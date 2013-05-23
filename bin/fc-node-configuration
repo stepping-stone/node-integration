@@ -8,6 +8,13 @@
 #                    http://www.foss-group.de
 #                    support@foss-group.de
 #
+# and
+#
+# Copyright (C) 2013 stepping stone GmbH
+# Switzerland
+# http://www.stepping-stone.ch
+# support@stepping-stone.ch 
+#
 # Authors:
 #   Pat Kläy  <pat.klaey@stepping-stone.ch>
 #   Michael Eichenberger <michael.eichenberger@stepping-stone.ch>
@@ -177,7 +184,7 @@ my $location=dirname(abs_path($0));
 
 my $config_file_path = "$location/../etc/foss-cloud";
 
-my $cfg = Config::IniFiles->new( -file => "$config_file_path/node-configuration.conf");
+my $cfg = Config::IniFiles->new( -file => "$config_file_path/node-configuration.conf" , -nomultiline => 1 );
 
 ######################################################################################################
 # Process the single character or long command line arguments.
@@ -216,6 +223,8 @@ my $ucarp_pub_password = "";
 
 my $helper_scripts_path = $location;
 my $remote_helper_scripts_path = $cfg->val("General","remote_helper_script_location");
+
+my $ldap_base_dn = $cfg->val("openLDAP","basedn");
 
 ######################################################################################################
 # Constant definitions
@@ -505,6 +514,9 @@ sub primaryMasterNode{
   # Asks the user, if the installation should really proceed
   proceed("primary-master-node");
 
+  # First of all check if the LDAP base dn is correct
+  verifyLDAPBaseDn();
+
   # Start with step one and check the network configuration
   my $localNetworkHash = checkLocalNetwork();
 
@@ -622,6 +634,9 @@ sub secondaryMasterNode{
 
    # Asks the user, if the installation should really proceed
    proceed("secondary-master-node");
+
+  # First of all check if the LDAP base dn is correct
+  verifyLDAPBaseDn();
 
   # Start with step one and check the network configuration
   my $localNetworkHash = checkLocalNetwork();
@@ -1023,6 +1038,9 @@ sub singleServer{
 
   # Asks the user, if the installation should really proceed
   proceed("single-server-node");
+
+  # First of all check if the LDAP base dn is correct
+  verifyLDAPBaseDn();
 
   # Start with step one and check the network configuration
   my $localNetworkHash = checkLocalNetwork();
@@ -1929,6 +1947,16 @@ sub configureOpenLDAP {
   my $file_16_secondary_master_node_template         = $directory_data."/16_secondary-master-node.template-$local_modus";
   my $file_17_ranges_networks_services_virtualization = $directory_data."/17_ranges_networks_services_virtualization.ldif";
   my $file_18_services_monitoring                    = $directory_data."/18_services_monitoring.ldif";
+  my $acl_administration_template                    = $directory_acl."/slapd.acl.administration.template";
+  my $acl_administration_file                        = $directory_acl."/slapd.acl.administration.conf";
+  my $acl_customers_template                         = $directory_acl."/slapd.acl.customers.template";
+  my $acl_customers_file                             = $directory_acl."/slapd.acl.customers.conf";
+  my $acl_people_template                            = $directory_acl."/slapd.acl.people.template";
+  my $acl_people_file                                = $directory_acl."/slapd.acl.people.conf";
+  my $acl_reseller_template                          = $directory_acl."/slapd.acl.reseller.template";
+  my $acl_reseller_file                              = $directory_acl."/slapd.acl.reseller.conf";
+  my $acl_service_template                           = $directory_acl."/slapd.acl.service.virtualization.template";
+  my $acl_service_file                               = $directory_acl."/slapd.acl.service.virtualization.conf";
   my $file;
   my $line;
   my $unencrypted_password;
@@ -1980,6 +2008,45 @@ sub configureOpenLDAP {
   # Setting the proper permisions on the openldap directory
   print "\n";
   setSingleFilePermissions("directory",$uid_root,$gid_ldap,0755,$directory_openldap);
+
+  ##############################################################################
+  ### Working on the on the acl files
+  ##############################################################################
+  
+  @sar_commands = ( { search => "<FOSS-CLOUD-LDAP-BASE-DN>",replace => $ldap_base_dn } );
+
+  # Replace the template with the correct values which are specified in the
+  # @sar_commands array
+  searchAndReplace( $acl_administration_template,
+                    $acl_administration_file,
+                    @sar_commands
+                  );
+
+  searchAndReplace( $acl_customers_template,
+                    $acl_customers_file,
+                    @sar_commands
+                  );
+
+  searchAndReplace( $acl_people_template,
+                    $acl_people_file,
+                    @sar_commands
+                  );
+
+  searchAndReplace( $acl_reseller_template,
+                    $acl_reseller_file,
+                    @sar_commands
+                  );
+
+  searchAndReplace( $acl_service_template,
+                    $acl_service_file,
+                    @sar_commands
+                  );
+
+  searchAndReplace( $acl_administration_template,
+                    $acl_administration_file,
+                    @sar_commands
+                  );
+  
 
   ##############################################################################
   ### Working on the file /etc/openldap/ldap.conf if needed by $modus
@@ -2051,6 +2118,13 @@ sub configureOpenLDAP {
           print "Found:          $line";
           $line = $req_cert."\n";
           print "Replacing with: $req_cert\n";
+          $error = 0;
+        } # End of if ($line =~ "listen_addr")
+
+        if ($line =~ m/<FOSS-CLOUD-LDAP-BASE-DN>/) {
+          print "Found:          $line";
+          $line =~ s/<FOSS-CLOUD-LDAP-BASE-DN>/$ldap_base_dn/;
+          print "Replacing <FOSS-CLOUD-LDAP-BASE-DN> with: $ldap_base_dn\n";
           $error = 0;
         } # End of if ($line =~ "listen_addr")
 
@@ -2244,6 +2318,11 @@ sub configureOpenLDAP {
             print "Replacing <FOSS-CLOUD-SLAPD-CA-CERTIFICATE-FILE> with: /etc/ssl/certs/FOSS-Cloud_CA.cert.pem\n";
             $error = 0;
         }
+
+        if ($line =~ m/<FOSS-CLOUD-LDAP-BASE-DN>/) {
+          $line =~ s/<FOSS-CLOUD-LDAP-BASE-DN>/$ldap_base_dn/;
+          print "Replacing <FOSS-CLOUD-LDAP-BASE-DN> with: $ldap_base_dn\n";
+        } # End of if ($line =~ "listen_addr")
 
 
       } # End of foreach $line (@output)
@@ -3219,6 +3298,7 @@ sub configureDHCP {
     my $file_dhcp_conf_template = $cfg->val($modus,"file_dhcp_conf_template");
     my $file_dhcp_conf = $cfg->val($modus,"file_dhcp_conf");
     my $ldap_port = $cfg->val("openLDAP","port");
+    my $dhcp_bind_dn = $cfg->val("General","dhcp_binddn");
     $ldap_port = "389" if ( $modus eq "demo-system" );
 
     # Configuring the DHCP Daemon
@@ -3243,7 +3323,11 @@ sub configureDHCP {
     $ldap_uri = "127.0.0.1" if ( $modus eq "demo-system" );
     my @sar_commands = ( { search => "<FOSS-CLOUD-LDAP-SERVER>", replace =>  $ldap_uri },
                          { search => "<FOSS-CLOUD-DHCP-PASSWORD>", replace => $dhcp_unencrypted_password}, 
-                         { search => "<FOSS-CLOUD-LDAP-PORT>", replace => $ldap_port});
+                         { search => "<FOSS-CLOUD-LDAP-PORT>", replace => $ldap_port},
+                         { search => "<FOSS-CLOUD-DHCP-BIND-DN>", replace => $dhcp_bind_dn},
+                         { search => "<FOSS-CLOUD-LDAP-BASE-DN>", replace => $ldap_base_dn},
+
+                       );
 
     searchAndReplace( $file_dhcp_conf_template,
                       $file_dhcp_conf,
@@ -3337,12 +3421,28 @@ sub configureVMManager {
       print "Replacing with:                         'bind_pwd' => '$unencrypted_password',\n";
       $error = 0;
     } # End of if ($line =~ "'bind_pwd'")
+    if ($line =~ "'bind_rdn'") {
+      print "Found:          $line";
+      $line =~ s/'bind_rdn'.*/'bind_rdn' => 'cn=Manager,$ldap_base_dn',/g;
+      print "Replacing with:                         'bind_rdn' => 'cn=Manager,$ldap_base_dn',\n";
+      $error = 0;
+    } # End of if ($line =~ "'bind_rdn'")
+    if ($line =~ "'base_dn'") {
+      print "Found:          $line";
+      $line =~ s/'base_dn'.*/'base_dn' => '$ldap_base_dn',/g;
+      print "Replacing with:                         'base_dn' => '$ldap_base_dn',\n";
+      $error = 0;
+    } # End of if ($line =~ "'bind_pwd'")
+
   } # End of foreach $line (@output)
 
   if (!$dryrun) {
     print "Writing:        'server' => '$ldap_uri/',\n";
     print "Writing:        'port' => $ldap_port,\n";
     print "Writing:        'bind_pwd' => '$unencrypted_password',\n";
+    print "Writing:        'bind_rdn' => 'cn=Manager,$ldap_base_dn',\n";
+    print "Writing:        'base_dn' => '$ldap_base_dn',\n";
+
     print "To the file:    $file_vmmanager_conf\n";
     open(FOUT,">$file_vmmanager_conf") || die("Could not open $file_vmmanager_conf for writing.");
     foreach $line (@output) {
@@ -3358,6 +3458,8 @@ sub configureVMManager {
     print "--dry-run: Would write ''server' => '$ldap_uri/,' to the file $file_vmmanager_conf!\n";
     print "--dry-run: Would write ''port' => $ldap_port,' to the file $file_vmmanager_conf!\n";
     print "--dry-run: Would write ''bind_pwd' => '$unencrypted_password',' to the file $file_vmmanager_conf!\n";
+    print "--dry-run: Would write ''bind_rdn' => 'cn=Manager,$ldap_base_dn',' to the file $file_vmmanager_conf!\n";
+    print "--dry-run: Would write ''base_dn' => '$ldap_base_dn',' to the file $file_vmmanager_conf!\n";
   } # End of if (!$dryrun)
 
   print "\n";
@@ -3390,7 +3492,7 @@ sub configurePhpLDAPadmin {
   my $ldap_port;
   if ( $modus eq "demo-system" )
   {
-    # LDAP
+    # LDAPa
     $ldap_protocol = "ldap://";
     $ldap_port = "389";
   } else
@@ -3440,6 +3542,7 @@ sub configurePhpLDAPadmin {
                       {search => "<FOSS-CLOUD-LDAP-RIP1>",replace => $ldap_protocol.$ldap_rip1_uri},
                       {search => "<FOSS-CLOUD-LDAP-RIP2>",replace => $ldap_protocol.$ldap_rip2_uri},
                       {search => "<FOSS-CLOUD-LDAP-PORT>",replace => $ldap_port},
+                      {search => "<FOSS-CLOUD-LDAP-BASE-DN>",replace => $ldap_base_dn},
                      );
 
   searchAndReplace ( $file_phpldapadmin_template,
@@ -4776,7 +4879,7 @@ sub loadOpenLDAPsingleLDIF {
   # Load the given LDIF into the directory server with ldapadd
   if (!$dryrun) {
     print "Working on $ldif ...\n";
-    $output = `/usr/bin/ldapadd -M -H "$ldap_protocol$server" -w $password -x -D "cn=Manager,dc=foss-cloud,dc=org" -f $ldif`;
+    $output = `/usr/bin/ldapadd -M -H "$ldap_protocol$server" -w $password -x -D "cn=Manager,$ldap_base_dn" -f $ldif`;
     $errorCode = $? >> 8;
 
     if($errorCode != 0) {
@@ -5597,5 +5700,86 @@ sub wirteVIPToHosts
         # Close the fh 
         close HOSTS;
     }
+
+}
+
+################################################################################
+# verifyLDAPBaseDn
+################################################################################
+# Description:
+#   
+################################################################################
+# Usage:
+#   verifyLDAPBaseDn( );
+################################################################################
+# Return Values:
+#   none
+################################################################################
+
+sub verifyLDAPBaseDn
+{
+    # Save the original base dn
+    my $old = $ldap_base_dn;
+    my $new = "";
+
+    while ( $new !~ m/=/ )
+    {
+        # Ask for the correct one
+        print "Please enter the openldap base dn [$ldap_base_dn]: ";
+
+        # Read from stdin
+        chomp($new = <STDIN>);
+
+        # Check if the user entered something, if not take the default value
+        if ( !$new || $new eq "" )
+        {
+            $new = $ldap_base_dn;
+        }
+    }
+
+    # Check if the user changed the dn, if not we are fine and nothing needs to 
+    # be done, otherwise we need to change the basedn in the hole configuration
+    # file
+    if ( $new ne $old )
+    {
+        # Read go through all sections/values in the config and check if the 
+        # current value matches the old base dn, if yes replace it with the 
+        # new one
+        my $rewrite = 0;
+        my $value = "";
+
+        # Go throug all sections
+        foreach my $section ( $cfg->Sections )
+        {
+            # Go through all parameters
+            foreach my $parameter ( $cfg->Parameters( $section ) )
+            {
+                # Get the value
+                $value = $cfg->val( $section, $parameter );
+
+                # If the value containes the old dn, replace it with the new 
+                # one and remember to rewrite the config fike
+                if ( $value =~ m/$old/ )
+                {
+                    $value =~ s/$old/$new/;
+                    $cfg->setval($section,$parameter,$value);
+                    $rewrite = 1;
+                } # End if ( $value =~ m/$old/ )
+
+            } # End foreach my $parameter ( $cfg->Parameters( $section ) )
+
+        } # End foreach my $section ( $cfg->Sections )
+
+        # Check if we need to rewrite the configuration file
+        if ( $rewrite == 1 )
+        {
+            $cfg->RewriteConfig;
+        }
+
+        # And finally overwrite the ldap base dn var
+        $ldap_base_dn = $new;
+
+    } # End if ( $new ne $old )
+
 
 }
