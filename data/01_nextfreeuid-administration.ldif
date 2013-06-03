@@ -42,6 +42,6 @@
 #####################################################################################################################
 dn: cn=nextfreeuid,ou=administration,dc=foss-cloud,dc=org
 objectClass: inetOrgPerson
-uid: 4000017
+uid: 4000057
 cn: nextFreeUID
 sn: nextFreeUID
