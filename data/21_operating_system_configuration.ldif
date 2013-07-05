@@ -83,7 +83,7 @@ objectclass: top
 objectclass: sstGroupObjectClass
 objectclass: sstRelationship
 uid: 4000022
-sstDisplayName: 5
+sstDisplayName: 6
 sstBelongsToResellerUID: 4000000
 sstBelongsToCustomerUID: 4000001
 sstAllowResellerUID: 0
