@@ -280,6 +280,7 @@ use constant ERROR_NETWORK_CONF_MISSING_STRING      => "The specified network co
 use constant ERROR_PASSWORD_NOT_FOUND_CODE          => 24;
 use constant ERROR_PASSWORD_NOT_FOUND_STRING        => "Could not get all necessary passwords form primary master node";
 
+
 use constant VIP            => 'vip';
 use constant SECONDARY_IP   => 'secondary_ip';
 ######################################################################################################
@@ -2156,11 +2157,13 @@ sub configureOpenLDAP {
   ### Working on the file /etc/openldap/slapd.conf if needed by $modus
   ##############################################################################
 
-  # Generate a passwor for the syncrepl user
+  # Generate a passwor for the syncrepl and libvirtd user
   my $syncrepl_password;
+  my $libvirtd_password;
   if ( $local_modus eq "primary-master" )
   {
     $syncrepl_password = chars(8,8);
+    $libvirtd_password = chars(8,8);
   }
 
   if ( $local_modus eq "primary-master" || $local_modus eq "secondary-master")
@@ -2207,13 +2210,22 @@ sub configureOpenLDAP {
          $fc_brokerd_unencrypted_password,
          $apache_vip_name,
          $ucarp_pub_password,
-         $ucarp_int_password ) = getRemoteConfiguration();
+         $ucarp_int_password,
+         $libvirtd_password ) = getRemoteConfiguration();
 
         # Write to the hosts file
         wirteVIPToHosts($localNetworkHash);
 
       }
 
+      # Write the libvritd password to the configuration file
+      my $libvirtd_config = $cfg->val("General","libvritd_service_configuration");
+      if ( !open( LIBVIRTD, ">$libvirtd_config" ) )
+      {
+          returnError(ERROR_PASSWORD_NOT_CREATED_CODE, ERROR_PASSWORD_NOT_CREATED_STRING, "Could not write password to the file $libvirtd_config");
+      }
+      print LIBVIRTD $libvirtd_password;
+      close LIBVIRTD;
 
       unless ( defined($password) && $password ne "" )
       {
@@ -2644,15 +2656,19 @@ sub configureOpenLDAP {
       # With:
       # sstLDAPBindPassword: admin
 
-      # Create the crypted syncreply password
+      # Create the crypted syncreply and libvrit password
       my $crypted_syncrepl_password = `/usr/sbin/slappasswd -s '$syncrepl_password'`;
       chomp($crypted_syncrepl_password);
 
+      my $crypted_libvirtd_password = `/usr/sbin/slappasswd -s '$libvirtd_password'`;
+      chomp( $crypted_libvirtd_password );
+
       # Create the search_and_replace commands to replace the LDIF template with
       # the correct values
-      @sar_commands = ( {search => "<FOSS-CLOUD-PROV-BACKUP-KVM-PASSWORD>", replace => $prov_backup_kvm_password},
-                        {search => "<FOSS-CLOUD-DHCP-PASSWORD>", replace => $dhcp_password},
-                        {search => "<FOSS-CLOUD-SYNCREPL-PASSWORD>", replace => $crypted_syncrepl_password},
+      @sar_commands = ( {search => "<STONEY-CLOUD-PROV-BACKUP-KVM-PASSWORD>", replace => $prov_backup_kvm_password},
+                        {search => "<STONEY-CLOUD-DHCP-PASSWORD>", replace => $dhcp_password},
+                        {search => "<STONEY-CLOUD-SYNCREPL-PASSWORD>", replace => $crypted_syncrepl_password},
+                        {search => "<STONEY-CLOUD-LIBVIRTD-PASSWORD>", replace => $crypted_syncrepl_password },
                       );
 
       # Replace the template with the correct values which are specified in the
@@ -5368,6 +5384,7 @@ sub getRemoteConfiguration
     my $apache_name = "";
     my $ucarp_pub_pwd = "";
     my $ucarp_int_pwd = "";
+    my $libvirtd_pwd = "";
 
     # Check if the known_hosts file exists or not
     if ( -e "~/.ssh/known_hosts" ) {
@@ -5507,6 +5524,22 @@ sub getRemoteConfiguration
         {
             returnError(ERROR_SSH_CMD_FAILED_CODE,ERROR_SSH_CMD_FAILED_STRING,$ssh->error);
         }
+        
+        # Get the libvirtd user password
+        my $libvirtd_config = $cfg->val("General","libvritd_service_configuration");
+        $cmd = "cat '$libvirtd_config'";
+        
+        # Execute the command on the remote host
+        $output = $ssh->capture($cmd);
+
+        if ( !$ssh->error )
+        {
+            $libvirtd_pwd = $output;
+            chomp( $libvirtd_pwd );
+        } else
+        {
+            returnError(ERROR_SSH_CMD_FAILED_CODE,ERROR_SSH_CMD_FAILED_STRING,$ssh->error);
+        }
 
     }
     else{
@@ -5520,14 +5553,14 @@ sub getRemoteConfiguration
     # Test if both passwords were found
     if ( $syncrepl_password eq "" or $dhcp_password eq "" or $kvm_password eq "" 
          or $broker_password eq "" or $ucarp_pub_pwd eq "" 
-         or $ucarp_int_pwd eq "" )
+         or $ucarp_int_pwd eq "" or $libvirtd_pwd eq "" )
     {
         returnError(ERROR_PASSWORD_NOT_FOUND_CODE,ERROR_PASSWORD_NOT_FOUND_STRING);
     }
 
     # Return the passwords
     return ( $syncrepl_password, $dhcp_password, $kvm_password, $broker_password,
-             $apache_name, $ucarp_pub_pwd, $ucarp_int_pwd );
+             $apache_name, $ucarp_pub_pwd, $ucarp_int_pwd, $libvirtd_pwd );
 }
 
 ################################################################################

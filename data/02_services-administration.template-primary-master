@@ -3,6 +3,11 @@
 #                    http://www.foss-group.de
 #                    support@foss-group.de
 #
+# Copyright (C) 2013 stepping stone GmbH
+#                    Switzerland
+#                    http://www.stepping-stone.ch
+#                    support@stepping-stone.ch
+#
 # Authors:
 #  Michael Eichenberger <michael.eichenberger@stepping-stone.ch>
 #  
@@ -40,7 +45,15 @@ objectclass: organizationalPerson
 objectclass: inetOrgPerson
 cn: dhcp
 sn: dhcp
-userPassword: <FOSS-CLOUD-DHCP-PASSWORD>
+userPassword: <STONEY-CLOUD-DHCP-PASSWORD>
+
+dn: cn=libvirtd,ou=services,ou=administration,dc=foss-cloud,dc=org
+objectclass: top
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: libvirtd
+sn: libvirtd
+userPassword: <STONEY-CLOUD-LIBVIRTD-PASSWORD>
 
 dn: cn=prov-backup-kvm,ou=services,ou=administration,dc=foss-cloud,dc=org
 objectclass: top
@@ -48,7 +61,7 @@ objectclass: organizationalPerson
 objectclass: inetOrgPerson
 cn: prov-backup-kvm
 sn: prov-backup-kvm
-userPassword: <FOSS-CLOUD-PROV-BACKUP-KVM-PASSWORD>
+userPassword: <STONEY-CLOUD-PROV-BACKUP-KVM-PASSWORD>
 
 dn: cn=slapd-mirrormode,ou=services,ou=administration,dc=foss-cloud,dc=org
 objectclass: top
@@ -56,4 +69,4 @@ objectclass: organizationalPerson
 objectclass: inetOrgPerson
 cn: slapd-mirrormode 
 sn: slapd-mirrormode
-userPassword: <FOSS-CLOUD-SYNCREPL-PASSWORD>
+userPassword: <STONEY-CLOUD-SYNCREPL-PASSWORD>
