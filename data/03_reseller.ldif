@@ -41,6 +41,8 @@ objectclass: top
 objectclass: sstReseller
 uid: 4000000
 organizationName: Reseller Ltd.
+sstBelongsToResellerUID: 4000000
+sstIsActive: TRUE
 
 dn: ou=address,uid=4000000,ou=reseller,dc=foss-cloud,dc=org
 objectclass: top
