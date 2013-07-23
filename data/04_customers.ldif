@@ -42,6 +42,8 @@ objectclass: sstCustomerCompany
 uid: 4000001
 organizationName: Customer Ltd.
 sstBelongsToResellerUID: 4000000
+sstBelongsToCustomerUID: 4000001
+sstIsActive: TRUE
 
 #####################################################################################################################
 # address
