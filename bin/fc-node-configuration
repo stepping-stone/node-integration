@@ -2226,6 +2226,9 @@ sub configureOpenLDAP {
       }
       print LIBVIRTD $libvirtd_password;
       close LIBVIRTD;
+      
+      # Set correct ownership and permission to the password file
+      setSingleFilePermissions('file',$uid_root,$gid_root,0600,$libvirtd_config);
 
       unless ( defined($password) && $password ne "" )
       {
