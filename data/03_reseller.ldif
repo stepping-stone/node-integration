@@ -51,8 +51,8 @@ objectclass: sstAddressCompany
 ou: address
 organizationName: Reseller Ltd.
 sstGender: m
-surname: Surname
 givenName: Name
+surname: Surname
 postalAddress: Street Number
 countryName: CH
 postalCode: Postal Code
@@ -61,6 +61,7 @@ preferredLanguage: en-GB
 mail: name.surname@example.com
 telephoneNumber: +41 00 000 00 00
 mobileTelephoneNumber: +41 00 000 00 00
+sstWebsiteURL: https://www.example.com/
 
 dn: ou=billing,uid=4000000,ou=reseller,dc=foss-cloud,dc=org
 objectclass: top
@@ -75,6 +76,13 @@ objectclass: organizationalUnit
 objectclass: labeledURIObject
 ou: customers
 labeledURI: ldap:///ou=customers,dc=foss-cloud,dc=org??one?(sstBelongsToResellerUID=4000000)
+
+dn: ou=employees,uid=4000000,ou=reseller,dc=foss-cloud,dc=org
+objectclass: top
+objectclass: organizationalUnit
+objectclass: labeledURIObject
+ou: employees
+labeledURI: ldap:///ou=people,dc=foss-cloud,dc=org??one?(sstEmployeeOfUID=4000000)
 
 dn: ou=people,uid=4000000,ou=reseller,dc=foss-cloud,dc=org
 objectclass: top
