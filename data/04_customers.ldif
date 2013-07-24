@@ -55,8 +55,8 @@ objectclass: sstAddressCompany
 ou: address
 organizationName: Customer Ltd.
 sstGender: m
-surname: Surname
 givenName: Name
+surname: Surname
 postalAddress: Street Number
 countryName: CH
 postalCode: Postal Code
@@ -75,6 +75,13 @@ sstBillingCycle: 1
 sstBillingCycleFix: TRUE
 sstCurrency: CHF
 sstPaymentMethod: invoice
+
+dn: ou=employees,uid=4000001,ou=customers,dc=foss-cloud,dc=org
+objectclass: top
+objectclass: organizationalUnit
+objectclass: labeledURIObject
+ou: employees
+labeledURI: ldap:///ou=people,dc=foss-cloud,dc=org??one?(sstEmployeeOfUID=4000001)
 
 dn: ou=people,uid=4000001,ou=customers,dc=foss-cloud,dc=org
 objectclass: top
