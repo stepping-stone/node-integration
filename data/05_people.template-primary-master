@@ -49,6 +49,7 @@ userPassword: <FOSS-CLOUD-PEOPLE-PASSWORD>
 mail: <FOSS-CLOUD-PEOPLE-MAIL>
 cn: admin
 sstTimeZoneOffset: <FOSS-CLOUD-PEOPLE-TIMEZONE>
+sstIsActive: TRUE
 sstBelongsToResellerUID: 4000000
 sstBelongsToCustomerUID: 4000001
 sstEmployeeOfUID: 4000000
