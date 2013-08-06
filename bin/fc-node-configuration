@@ -1973,6 +1973,7 @@ sub configureOpenLDAP {
   my $dns_host_string = "";
   my $ntp_host_string = "";
   my $ldap_server;
+  my $ldap_port;
 
   # Check if the modus is demo-system, if yes change the vip to the internal 
   # interface ip
@@ -2085,13 +2086,15 @@ sub configureOpenLDAP {
       if ( $modus eq "demo-system" )
       {
         # LDAP
-        $replace_string = "URI             ldap:\/\/$int_vip:389";
+        $ldap_port = 389;
+        $replace_string = "URI             ldap:\/\/$int_vip:$ldap_port";
         $cert_file = "#TLS_CACERT <FOSS-CLOUD-LDAP-CA-CERTIFICATE-FILE>";
         $req_cert = "#TLS_REQCERT demand"; 
       } else
       {
         # LDAPS
-        $replace_string = "URI             ldaps:\/\/$int_vip:636";
+        $ldap_port = 636;
+        $replace_string = "URI             ldaps:\/\/$int_vip:$ldap_port";
         my $ldap_cert_name;
         $ldap_cert_name = "ldapm-01." if ( $modus eq "primary-master" || $modus eq "single-server" );
         $ldap_cert_name = "ldapm-02." if ( $modus eq "secondary-master");
@@ -2219,7 +2222,7 @@ sub configureOpenLDAP {
       }
 
       # Write the libvritd password to the configuration file
-      my $libvirtd_config = $cfg->val("General","libvritd_service_configuration");
+      my $libvirtd_config = $cfg->val("General","libvritd_password_file");
       if ( !open( LIBVIRTD, ">$libvirtd_config" ) )
       {
           returnError(ERROR_PASSWORD_NOT_CREATED_CODE, ERROR_PASSWORD_NOT_CREATED_STRING, "Could not write password to the file $libvirtd_config");
@@ -2229,6 +2232,9 @@ sub configureOpenLDAP {
       
       # Set correct ownership and permission to the password file
       setSingleFilePermissions('file',$uid_root,$gid_root,0600,$libvirtd_config);
+      
+      # And finally configure the libvirtd hooks
+      configureLibvirtdHooks( $cfg, $int_vip, $ldap_port );
 
       unless ( defined($password) && $password ne "" )
       {
@@ -5817,5 +5823,79 @@ sub verifyLDAPBaseDn
 
     } # End if ( $new ne $old )
 
+}
 
+################################################################################
+# configureLibvirtdHooks
+################################################################################
+# Description:
+#   
+################################################################################
+# Usage:
+#   configureLibvirtdHooks( $cfg, $ldap_vip );
+################################################################################
+# Return Values:
+#   none
+################################################################################
+
+sub configureLibvirtdHooks
+{
+    my $config = shift;
+    my $ldap_vip = shift;
+    my $ldap_port = shift;
+    
+    my $configuration_template = $config->val("General","libvirtd_configuration_template");
+    my $configuration_file = $config->val("General","libvirtd_configuration_file");
+    my $binddn = $config->val("General","libvird_binddn");
+    my $password_file = $config->val("General","libvritd_password_file");
+    my $ldap_uri;
+    
+    if ( $ldap_port == 636 )
+    {
+        $ldap_uri = "ldaps:\\\\$ldap_vip";
+    } else
+    {
+        $ldap_uri = "ldap:\\\\$ldap_vip";
+    }
+    
+    # Open the template file, replace the variables and write the configuration 
+    # file
+    if ( !open( TEMPLATE , $configuration_template ) )
+    {
+        returnError();
+    }
+    
+    if ( !open( CONFIG, ">$configuration_file" ) )
+    {
+        returnError();
+    }
+    
+    while ( <TEMPLATE> )
+    {
+        my $line = $_;
+        
+        # Check if the line matches one of the variables we need to set
+        if ( $line =~ m/^libvirtHookFirewallLdapBindDn=\".*\"$/ )
+        {
+            $line = "libvirtHookFirewallLdapBindDn=\"$binddn\"\n";
+        }
+        
+        if ( $line =~ m/^libvirtHookFirewallLdapBindPasswordFile=\".*\"$/ )
+        {
+            $line= "libvirtHookFirewallLdapBindPasswordFile=\"$password_file\"";
+            $line .= "\n";
+        }
+        
+        if ( $line =~ m/^libvirtHookFirewallLdapUri=\".*\"$/ )
+        {
+            $line = "libvirtHookFirewallLdapUri=\"$ldap_uri\"\n";
+        }
+     
+        # Write the current line (replaced or not) to the configuration file
+        print CONFIG $line;
+    }
+    
+    close TEMPLATE;
+    close CONFIG;
+    
 }
