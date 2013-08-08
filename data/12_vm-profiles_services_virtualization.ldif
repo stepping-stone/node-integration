@@ -111,6 +111,7 @@ sstclockoffsetvalues: utc
 sstdisplayname: TBD_GUI
 sstfeature: acpi
 sstfeature: pae
+sstfeature: hap
 sstmemory: -1
 sstmemorydefault: 134217728
 sstmemorymax: 137438953472
@@ -259,6 +260,7 @@ sstclockoffsetvalues: utc
 sstdisplayname: TBD_GUI
 sstfeature: acpi
 sstfeature: pae
+sstfeature: hap
 sstmemory: -1
 sstmemorydefault: 536870912
 sstmemorymax: 137438953472
