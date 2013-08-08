@@ -279,6 +279,8 @@ use constant ERROR_NETWORK_CONF_MISSING_CODE        => 23;
 use constant ERROR_NETWORK_CONF_MISSING_STRING      => "The specified network configuration is not writable";
 use constant ERROR_PASSWORD_NOT_FOUND_CODE          => 24;
 use constant ERROR_PASSWORD_NOT_FOUND_STRING        => "Could not get all necessary passwords form primary master node";
+use constant ERROR_GLUSTER_PEER_STATUS_FAILED_CODE   => 25;
+use constant ERROR_GLUSTER_PEER_STATUS_FAILED_STRING => "The gluster peer status command did not succeed";
 
 
 use constant VIP            => 'vip';
@@ -555,6 +557,10 @@ sub primaryMasterNode{
   # Start the ksmtuned daemon and add it to the default runlevel
   startDaemon("ksmtuned");
   rcUpdate("ksmtuned","default");
+  
+  # Start the haveged daemon and add it to the default runlevel
+  startDaemon("haveged");
+  rcUpdate("haveged","default");
 
   # Mount the GlusterFS volume
   mountGlusterFS($remoteNetworkHash1,$remoteNetworkHash2);
@@ -683,6 +689,10 @@ sub secondaryMasterNode{
   # Start the ksmtuned daemon and add it to the default runlevel
   startDaemon("ksmtuned");
   rcUpdate("ksmtuned","default");
+  
+  # Start the haveged daemon and add it to the default runlevel
+  startDaemon("haveged");
+  rcUpdate("haveged","default");
 
   # Mount the GlusterFS volume
   mountGlusterFS($remoteNetworkHash1,$remoteNetworkHash2);
@@ -785,6 +795,10 @@ sub vmNode{
   # Start the ksmtuned daemon and add it to the default runlevel
   startDaemon("ksmtuned");
   rcUpdate("ksmtuned","default");
+  
+  # Start the haveged daemon and add it to the default runlevel
+  startDaemon("haveged");
+  rcUpdate("haveged","default");
 
   # Get the port and protocol:
   my $ldap_protocol;
@@ -1001,6 +1015,10 @@ sub demoSystem{
   # Start and add the PowerDNS recursor to the default runlevel
   startDaemon("precursor");
   rcUpdate("precursor","default");
+  
+  # Start the haveged daemon and add it to the default runlevel
+  startDaemon("haveged");
+  rcUpdate("haveged","default");
 
   # Start the dhcp daemon and add it to the default runlevel
   startDaemon("dhcpd");
@@ -1059,6 +1077,10 @@ sub singleServer{
   # Start the ksmtuned daemon and add it to the default runlevel
   startDaemon("ksmtuned");
   rcUpdate("ksmtuned","default");
+  
+  # Start the haveged daemon and add it to the default runlevel
+  startDaemon("haveged");
+  rcUpdate("haveged","default");
 
   # Unpack virtualization data tarball and test if it's ok
   my $tarball = $cfg->val($modus,"file_tarball_source");
@@ -1444,11 +1466,43 @@ sub configureGlusterFS {
     $output = `gluster peer status`;
     $errorCode = $? >> 8;
 
-    if($errorCode == 0) {
-      print "$output\n";
-    } else {
-      returnError(ERROR_UNDEFINED_CODE,ERROR_UNDEFINED_STRING);
-    } # End of if($errorCode == 0)
+    # Parse the output to see wether or not the peers state is "Peer in Cluster (Connected)"
+    my $retry_status = 0;
+    if ( $errorCode == 0 && $output =~ m/State\:\s(.+)\n/ )
+    {
+        # Check if the matched part is "Peer in Cluster (Connected)", then everything is ok
+        if ( $1 ne "Peer in Cluster (Connected)" )
+        {
+            print "Peer is not yet in cluster, retry in 5 seconds\n";
+            $retry_status = 1;
+        }
+    } else
+    {
+        print "The command \"gluster peer status\" did not return a state value";
+        print ", retry in 5 seconds\n";
+        $retry_status = 1;
+    }
+    
+    # If we need to re-execute the gluster peer status command, wait 5 seconds and retry
+    if ( $retry_status )
+    {
+        sleep 5;
+        $output = `gluster peer status`;
+        $errorCode = $? >> 8;
+
+        # Parse the output to see wether or not the peers state is "Peer in Cluster (Connected)"
+        if ( $errorCode == 0 && $output =~ m/State\:\s(.+)\n/ )
+        {
+            # Check if the matched part is "Peer in Cluster (Connected)", then everything is ok
+            if ( $1 ne "Peer in Cluster (Connected)" )
+            {
+                returnError(ERROR_GLUSTER_PEER_STATUS_FAILED_CODE,ERROR_GLUSTER_PEER_STATUS_FAILED_STRING );
+            }
+        } else
+        {
+            returnError(ERROR_GLUSTER_PEER_STATUS_FAILED_CODE,ERROR_GLUSTER_PEER_STATUS_FAILED_STRING );
+        } 
+    }
 
     # Creating the distributed replicated volume
     print "Creating the distributed replicated volume ...\n";
@@ -1735,7 +1789,7 @@ sub restartDaemon {
 
   # Test if the daemon is the mount_glusterFS_daemon, this one we do not have to 
   # restart
-  if ( $daemon eq $cfg->val($modus,"mount_glusterFS_daemon") )
+  if ( $daemon eq $cfg->val("General","mount_glusterFS_daemon") )
   {
       print "We do not have to restart the daemon $daemon\n";
       return;
