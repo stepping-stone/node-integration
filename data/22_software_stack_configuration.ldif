@@ -29,26 +29,36 @@
 # /etc/openldap/data/22_software_stack_configuration.ldif
 #####################################################################################################################
 # Description:
-#  This sub tree contains the software stack choices for the whole FOSS-Cloud installation (since version 1.4.0).
-#  They can be extended by the administrator.
+#  This sub tree contains the software stack choices for the whole stoney cloud installation. The entries can
+#  currently only be updated or expanded by the administrator via LDAP commands.
+#####################################################################################################################
+# Notes:
+#  To get all the possible operating systems (used for the default 'None' entry with the uid=3000051) out of the 
+#  file 21_operating_system_configuration.ldif, execute the following command:
+#    grep -E '((uid=([0-9]{7})),){3}' 21_operating_system_configuration.ldif
+#  This will give you the following output:
+#    dn: uid=3000021,uid=3000020,uid=3000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+#    dn: uid=3000022,uid=3000020,uid=3000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+#    dn: uid=3000023,uid=3000020,uid=3000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+#    ...
 #####################################################################################################################
 dn: ou=software stack,ou=configuration,dc=foss-cloud,dc=org
 objectclass: top
 objectclass: organizationalUnit
 ou: software stack
-description: This sub tree contains the software stack choices for the whole FOSS-Cloud installation (since version 1.4.0).
+description: This sub tree contains the software stack choices for the whole stoney cloud installation.
 
 dn: ou=environments,ou=software stack,ou=configuration,dc=foss-cloud,dc=org
 objectclass: top
 objectclass: organizationalUnit
 ou: environments
-description: This sub tree contains the software stack environment choices for the whole FOSS-Cloud installation (since version 1.4.0).
+description: This sub tree contains the software stack environment choices for the whole stoney cloud installation.
 
-dn: uid=4000054,ou=environments,ou=software stack,ou=configuration,dc=foss-cloud,dc=org
+dn: uid=3000054,ou=environments,ou=software stack,ou=configuration,dc=foss-cloud,dc=org
 objectclass: top
 objectclass: sstGroupObjectClass
 objectclass: sstRelationship
-uid: 4000054
+uid: 3000054
 sstDisplayName: Test Environment
 description: This is the environment used for testing (pre-production).
 sstEnvironmentName: Test
@@ -58,11 +68,11 @@ sstAllowResellerUID: 0
 sstAllowCustomerUID: 0
 sstAllowPersonUID: 0
 
-dn: uid=4000055,ou=environments,ou=software stack,ou=configuration,dc=foss-cloud,dc=org
+dn: uid=3000055,ou=environments,ou=software stack,ou=configuration,dc=foss-cloud,dc=org
 objectclass: top
 objectclass: sstGroupObjectClass
 objectclass: sstRelationship
-uid: 4000055
+uid: 3000055
 sstDisplayName: Development Environment
 description: This is the environment used for development (sandbox).
 sstEnvironmentName: Development
@@ -72,11 +82,11 @@ sstAllowResellerUID: 0
 sstAllowCustomerUID: 0
 sstAllowPersonUID: 0
 
-dn: uid=4000056,ou=environments,ou=software stack,ou=configuration,dc=foss-cloud,dc=org
+dn: uid=3000056,ou=environments,ou=software stack,ou=configuration,dc=foss-cloud,dc=org
 objectclass: top
 objectclass: sstGroupObjectClass
 objectclass: sstRelationship
-uid: 4000056
+uid: 3000056
 sstDisplayName: Production Environment
 description: This is the environment used for production.
 sstEnvironmentName: Production
@@ -86,16 +96,44 @@ sstAllowResellerUID: 0
 sstAllowCustomerUID: 0
 sstAllowPersonUID: 0
 
-dn: uid=4000051,ou=software stack,ou=configuration,dc=foss-cloud,dc=org
+dn: uid=3000051,ou=software stack,ou=configuration,dc=foss-cloud,dc=org
 objectclass: top
 objectclass: sstGroupObjectClass
 objectclass: sstRelationship
 objectclass: labeledURIObject
-uid: 4000051
-sstDisplayName: Django (Version 1)
-description: Django Python Web Framework Version 1.
-labeledURI: ldap://uid=4000034,uid=4000033,uid=4000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
-labeledURI: ldap://uid=4000035,uid=4000033,uid=4000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+uid: 3000051
+sstDisplayName: None
+description: No Software Stack is to be managed through the configuration management.
+labeledURI: ldap://uid=3000021,uid=3000020,uid=3000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+labeledURI: ldap://uid=3000022,uid=3000020,uid=3000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+labeledURI: ldap://uid=3000023,uid=3000020,uid=3000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+labeledURI: ldap://uid=3000025,uid=3000024,uid=3000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+labeledURI: ldap://uid=3000026,uid=3000024,uid=3000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+labeledURI: ldap://uid=3000027,uid=3000024,uid=3000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+labeledURI: ldap://uid=3000028,uid=3000024,uid=3000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+labeledURI: ldap://uid=3000029,uid=3000024,uid=3000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+labeledURI: ldap://uid=3000030,uid=3000024,uid=3000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+labeledURI: ldap://uid=3000031,uid=3000024,uid=3000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+labeledURI: ldap://uid=3000032,uid=3000024,uid=3000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+labeledURI: ldap://uid=3000051,uid=3000024,uid=3000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+labeledURI: ldap://uid=3000034,uid=3000033,uid=3000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+labeledURI: ldap://uid=3000035,uid=3000033,uid=3000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+labeledURI: ldap://uid=3000053,uid=3000052,uid=3000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+labeledURI: ldap://uid=3000054,uid=3000052,uid=3000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+labeledURI: ldap://uid=3000055,uid=3000052,uid=3000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+labeledURI: ldap://uid=3000056,uid=3000052,uid=3000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+labeledURI: ldap://uid=3000057,uid=3000052,uid=3000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+labeledURI: ldap://uid=3000038,uid=3000037,uid=3000036,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+labeledURI: ldap://uid=3000039,uid=3000037,uid=3000036,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+labeledURI: ldap://uid=3000040,uid=3000037,uid=3000036,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+labeledURI: ldap://uid=3000041,uid=3000037,uid=3000036,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+labeledURI: ldap://uid=3000043,uid=3000042,uid=3000036,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+labeledURI: ldap://uid=3000044,uid=3000042,uid=3000036,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+labeledURI: ldap://uid=3000045,uid=3000042,uid=3000036,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+labeledURI: ldap://uid=3000046,uid=3000042,uid=3000036,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+labeledURI: ldap://uid=3000047,uid=3000042,uid=3000036,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+labeledURI: ldap://uid=3000049,uid=3000048,uid=3000036,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+labeledURI: ldap://uid=3000050,uid=3000048,uid=3000036,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
 sstEnvironmentName: Test
 sstEnvironmentName: Development
 sstEnvironmentName: Production
@@ -105,16 +143,16 @@ sstAllowResellerUID: 0
 sstAllowCustomerUID: 0
 sstAllowPersonUID: 0
 
-dn: uid=4000052,ou=software stack,ou=configuration,dc=foss-cloud,dc=org
+dn: uid=3000052,ou=software stack,ou=configuration,dc=foss-cloud,dc=org
 objectclass: top
 objectclass: sstGroupObjectClass
 objectclass: sstRelationship
 objectclass: labeledURIObject
-uid: 4000052
-sstDisplayName: Django (Version 2)
-description: Django Python Web Framework Version 2. 
-labeledURI: ldap://uid=4000034,uid=4000033,uid=4000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
-labeledURI: ldap://uid=4000035,uid=4000033,uid=4000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+uid: 3000052
+sstDisplayName: SSH (stepping stone GmbH)
+description: SSH configuration for remote access by stepping stone GmbH employees.
+labeledURI: ldap://uid=3000034,uid=3000033,uid=3000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+labeledURI: ldap://uid=3000035,uid=3000033,uid=3000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
 sstEnvironmentName: Test
 sstEnvironmentName: Development
 sstEnvironmentName: Production
