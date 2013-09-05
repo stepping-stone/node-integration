@@ -29,208 +29,220 @@
 # /etc/openldap/data/21_operating_system_configuration.ldif
 #####################################################################################################################
 # Description:
-#  This sub tree contains the operating system choices for the whole FOSS-Cloud installation (since version 1.4.0).
-#  They can be extended by the administrator.
+#  This sub tree contains the operating system choices for the whole stoney cloud installation. The entries can
+#  currently only be updated or expanded by the administrator via LDAP commands.
 #####################################################################################################################
 dn: ou=operating system,ou=configuration,dc=foss-cloud,dc=org
 objectclass: top
 objectclass: organizationalUnit
 ou: operating system
-description: This sub tree contains the operating system choices for the whole FOSS-Cloud installation (since version 1.4.0).
+description: This sub tree contains the operating system choices for the whole stoney cloud installation.
 
-# This sub tree contains the Linux based operating system choices for the whole FOSS-Cloud installation (since version 1.4.0).
-dn: uid=4000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+# This sub tree contains the Linux based operating system choices for the whole stoney cloud installation.
+dn: uid=3000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
 objectclass: top
 objectclass: sstGroupObjectClass
 objectclass: sstRelationship
-uid: 4000019
+uid: 3000019
 sstDisplayName: Linux
-description: This sub tree contains the Linux based operating system choices for the whole FOSS-Cloud installation (since version 1.4.0).
+description: This sub tree contains the Linux based operating system choices for the whole stoney cloud installation.
 sstBelongsToResellerUID: 4000000
 sstBelongsToCustomerUID: 4000001
 sstAllowResellerUID: 0
 sstAllowCustomerUID: 0
 sstAllowPersonUID: 0
 
-# This sub tree contains the Debian Linux based operating system choices for the whole FOSS-Cloud installation (since version 1.4.0).
-dn: uid=4000020,uid=4000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+# This sub tree contains the Debian Linux based operating system choices for the whole stoney cloud installation.
+dn: uid=3000020,uid=3000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
 objectclass: top
 objectclass: sstGroupObjectClass
 objectclass: sstRelationship
-uid: 4000020
+uid: 3000020
 sstDisplayName: Debian
-description: This sub tree contains the Debian Linux based operating system choices for the whole FOSS-Cloud installation (since version 1.4.0).
+description: This sub tree contains the Debian Linux based operating system choices for the whole stoney cloud installation.
 sstBelongsToResellerUID: 4000000
 sstBelongsToCustomerUID: 4000001
 sstAllowResellerUID: 0
 sstAllowCustomerUID: 0
 sstAllowPersonUID: 0
 
-dn: uid=4000021,uid=4000020,uid=4000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+dn: uid=3000021,uid=3000020,uid=3000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
 objectclass: top
 objectclass: sstGroupObjectClass
 objectclass: sstRelationship
-uid: 4000021
-sstDisplayName: 5
+uid: 3000021
+sstDisplayName: 5 (Lenny)
 sstBelongsToResellerUID: 4000000
 sstBelongsToCustomerUID: 4000001
 sstAllowResellerUID: 0
 sstAllowCustomerUID: 0
 sstAllowPersonUID: 0
 
-dn: uid=4000022,uid=4000020,uid=4000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+dn: uid=3000022,uid=3000020,uid=3000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
 objectclass: top
 objectclass: sstGroupObjectClass
 objectclass: sstRelationship
-uid: 4000022
-sstDisplayName: 6
+uid: 3000022
+sstDisplayName: 6 (Squeeze)
 sstBelongsToResellerUID: 4000000
 sstBelongsToCustomerUID: 4000001
 sstAllowResellerUID: 0
 sstAllowCustomerUID: 0
 sstAllowPersonUID: 0
 
-dn: uid=4000023,uid=4000020,uid=4000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+dn: uid=3000023,uid=3000020,uid=3000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
 objectclass: top
 objectclass: sstGroupObjectClass
 objectclass: sstRelationship
-uid: 4000023
-sstDisplayName: 7
+uid: 3000023
+sstDisplayName: 7 (Wheezy)
 sstBelongsToResellerUID: 4000000
 sstBelongsToCustomerUID: 4000001
 sstAllowResellerUID: 0
 sstAllowCustomerUID: 0
 sstAllowPersonUID: 0
 
-# This sub tree contains the Fedora Linux based operating system choices for the whole FOSS-Cloud installation (since version 1.4.0).
-dn: uid=4000024,uid=4000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+# This sub tree contains the Fedora Linux based operating system choices for the whole stoney cloud installation.
+dn: uid=3000024,uid=3000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
 objectclass: top
 objectclass: sstGroupObjectClass
 objectclass: sstRelationship
-uid: 4000024
+uid: 3000024
 sstDisplayName: Fedora
-description: This sub tree contains the Fedora Linux based operating system choices for the whole FOSS-Cloud installation (since version 1.4.0).
+description: This sub tree contains the Fedora Linux based operating system choices for the whole stoney cloud installation.
 sstBelongsToResellerUID: 4000000
 sstBelongsToCustomerUID: 4000001
 sstAllowResellerUID: 0
 sstAllowCustomerUID: 0
 sstAllowPersonUID: 0
 
-dn: uid=4000025,uid=4000024,uid=4000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+dn: uid=3000025,uid=3000024,uid=3000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
 objectclass: top
 objectclass: sstGroupObjectClass
 objectclass: sstRelationship
-uid: 4000025
-sstDisplayName: 12
+uid: 3000025
+sstDisplayName: 12 (Constantine)
 sstBelongsToResellerUID: 4000000
 sstBelongsToCustomerUID: 4000001
 sstAllowResellerUID: 0
 sstAllowCustomerUID: 0
 sstAllowPersonUID: 0
 
-dn: uid=4000026,uid=4000024,uid=4000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+dn: uid=3000026,uid=3000024,uid=3000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
 objectclass: top
 objectclass: sstGroupObjectClass
 objectclass: sstRelationship
-uid: 4000026
-sstDisplayName: 13
+uid: 3000026
+sstDisplayName: 13 (Goddard)
 sstBelongsToResellerUID: 4000000
 sstBelongsToCustomerUID: 4000001
 sstAllowResellerUID: 0
 sstAllowCustomerUID: 0
 sstAllowPersonUID: 0
 
-dn: uid=4000027,uid=4000024,uid=4000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+dn: uid=3000027,uid=3000024,uid=3000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
 objectclass: top
 objectclass: sstGroupObjectClass
 objectclass: sstRelationship
-uid: 4000027
-sstDisplayName: 14
+uid: 3000027
+sstDisplayName: 14 (Laughlin)
 sstBelongsToResellerUID: 4000000
 sstBelongsToCustomerUID: 4000001
 sstAllowResellerUID: 0
 sstAllowCustomerUID: 0
 sstAllowPersonUID: 0
 
-dn: uid=4000028,uid=4000024,uid=4000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+dn: uid=3000028,uid=3000024,uid=3000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
 objectclass: top
 objectclass: sstGroupObjectClass
 objectclass: sstRelationship
-uid: 4000028
-sstDisplayName: 15
+uid: 3000028
+sstDisplayName: 15 (Lovelock)
 sstBelongsToResellerUID: 4000000
 sstBelongsToCustomerUID: 4000001
 sstAllowResellerUID: 0
 sstAllowCustomerUID: 0
 sstAllowPersonUID: 0
 
-dn: uid=4000029,uid=4000024,uid=4000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+dn: uid=3000029,uid=3000024,uid=3000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
 objectclass: top
 objectclass: sstGroupObjectClass
 objectclass: sstRelationship
-uid: 4000029
-sstDisplayName: 16
+uid: 3000029
+sstDisplayName: 16 (Verne)
 sstBelongsToResellerUID: 4000000
 sstBelongsToCustomerUID: 4000001
 sstAllowResellerUID: 0
 sstAllowCustomerUID: 0
 sstAllowPersonUID: 0
 
-dn: uid=4000030,uid=4000024,uid=4000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+dn: uid=3000030,uid=3000024,uid=3000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
 objectclass: top
 objectclass: sstGroupObjectClass
 objectclass: sstRelationship
-uid: 4000030
-sstDisplayName: 17
+uid: 3000030
+sstDisplayName: 17 (Beefy Miracle)
 sstBelongsToResellerUID: 4000000
 sstBelongsToCustomerUID: 4000001
 sstAllowResellerUID: 0
 sstAllowCustomerUID: 0
 sstAllowPersonUID: 0
 
-dn: uid=4000031,uid=4000024,uid=4000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+dn: uid=3000031,uid=3000024,uid=3000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
 objectclass: top
 objectclass: sstGroupObjectClass
 objectclass: sstRelationship
-uid: 4000031
-sstDisplayName: 18
+uid: 3000031
+sstDisplayName: 18 (Spherical Cow)
 sstBelongsToResellerUID: 4000000
 sstBelongsToCustomerUID: 4000001
 sstAllowResellerUID: 0
 sstAllowCustomerUID: 0
 sstAllowPersonUID: 0
 
-dn: uid=4000032,uid=4000024,uid=4000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+dn: uid=3000032,uid=3000024,uid=3000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
 objectclass: top
 objectclass: sstGroupObjectClass
 objectclass: sstRelationship
-uid: 4000032
-sstDisplayName: 19
+uid: 3000032
+sstDisplayName: 19 (Schrödinger's Cat)
 sstBelongsToResellerUID: 4000000
 sstBelongsToCustomerUID: 4000001
 sstAllowResellerUID: 0
 sstAllowCustomerUID: 0
 sstAllowPersonUID: 0
 
-# This sub tree contains the Gentoo Linux based operating system choices for the whole FOSS-Cloud installation (since version 1.4.0).
-dn: uid=4000033,uid=4000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+dn: uid=3000051,uid=3000024,uid=3000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
 objectclass: top
 objectclass: sstGroupObjectClass
 objectclass: sstRelationship
-uid: 4000033
+uid: 3000051
+sstDisplayName: 20 (Heisenbug)
+sstBelongsToResellerUID: 4000000
+sstBelongsToCustomerUID: 4000001
+sstAllowResellerUID: 0
+sstAllowCustomerUID: 0
+sstAllowPersonUID: 0
+
+# This sub tree contains the Gentoo Linux based operating system choices for the whole stoney cloud installation.
+dn: uid=3000033,uid=3000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+objectclass: top
+objectclass: sstGroupObjectClass
+objectclass: sstRelationship
+uid: 3000033
 sstDisplayName: Gentoo
-description: This sub tree contains the Gentoo Linux based operating system choices for the whole FOSS-Cloud installation (since version 1.4.0).
+description: This sub tree contains the Gentoo Linux based operating system choices for the whole stoney cloud installation.
 sstBelongsToResellerUID: 4000000
 sstBelongsToCustomerUID: 4000001
 sstAllowResellerUID: 0
 sstAllowCustomerUID: 0
 sstAllowPersonUID: 0
 
-dn: uid=4000034,uid=4000033,uid=4000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+dn: uid=3000034,uid=3000033,uid=3000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
 objectclass: top
 objectclass: sstGroupObjectClass
 objectclass: sstRelationship
-uid: 4000034
+uid: 3000034
 sstDisplayName: 2012.0
 sstBelongsToResellerUID: 4000000
 sstBelongsToCustomerUID: 4000001
@@ -238,11 +250,11 @@ sstAllowResellerUID: 0
 sstAllowCustomerUID: 0
 sstAllowPersonUID: 0
 
-dn: uid=4000035,uid=4000033,uid=4000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+dn: uid=3000035,uid=3000033,uid=3000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
 objectclass: top
 objectclass: sstGroupObjectClass
 objectclass: sstRelationship
-uid: 4000035
+uid: 3000035
 sstDisplayName: 2013.0
 sstBelongsToResellerUID: 4000000
 sstBelongsToCustomerUID: 4000001
@@ -250,39 +262,113 @@ sstAllowResellerUID: 0
 sstAllowCustomerUID: 0
 sstAllowPersonUID: 0
 
-# This sub tree contains the Windows based operating system choices for the whole FOSS-Cloud installation (since version 1.4.0).
-dn: uid=4000036,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+# This sub tree contains the Ubuntu Linux based operating system choices for the whole stoney cloud installation.
+dn: uid=3000052,uid=3000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
 objectclass: top
 objectclass: sstGroupObjectClass
 objectclass: sstRelationship
-uid: 4000036
+uid: 3000052
+sstDisplayName: Ubuntu
+description: This sub tree contains the Ubuntu Linux based operating system choices for the whole stoney cloud installation.
+sstBelongsToResellerUID: 4000000
+sstBelongsToCustomerUID: 4000001
+sstAllowResellerUID: 0
+sstAllowCustomerUID: 0
+sstAllowPersonUID: 0
+
+dn: uid=3000053,uid=3000052,uid=3000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+objectclass: top
+objectclass: sstGroupObjectClass
+objectclass: sstRelationship
+uid: 3000053
+sstDisplayName: 8.04 LTS (Hardy Heron)
+sstBelongsToResellerUID: 4000000
+sstBelongsToCustomerUID: 4000001
+sstAllowResellerUID: 0
+sstAllowCustomerUID: 0
+sstAllowPersonUID: 0
+
+dn: uid=3000054,uid=3000052,uid=3000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+objectclass: top
+objectclass: sstGroupObjectClass
+objectclass: sstRelationship
+uid: 3000054
+sstDisplayName: 10.04 LTS (Lucid Lynx)
+sstBelongsToResellerUID: 4000000
+sstBelongsToCustomerUID: 4000001
+sstAllowResellerUID: 0
+sstAllowCustomerUID: 0
+sstAllowPersonUID: 0
+
+dn: uid=3000055,uid=3000052,uid=3000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+objectclass: top
+objectclass: sstGroupObjectClass
+objectclass: sstRelationship
+uid: 3000055
+sstDisplayName: 12.04 LTS (Precise Pangolin)
+sstBelongsToResellerUID: 4000000
+sstBelongsToCustomerUID: 4000001
+sstAllowResellerUID: 0
+sstAllowCustomerUID: 0
+sstAllowPersonUID: 0
+
+dn: uid=3000056,uid=3000052,uid=3000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+objectclass: top
+objectclass: sstGroupObjectClass
+objectclass: sstRelationship
+uid: 3000056
+sstDisplayName: 12.10 (Quantal Quetzal)
+sstBelongsToResellerUID: 4000000
+sstBelongsToCustomerUID: 4000001
+sstAllowResellerUID: 0
+sstAllowCustomerUID: 0
+sstAllowPersonUID: 0
+
+dn: uid=3000057,uid=3000052,uid=3000019,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+objectclass: top
+objectclass: sstGroupObjectClass
+objectclass: sstRelationship
+uid: 3000057
+sstDisplayName: 13.04 (Raring Ringtail)
+sstBelongsToResellerUID: 4000000
+sstBelongsToCustomerUID: 4000001
+sstAllowResellerUID: 0
+sstAllowCustomerUID: 0
+sstAllowPersonUID: 0
+
+# This sub tree contains the Windows based operating system choices for the whole stoney cloud installation.
+dn: uid=3000036,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+objectclass: top
+objectclass: sstGroupObjectClass
+objectclass: sstRelationship
+uid: 3000036
 sstDisplayName: Windows
-description: This sub tree contains the Windows based operating system choices for the whole FOSS-Cloud installation (since version 1.4.0).
+description: This sub tree contains the Windows based operating system choices for the whole stoney cloud installation.
 sstBelongsToResellerUID: 4000000
 sstBelongsToCustomerUID: 4000001
 sstAllowResellerUID: 0
 sstAllowCustomerUID: 0
 sstAllowPersonUID: 0
 
-# This sub tree contains the Windows Server 2008 based operating system choices for the whole FOSS-Cloud installation (since version 1.4.0).
-dn: uid=4000037,uid=4000036,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+# This sub tree contains the Windows Server 2008 based operating system choices for the whole stoney cloud installation.
+dn: uid=3000037,uid=3000036,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
 objectclass: top
 objectclass: sstGroupObjectClass
 objectclass: sstRelationship
-uid: 4000037
+uid: 3000037
 sstDisplayName: Server 2008
-description: This sub tree contains the Windows Server 2008 based operating system choices for the whole FOSS-Cloud installation (since version 1.4.0).
+description: This sub tree contains the Windows Server 2008 based operating system choices for the whole stoney cloud installation.
 sstBelongsToResellerUID: 4000000
 sstBelongsToCustomerUID: 4000001
 sstAllowResellerUID: 0
 sstAllowCustomerUID: 0
 sstAllowPersonUID: 0
 
-dn: uid=4000038,uid=4000037,uid=4000036,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+dn: uid=3000038,uid=3000037,uid=3000036,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
 objectclass: top
 objectclass: sstGroupObjectClass
 objectclass: sstRelationship
-uid: 4000038
+uid: 3000038
 sstDisplayName: Datacenter
 sstBelongsToResellerUID: 4000000
 sstBelongsToCustomerUID: 4000001
@@ -290,11 +376,11 @@ sstAllowResellerUID: 0
 sstAllowCustomerUID: 0
 sstAllowPersonUID: 0
 
-dn: uid=4000039,uid=4000037,uid=4000036,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+dn: uid=3000039,uid=3000037,uid=3000036,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
 objectclass: top
 objectclass: sstGroupObjectClass
 objectclass: sstRelationship
-uid: 4000039
+uid: 3000039
 sstDisplayName: Enterprise
 sstBelongsToResellerUID: 4000000
 sstBelongsToCustomerUID: 4000001
@@ -302,11 +388,11 @@ sstAllowResellerUID: 0
 sstAllowCustomerUID: 0
 sstAllowPersonUID: 0
 
-dn: uid=4000040,uid=4000037,uid=4000036,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+dn: uid=3000040,uid=3000037,uid=3000036,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
 objectclass: top
 objectclass: sstGroupObjectClass
 objectclass: sstRelationship
-uid: 4000040
+uid: 3000040
 sstDisplayName: Foundation
 sstBelongsToResellerUID: 4000000
 sstBelongsToCustomerUID: 4000001
@@ -314,11 +400,11 @@ sstAllowResellerUID: 0
 sstAllowCustomerUID: 0
 sstAllowPersonUID: 0
 
-dn: uid=4000041,uid=4000037,uid=4000036,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+dn: uid=3000041,uid=3000037,uid=3000036,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
 objectclass: top
 objectclass: sstGroupObjectClass
 objectclass: sstRelationship
-uid: 4000041
+uid: 3000041
 sstDisplayName: Standard
 sstBelongsToResellerUID: 4000000
 sstBelongsToCustomerUID: 4000001
@@ -326,25 +412,25 @@ sstAllowResellerUID: 0
 sstAllowCustomerUID: 0
 sstAllowPersonUID: 0
 
-# This sub tree contains the Windows Server 2008 R2 based operating system choices for the whole FOSS-Cloud installation (since version 1.4.0).
-dn: uid=4000042,uid=4000036,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+# This sub tree contains the Windows Server 2008 R2 based operating system choices for the whole stoney cloud installation.
+dn: uid=3000042,uid=3000036,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
 objectclass: top
 objectclass: sstGroupObjectClass
 objectclass: sstRelationship
-uid: 4000042
+uid: 3000042
 sstDisplayName: Server 2008 R2
-description: This sub tree contains the Windows Server 2008 R2 based operating system choices for the whole FOSS-Cloud installation (since version 1.4.0).
+description: This sub tree contains the Windows Server 2008 R2 based operating system choices for the whole stoney cloud installation.
 sstBelongsToResellerUID: 4000000
 sstBelongsToCustomerUID: 4000001
 sstAllowResellerUID: 0
 sstAllowCustomerUID: 0
 sstAllowPersonUID: 0
 
-dn: uid=4000043,uid=4000042,uid=4000036,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+dn: uid=3000043,uid=3000042,uid=3000036,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
 objectclass: top
 objectclass: sstGroupObjectClass
 objectclass: sstRelationship
-uid: 4000043
+uid: 3000043
 sstDisplayName: Datacenter
 sstBelongsToResellerUID: 4000000
 sstBelongsToCustomerUID: 4000001
@@ -352,11 +438,11 @@ sstAllowResellerUID: 0
 sstAllowCustomerUID: 0
 sstAllowPersonUID: 0
 
-dn: uid=4000044,uid=4000042,uid=4000036,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+dn: uid=3000044,uid=3000042,uid=3000036,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
 objectclass: top
 objectclass: sstGroupObjectClass
 objectclass: sstRelationship
-uid: 4000044
+uid: 3000044
 sstDisplayName: Enterprise
 sstBelongsToResellerUID: 4000000
 sstBelongsToCustomerUID: 4000001
@@ -364,11 +450,11 @@ sstAllowResellerUID: 0
 sstAllowCustomerUID: 0
 sstAllowPersonUID: 0
 
-dn: uid=4000045,uid=4000042,uid=4000036,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+dn: uid=3000045,uid=3000042,uid=3000036,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
 objectclass: top
 objectclass: sstGroupObjectClass
 objectclass: sstRelationship
-uid: 4000045
+uid: 3000045
 sstDisplayName: Foundation
 sstBelongsToResellerUID: 4000000
 sstBelongsToCustomerUID: 4000001
@@ -376,11 +462,11 @@ sstAllowResellerUID: 0
 sstAllowCustomerUID: 0
 sstAllowPersonUID: 0
 
-dn: uid=4000046,uid=4000042,uid=4000036,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+dn: uid=3000046,uid=3000042,uid=3000036,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
 objectclass: top
 objectclass: sstGroupObjectClass
 objectclass: sstRelationship
-uid: 4000046
+uid: 3000046
 sstDisplayName: Standard
 sstBelongsToResellerUID: 4000000
 sstBelongsToCustomerUID: 4000001
@@ -388,11 +474,11 @@ sstAllowResellerUID: 0
 sstAllowCustomerUID: 0
 sstAllowPersonUID: 0
 
-dn: uid=4000047,uid=4000042,uid=4000036,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+dn: uid=3000047,uid=3000042,uid=3000036,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
 objectclass: top
 objectclass: sstGroupObjectClass
 objectclass: sstRelationship
-uid: 4000047
+uid: 3000047
 sstDisplayName: Web
 sstBelongsToResellerUID: 4000000
 sstBelongsToCustomerUID: 4000001
@@ -400,25 +486,25 @@ sstAllowResellerUID: 0
 sstAllowCustomerUID: 0
 sstAllowPersonUID: 0
 
-# This sub tree contains the Windows Server 2012 based operating system choices for the whole FOSS-Cloud installation (since version 1.4.0).
-dn: uid=4000048,uid=4000036,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+# This sub tree contains the Windows Server 2012 based operating system choices for the whole stoney cloud installation.
+dn: uid=3000048,uid=3000036,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
 objectclass: top
 objectclass: sstGroupObjectClass
 objectclass: sstRelationship
-uid: 4000048
+uid: 3000048
 sstDisplayName: Server 2012
-description: This sub tree contains the Windows Server 2012 based operating system choices for the whole FOSS-Cloud installation (since version 1.4.0).
+description: This sub tree contains the Windows Server 2012 based operating system choices for the whole stoney cloud installation.
 sstBelongsToResellerUID: 4000000
 sstBelongsToCustomerUID: 4000001
 sstAllowResellerUID: 0
 sstAllowCustomerUID: 0
 sstAllowPersonUID: 0
 
-dn: uid=4000049,uid=4000048,uid=4000036,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+dn: uid=3000049,uid=3000048,uid=3000036,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
 objectclass: top
 objectclass: sstGroupObjectClass
 objectclass: sstRelationship
-uid: 4000049
+uid: 3000049
 sstDisplayName: Datacenter
 sstBelongsToResellerUID: 4000000
 sstBelongsToCustomerUID: 4000001
@@ -426,11 +512,11 @@ sstAllowResellerUID: 0
 sstAllowCustomerUID: 0
 sstAllowPersonUID: 0
 
-dn: uid=4000050,uid=4000048,uid=4000036,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
+dn: uid=3000050,uid=3000048,uid=3000036,ou=operating system,ou=configuration,dc=foss-cloud,dc=org
 objectclass: top
 objectclass: sstGroupObjectClass
 objectclass: sstRelationship
-uid: 4000050
+uid: 3000050
 sstDisplayName: Standard
 sstBelongsToResellerUID: 4000000
 sstBelongsToCustomerUID: 4000001
