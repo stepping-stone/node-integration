@@ -88,7 +88,7 @@ ou: User Search
 description: This is the "User Search" Bind-DN which is needed to search for the given user in the LDAP directory.
 sstDisplayName: "User Search" Bind-DN
 sstLDAPBaseDn: ou=people,dc=foss-cloud,dc=org
-sstLDAPFilter: (&(objectClass=sstPerson)(cn=%s))
+sstLDAPFilter: (&(objectClass=sstPerson)(mail=%s))
 sstLDAPForeignStaticAttribute: uid
 sstBelongsToResellerUID: 4000000
 sstBelongsToCustomerUID: 4000001
