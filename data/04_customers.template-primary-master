@@ -1,14 +1,13 @@
-# Copyright (C) 2013 FOSS-Group
-#                    Germany
-#                    http://www.foss-group.de
-#                    support@foss-group.de
+# Copyright (C) 2013 stepping stone GmbH
+#                    Switzerland
+#                    http://www.stepping-stone.ch
+#                    support@stepping-stone.ch
 #
 # Authors:
 #  Michael Eichenberger <michael.eichenberger@stepping-stone.ch>
 #  
-# Licensed under the EUPL, Version 1.1 or – as soon they
-# will be approved by the European Commission - subsequent
-# versions of the EUPL (the "Licence");
+# Licensed under the EUPL, Version 1.1.
+#
 # You may not use this work except in compliance with the
 # Licence.
 # You may obtain a copy of the Licence at:
@@ -23,7 +22,7 @@
 # See the Licence for the specific language governing
 # permissions and limitations under the Licence.
 #
-# 
+# $Id$
 #
 #
 #####################################################################################################################
@@ -36,24 +35,26 @@
 #####################################################################################################################
 # customers
 #####################################################################################################################
-dn: uid=4000001,ou=customers,dc=foss-cloud,dc=org
+dn: uid=4000001,ou=customers,<STONEY-CLOUD-LDAP-BASE-DN>
 objectclass: top
-objectclass: sstCustomerCompany
+objectclass: sstCustomer
+objectclass: sstRelationship
 uid: 4000001
 organizationName: Customer Ltd.
+sstIsCompany: TRUE
+sstIsActive: TRUE
 sstBelongsToResellerUID: 4000000
 sstBelongsToCustomerUID: 4000001
-sstIsActive: TRUE
 
 #####################################################################################################################
 # address
 #####################################################################################################################
-dn: ou=address,uid=4000001,ou=customers,dc=foss-cloud,dc=org
+dn: ou=address,uid=4000001,ou=customers,<STONEY-CLOUD-LDAP-BASE-DN>
 objectclass: top
 objectclass: organizationalUnit
-objectclass: sstAddressCompany
+objectclass: sstCustomerAddress
 ou: address
-organizationName: Customer Ltd.
+organizationName: Reseller Ltd.
 sstGender: m
 givenName: Name
 surname: Surname
@@ -65,8 +66,9 @@ preferredLanguage: en-GB
 mail: name.surname@example.com
 telephoneNumber: +41 00 000 00 00
 mobileTelephoneNumber: +41 00 000 00 00
+sstWebsiteURL: https://www.example.com/
 
-dn: ou=billing,uid=4000001,ou=customers,dc=foss-cloud,dc=org
+dn: ou=billing,uid=4000001,ou=customers,<STONEY-CLOUD-LDAP-BASE-DN>
 objectclass: top
 objectclass: organizationalUnit
 objectclass: sstBillingCustomer
@@ -76,16 +78,16 @@ sstBillingCycleFix: TRUE
 sstCurrency: CHF
 sstPaymentMethod: invoice
 
-dn: ou=employees,uid=4000001,ou=customers,dc=foss-cloud,dc=org
+dn: ou=employees,uid=4000001,ou=customers,<STONEY-CLOUD-LDAP-BASE-DN>
 objectclass: top
 objectclass: organizationalUnit
 objectclass: labeledURIObject
 ou: employees
-labeledURI: ldap:///ou=people,dc=foss-cloud,dc=org??one?(sstEmployeeOfUID=4000001)
+labeledURI: ldap:///ou=people,<STONEY-CLOUD-LDAP-BASE-DN>??one?(sstEmployeeOfUID=4000001)
 
-dn: ou=people,uid=4000001,ou=customers,dc=foss-cloud,dc=org
+dn: ou=people,uid=4000001,ou=customers,<STONEY-CLOUD-LDAP-BASE-DN>
 objectclass: top
 objectclass: organizationalUnit
 objectclass: labeledURIObject
 ou: people
-labeledURI: ldap:///ou=people,dc=foss-cloud,dc=org??one?(sstBelongsToCustomerUID=4000001)
+labeledURI: ldap:///ou=people,<STONEY-CLOUD-LDAP-BASE-DN>??one?(sstBelongsToCustomerUID=4000001)
