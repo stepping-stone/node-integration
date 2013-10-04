@@ -1,14 +1,13 @@
-# Copyright (C) 2013 FOSS-Group
-#                    Germany
-#                    http://www.foss-group.de
-#                    support@foss-group.de
+# Copyright (C) 2013 stepping stone GmbH
+#                    Switzerland
+#                    http://www.stepping-stone.ch
+#                    support@stepping-stone.ch
 #
 # Authors:
 #  Michael Eichenberger <michael.eichenberger@stepping-stone.ch>
 #  
-# Licensed under the EUPL, Version 1.1 or – as soon they
-# will be approved by the European Commission - subsequent
-# versions of the EUPL (the "Licence");
+# Licensed under the EUPL, Version 1.1.
+#
 # You may not use this work except in compliance with the
 # Licence.
 # You may obtain a copy of the Licence at:
@@ -23,7 +22,7 @@
 # See the Licence for the specific language governing
 # permissions and limitations under the Licence.
 #
-# 
+# $Id$
 #
 #
 #####################################################################################################################
@@ -36,18 +35,20 @@
 #####################################################################################################################
 # reseller
 #####################################################################################################################
-dn: uid=4000000,ou=reseller,dc=foss-cloud,dc=org
+dn: uid=4000000,ou=reseller,<STONEY-CLOUD-LDAP-BASE-DN>
 objectclass: top
-objectclass: sstReseller
+objectclass: sstCustomer
+objectclass: sstRelationship
 uid: 4000000
 organizationName: Reseller Ltd.
-sstBelongsToResellerUID: 4000000
+sstIsCompany: TRUE
 sstIsActive: TRUE
+sstBelongsToResellerUID: 4000000
 
-dn: ou=address,uid=4000000,ou=reseller,dc=foss-cloud,dc=org
+dn: ou=address,uid=4000000,ou=reseller,<STONEY-CLOUD-LDAP-BASE-DN>
 objectclass: top
 objectclass: organizationalUnit
-objectclass: sstAddressCompany
+objectclass: sstAddress
 ou: address
 organizationName: Reseller Ltd.
 sstGender: m
@@ -63,30 +64,30 @@ telephoneNumber: +41 00 000 00 00
 mobileTelephoneNumber: +41 00 000 00 00
 sstWebsiteURL: https://www.example.com/
 
-dn: ou=billing,uid=4000000,ou=reseller,dc=foss-cloud,dc=org
+dn: ou=billing,uid=4000000,ou=reseller,<STONEY-CLOUD-LDAP-BASE-DN>
 objectclass: top
 objectclass: organizationalUnit
 objectclass: sstBillingReseller
 ou: billing
 sstResellerBill: FALSE
 
-dn: ou=customers,uid=4000000,ou=reseller,dc=foss-cloud,dc=org
+dn: ou=customers,uid=4000000,ou=reseller,<STONEY-CLOUD-LDAP-BASE-DN>
 objectclass: top
 objectclass: organizationalUnit
 objectclass: labeledURIObject
 ou: customers
-labeledURI: ldap:///ou=customers,dc=foss-cloud,dc=org??one?(sstBelongsToResellerUID=4000000)
+labeledURI: ldap:///ou=customers,<STONEY-CLOUD-LDAP-BASE-DN>??one?(sstBelongsToResellerUID=4000000)
 
-dn: ou=employees,uid=4000000,ou=reseller,dc=foss-cloud,dc=org
+dn: ou=employees,uid=4000000,ou=reseller,<STONEY-CLOUD-LDAP-BASE-DN>
 objectclass: top
 objectclass: organizationalUnit
 objectclass: labeledURIObject
 ou: employees
-labeledURI: ldap:///ou=people,dc=foss-cloud,dc=org??one?(sstEmployeeOfUID=4000000)
+labeledURI: ldap:///ou=people,<STONEY-CLOUD-LDAP-BASE-DN>??one?(sstEmployeeOfUID=4000000)
 
-dn: ou=people,uid=4000000,ou=reseller,dc=foss-cloud,dc=org
+dn: ou=people,uid=4000000,ou=reseller,<STONEY-CLOUD-LDAP-BASE-DN>
 objectclass: top
 objectclass: organizationalUnit
 objectclass: labeledURIObject
 ou: people
-labeledURI: ldap:///ou=people,dc=foss-cloud,dc=org??one?(sstBelongsToResellerUID=4000000)
+labeledURI: ldap:///ou=people,<STONEY-CLOUD-LDAP-BASE-DN>??one?(sstBelongsToResellerUID=4000000)

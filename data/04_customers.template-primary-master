@@ -52,7 +52,7 @@ sstBelongsToCustomerUID: 4000001
 dn: ou=address,uid=4000001,ou=customers,<STONEY-CLOUD-LDAP-BASE-DN>
 objectclass: top
 objectclass: organizationalUnit
-objectclass: sstCustomerAddress
+objectclass: sstAddress
 ou: address
 organizationName: Reseller Ltd.
 sstGender: m
