@@ -1977,7 +1977,9 @@ sub configureOpenLDAP {
   my $file_02_group_mapping_administration           = $directory_data."/02_group_mapping-administration.ldif";
   my $file_02_administration_services_template       = $directory_data."/02_services-administration.template-$local_modus";
   my $file_02_administration_services                = $directory_data."/02_services-administration.ldif";
+  my $file_03_reseller_template                      = $directory_data."/03_reseller.template-$local_modus";
   my $file_03_reseller                               = $directory_data."/03_reseller.ldif";
+  my $file_04_customers_template                     = $directory_data."/04_customers.template-$local_modus";
   my $file_04_customers                              = $directory_data."/04_customers.ldif";
   my $file_05_people                                 = $directory_data."/05_people.ldif";
   my $file_05_people_template                        = $directory_data."/05_people.template-primary-master";
@@ -2682,8 +2684,6 @@ sub configureOpenLDAP {
   unless ( -r $file_00_directory ||
            -r $file_01_administration_nextfreeuid ||
            -r $file_02_group_mapping_administration ||
-           -r $file_03_reseller ||
-           -r $file_04_customers ||
            -r $file_06_groups ||
            -r $file_06_services_virtualization
          )
@@ -2747,6 +2747,24 @@ sub configureOpenLDAP {
 
   } # End of if ( ( $local_modus eq "primary-master" ) || ( $local_modus eq "vm-node" ) )
   # Worked on /etc/openldap/data/02_services-administration.ldif
+  
+  ##############################################################################
+  # Working on /etc/openldap/data/03_reseller.template-primary-master
+  # and /etc/openldap/data/04_customers.template-primary-master
+  # if needed by $modus
+  ############################################################################## 
+  
+  @sar_commands = ( { search => "<STONEY-CLOUD-LDAP-BASE-DN>",replace => $ldap_base_dn } );
+
+  searchAndReplace( $file_03_reseller_template,
+                    $file_03_reseller,
+                    @sar_commands
+                  );
+                  
+  searchAndReplace( $file_04_customers_template,
+                    $file_04_customers,
+                    @sar_commands
+                  );           
 
   loadOpenLDAPsingleLDIF($ldap_server,$unencrypted_password,$file_03_reseller);
   loadOpenLDAPsingleLDIF($ldap_server,$unencrypted_password,$file_04_customers);
