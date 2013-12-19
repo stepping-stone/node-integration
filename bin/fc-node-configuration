@@ -2003,6 +2003,10 @@ sub configureOpenLDAP {
   my $file_16_secondary_master_node_template         = $directory_data."/16_secondary-master-node.template-$local_modus";
   my $file_17_ranges_networks_services_virtualization = $directory_data."/17_ranges_networks_services_virtualization.ldif";
   my $file_18_services_monitoring                    = $directory_data."/18_services_monitoring.ldif";
+  my $file_19_services_maintenance                   = $directory_data."/19_services_maintenance.ldif";
+  my $file_20_configuration                          = $directory_data."/20_configuration.ldif";
+  my $file_21_operating_system_configuration         = $directory_data."/21_operating_system_configuration.ldif";
+  my $file_22_software_stack_configuration           = $directory_data."/21_software_stack_configuration.ldif";
   my $acl_administration_template                    = $directory_acl."/slapd.acl.administration.template";
   my $acl_administration_file                        = $directory_acl."/slapd.acl.administration.conf";
   my $acl_customers_template                         = $directory_acl."/slapd.acl.customers.template";
@@ -3305,9 +3309,14 @@ sub configureOpenLDAP {
   }
   # Worked on 17_ranges_networks_services_virtualization
 
-  # And finally load the monitoring services into the ldap
+  # And finally load the services, operating system and software stack
+  # configuration into the ldap
   loadOpenLDAPsingleLDIF($ldap_server,$unencrypted_password,$file_18_services_monitoring);
-
+  loadOpenLDAPsingleLDIF($ldap_server,$unencrypted_password,$file_19_services_maintenance);
+  loadOpenLDAPsingleLDIF($ldap_server,$unencrypted_password,$file_20_configuration);
+  loadOpenLDAPsingleLDIF($ldap_server,$unencrypted_password,$file_21_operating_system_configuration);
+  loadOpenLDAPsingleLDIF($ldap_server,$unencrypted_password,$file_22_software_stack_configuration);
+  
   print "\n";
 
 
