@@ -2028,6 +2028,11 @@ sub configureOpenLDAP {
   my $ntp_host_string = "";
   my $ldap_server;
   my $ldap_port;
+  
+  my $ldap_vip_name = $cfg->val("General","ldap_vip_name");
+  $ldap_vip_name .=  ".".$localNetworkHash->{'pub'}->{'domain'};
+  
+ 
 
   # Check if the modus is demo-system, if yes change the vip to the internal 
   # interface ip
@@ -2141,14 +2146,14 @@ sub configureOpenLDAP {
       {
         # LDAP
         $ldap_port = 389;
-        $replace_string = "URI             ldap:\/\/$int_vip:$ldap_port";
+        $replace_string = "URI             ldap:\/\/$ldap_vip_name:$ldap_port";
         $cert_file = "#TLS_CACERT <FOSS-CLOUD-LDAP-CA-CERTIFICATE-FILE>";
         $req_cert = "#TLS_REQCERT demand"; 
       } else
       {
         # LDAPS
         $ldap_port = 636;
-        $replace_string = "URI             ldaps:\/\/$int_vip:$ldap_port";
+        $replace_string = "URI             ldaps:\/\/$ldap_vip_name:$ldap_port";
         my $ldap_cert_name;
         $ldap_cert_name = "ldapm-01." if ( $modus eq "primary-master" || $modus eq "single-server" );
         $ldap_cert_name = "ldapm-02." if ( $modus eq "secondary-master");
