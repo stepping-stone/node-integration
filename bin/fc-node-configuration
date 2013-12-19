@@ -1966,7 +1966,6 @@ sub configureOpenLDAP {
   my $directory_openldap = $cfg->val("General","directory_openldap");
   my $directory_acl      = $directory_openldap.$cfg->val("General","directory_acl");;
   my $directory_data     = $directory_openldap.$cfg->val("General","directory_data");;
-  my $directory_schema   = $directory_openldap.$cfg->val("General","directory_schema");;
   my $directory_ssl      = $directory_openldap.$cfg->val("General","directory_ssl");;
   my $directory_hdb_data = $cfg->val("General","directory_hdb_data");
   my $directory_confd    = $cfg->val("General","directory_confd");
@@ -2555,10 +2554,6 @@ sub configureOpenLDAP {
   # Setting the proper permisions on the data directory and files ...
   setSingleFilePermissions("directory",$uid_root,$gid_ldap,0750,$directory_data);
   setMultipleFilePermissions($uid_root,$gid_ldap,0640,$directory_data);
-
-  # Setting the proper permisions on the schema directory and files ...
-  setSingleFilePermissions("directory",$uid_root,$gid_ldap,0750,$directory_schema);
-  setMultipleFilePermissions($uid_root,$gid_ldap,0640,$directory_schema);
 
   # Setting the proper permisions on the ssl directory ...
   setSingleFilePermissions("directory",$uid_root,$gid_ldap,0755,$directory_ssl);
@@ -4218,14 +4213,14 @@ sub createRootCA
 #    openssl req -new \
 #            -keyout /etc/ssl/FOSS-Cloud_CA/private/FOSS-Cloud_CA.key.pem \
 #            -out /etc/ssl/FOSS-Cloud_CA/requests/FOSS-Cloud_CA.req.pem \
-#            -subj "/DC=org/DC=stoney-cloud/OU=Certificate Authority/OU=Local FOSS-Cloud Certificate Authority/OU=<UUID>/CN=Local FOSS-Cloud Certificate Authority <UUID>" \
+#            -subj "/DC=org/DC=foss-cloud/OU=Certificate Authority/OU=Local FOSS-Cloud Certificate Authority/OU=<UUID>/CN=Local FOSS-Cloud Certificate Authority <UUID>" \
 #            -passout file:/etc/ssl/FOSS-Cloud_CA/private/passphrase.txt
 
     # Create the openssl request
     @args = ("openssl","req","-new",
              "-keyout","/etc/ssl/FOSS-Cloud_CA/private/FOSS-Cloud_CA.key.pem",
              "-out","/etc/ssl/FOSS-Cloud_CA/requests/FOSS-Cloud_CA.req.pem",
-             "-subj",'"/DC=org/DC=stoney-cloud/OU=Certificate Authority/OU=Local FOSS-Cloud Certificate Authority/OU='.$stoney_cloud_uuid.'/CN=Local FOSS-Cloud CA '.$stoney_cloud_uuid.'"',
+             "-subj",'"/DC=org/DC=foss-cloud/OU=Certificate Authority/OU=Local FOSS-Cloud Certificate Authority/OU='.$stoney_cloud_uuid.'/CN=Local FOSS-Cloud CA '.$stoney_cloud_uuid.'"',
              "-passout","file:/etc/ssl/FOSS-Cloud_CA/private/passphrase.txt",
             );
     system( join( " ", @args ) );
@@ -4341,7 +4336,7 @@ sub createApacheCertificate
 #        -keyout /etc/ssl/apache2/foss-cloud.example.com.key.pem \
 #        -newkey rsa:2048 \
 #        -sha1 \
-#        -subj "/DC=org/DC=stoney-cloud/OU=Certificate Authority/OU=<UUID>/OU=domains/CN=foss-cloud.example.com" \
+#        -subj "/DC=org/DC=foss-cloud/OU=Certificate Authority/OU=<UUID>/OU=domains/CN=foss-cloud.example.com" \
 #        -new \
 #        -passout pass:""
 
@@ -4355,7 +4350,7 @@ sub createApacheCertificate
 
     my $request = "/etc/ssl/apache2/".$apache_vip_name.".req.pem";
     my $key = "/etc/ssl/apache2/".$apache_vip_name.".key.pem";
-    my $subject = "/DC=org/DC=stoney-cloud/OU=Certificate Authority/OU="
+    my $subject = "/DC=org/DC=foss-cloud/OU=Certificate Authority/OU="
                   .$stoney_cloud_uuid."/OU=domains/CN=".$apache_vip_name;
 
     # Generate and execute the reqest command
@@ -4501,10 +4496,10 @@ sub createLDAPCertificate
 #    -keyout keys/ldapm-01.example.com.key.pem \
 #    -newkey rsa:2048 \
 #    -sha1 \
-#    -subj "/DC=org/DC=stoney-cloud/OU=Certificate Authority/OU=Local FOSS-Cloud Certificate Authority/OU=<UUID>/OU=domains/CN=ldapm-01.example.com" \
+#    -subj "/DC=org/DC=foss-cloud/OU=Certificate Authority/OU=Local FOSS-Cloud Certificate Authority/OU=<UUID>/OU=domains/CN=ldapm-01.example.com" \
 #    -new
 #    -passout pass:""
-    my $subject = "/DC=org/DC=stoney-cloud/OU=Certificate Authority/OU=Local "
+    my $subject = "/DC=org/DC=foss-cloud/OU=Certificate Authority/OU=Local "
                  ."FOSS-Cloud Certificate Authority/OU=".$stoney_cloud_uuid
                  ."/OU=domains/CN=".$ldap_host_name;
 
