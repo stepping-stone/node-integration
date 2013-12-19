@@ -300,10 +300,10 @@ openlog($0,"ndelay,pid","local0");
 checkCommandLineArguments();
 
 # Generate a universal unique identifier
-my $foss_cloud_uuid = `uuidgen`;
+my $stoney_cloud_uuid = `uuidgen`;
 
 # And remove the newline at the end
-chomp($foss_cloud_uuid);
+chomp($stoney_cloud_uuid);
 
 SWITCH: {
   $opts{'node-type'} eq "primary-storage-node" and do {
@@ -507,7 +507,7 @@ sub primaryMasterNode{
 
   # TBD: Workaround
   #print "Before proceeding, with the Primary-Master-Node Installation, you need to edit the \n";
-  #print "sstNode=<your Primary-Master-Nod>,ou=nodes,ou=virtualization,ou=services,dc=foss-cloud,dc=org LDIF:\n";
+  #print "sstNode=<your Primary-Master-Nod>,ou=nodes,ou=virtualization,ou=services,dc=stoney-cloud,dc=org LDIF:\n";
   #print "  cp /etc/openldap/data/16_primary-master-node.template /etc/openldap/data/16_primary-master-node.ldif\n";
   #print "Now open the copied file and replace the existing values with your setup:\n";
   #print "  vi /etc/openldap/data/16_primary-master-node.ldif\n";
@@ -2074,7 +2074,7 @@ sub configureOpenLDAP {
   ### Working on the on the acl files
   ##############################################################################
   
-  @sar_commands = ( { search => "<FOSS-CLOUD-LDAP-BASE-DN>",replace => $ldap_base_dn } );
+  @sar_commands = ( { search => "<STONEY-CLOUD-LDAP-BASE-DN>",replace => $ldap_base_dn } );
 
   # Replace the template with the correct values which are specified in the
   # @sar_commands array
@@ -2122,7 +2122,7 @@ sub configureOpenLDAP {
       # Replace:
       # URI             ldap://127.0.0.1:389
       # Or:
-      # URI             <FOSS-CLOUD-LDAP-VIP-URI>
+      # URI             <STONEY-CLOUD-LDAP-VIP-URI>
       # With:
       # URI             ldap://$localIntIP:389
 
@@ -2147,7 +2147,7 @@ sub configureOpenLDAP {
         # LDAP
         $ldap_port = 389;
         $replace_string = "URI             ldap:\/\/$ldap_vip_name:$ldap_port";
-        $cert_file = "#TLS_CACERT <FOSS-CLOUD-LDAP-CA-CERTIFICATE-FILE>";
+        $cert_file = "#TLS_CACERT <STONEY-CLOUD-LDAP-CA-CERTIFICATE-FILE>";
         $req_cert = "#TLS_REQCERT demand"; 
       } else
       {
@@ -2170,7 +2170,7 @@ sub configureOpenLDAP {
           $error = 0;
         } # End of if ($line =~ "listen_addr")
 
-        if ($line =~ m/<FOSS-CLOUD-LDAP-CA-CERTIFICATE-FILE>/ ) {
+        if ($line =~ m/<STONEY-CLOUD-LDAP-CA-CERTIFICATE-FILE>/ ) {
           print "Found:          $line";
           $line = $cert_file."\n";
           print "Replacing with: $cert_file\n";
@@ -2184,10 +2184,10 @@ sub configureOpenLDAP {
           $error = 0;
         } # End of if ($line =~ "listen_addr")
 
-        if ($line =~ m/<FOSS-CLOUD-LDAP-BASE-DN>/) {
+        if ($line =~ m/<STONEY-CLOUD-LDAP-BASE-DN>/) {
           print "Found:          $line";
-          $line =~ s/<FOSS-CLOUD-LDAP-BASE-DN>/$ldap_base_dn/;
-          print "Replacing <FOSS-CLOUD-LDAP-BASE-DN> with: $ldap_base_dn\n";
+          $line =~ s/<STONEY-CLOUD-LDAP-BASE-DN>/$ldap_base_dn/;
+          print "Replacing <STONEY-CLOUD-LDAP-BASE-DN> with: $ldap_base_dn\n";
           $error = 0;
         } # End of if ($line =~ "listen_addr")
 
@@ -2322,7 +2322,7 @@ sub configureOpenLDAP {
       # Replace:
       # rootpw          {SSHA}0vML7DliNHZWrK9pok8UQpPhyPe9iNKu
       # Or:
-      # rootpw          <FOSS-CLOUD-SLAPD-ROOT-PW>
+      # rootpw          <STONEY-CLOUD-SLAPD-ROOT-PW>
       # With:
       # rootpw          {SSHA}McZMZiKDM5/EpeexPxG4qOojndoJeM2D
 
@@ -2345,63 +2345,63 @@ sub configureOpenLDAP {
           print "Replacing with: rootpw          $password\n";
           $error = 0;
         } # End of if ($line =~ "^rootpw")
-        if ( $line =~ m/<FOSS-CLOUD-SLAPD-SERVER-ID>/ )
+        if ( $line =~ m/<STONEY-CLOUD-SLAPD-SERVER-ID>/ )
         {
             # Replace the Serverid
             my $server_id = $cfg->val($modus,"openldap_server_id");
-            $line =~ s/<FOSS-CLOUD-SLAPD-SERVER-ID>/$server_id/;
-            print "Replacing <FOSS-CLOUD-SLAPD-SERVER-ID> with: $server_id\n";
+            $line =~ s/<STONEY-CLOUD-SLAPD-SERVER-ID>/$server_id/;
+            print "Replacing <STONEY-CLOUD-SLAPD-SERVER-ID> with: $server_id\n";
             $error = 0;
         }
-        if ( $line =~ m/<FOSS-CLOUD-SLAPD-SYNCREPL-RID>/ )
+        if ( $line =~ m/<STONEY-CLOUD-SLAPD-SYNCREPL-RID>/ )
         {
             # Replace the sycnrepl rid
             my $syncrepl_rid = $cfg->val($modus,"syncrepl_rid");
-            $line =~ s/<FOSS-CLOUD-SLAPD-SYNCREPL-RID>/$syncrepl_rid/;
-            print "Replacing <FOSS-CLOUD-SLAPD-SERVER-ID> with: $syncrepl_rid\n";
+            $line =~ s/<STONEY-CLOUD-SLAPD-SYNCREPL-RID>/$syncrepl_rid/;
+            print "Replacing <STONEY-CLOUD-SLAPD-SERVER-ID> with: $syncrepl_rid\n";
             $error = 0;
         }
-        if ( $line =~ m/<FOSS-CLOUD-SLAPD-SYNCREPL-PROVIDER>/ )
+        if ( $line =~ m/<STONEY-CLOUD-SLAPD-SYNCREPL-PROVIDER>/ )
         {
             # Replace the syncrepl provider
             $line =~ s/provider=.+$/provider=$syncrepl_provider/;
-            # TODO change the line above, just replace <FOSS-CLOUD-SLAPD-SYNCREPL-PROVIDER>
-            print "Replacing <FOSS-CLOUD-SLAPD-SYNCREPL-PROVIDER> with: $syncrepl_provider\n";
+            # TODO change the line above, just replace <STONEY-CLOUD-SLAPD-SYNCREPL-PROVIDER>
+            print "Replacing <STONEY-CLOUD-SLAPD-SYNCREPL-PROVIDER> with: $syncrepl_provider\n";
             $error = 0;
         }
-        if ( $line =~ m/<FOSS-CLOUD-SLAPD-SYNCREPL-CREDENTIALS>/ )
+        if ( $line =~ m/<STONEY-CLOUD-SLAPD-SYNCREPL-CREDENTIALS>/ )
         {
             # Replace the syncrepl password
-            $line =~ s/<FOSS-CLOUD-SLAPD-SYNCREPL-CREDENTIALS>/$syncrepl_password/;
-            print "Replacing <FOSS-CLOUD-SLAPD-SYNCREPL-CREDENTIALS> with: $syncrepl_password\n";
+            $line =~ s/<STONEY-CLOUD-SLAPD-SYNCREPL-CREDENTIALS>/$syncrepl_password/;
+            print "Replacing <STONEY-CLOUD-SLAPD-SYNCREPL-CREDENTIALS> with: $syncrepl_password\n";
             $error = 0;
         }
-        if ( $line =~ m/<FOSS-CLOUD-SLAPD-CERTIFICATE>/ && $modus ne "demo-system" )
+        if ( $line =~ m/<STONEY-CLOUD-SLAPD-CERTIFICATE>/ && $modus ne "demo-system" )
         {
             # Replace the syncrepl password
             $line = "TLSCertificateFile     /etc/openldap/ssl/$ldap_server.cert.pem\n";
-            print "Replacing <FOSS-CLOUD-SLAPD-CERTIFICATE> with: $ldap_server.cert.pem\n";
+            print "Replacing <STONEY-CLOUD-SLAPD-CERTIFICATE> with: $ldap_server.cert.pem\n";
             $error = 0;
         }
-        if ( $line =~ m/<FOSS-CLOUD-SLAPD-KEY>/ && $modus ne "demo-system" )
+        if ( $line =~ m/<STONEY-CLOUD-SLAPD-KEY>/ && $modus ne "demo-system" )
         {
             # Replace the syncrepl password
             $line = "TLSCertificateKeyFile     /etc/openldap/ssl/keys/$ldap_server.key.pem\n";
-            print "Replacing <FOSS-CLOUD-SLAPD-KEY> with: $ldap_server.key.pem\n";
+            print "Replacing <STONEY-CLOUD-SLAPD-KEY> with: $ldap_server.key.pem\n";
             $error = 0;
         }
 
-        if ( $line =~ m/<FOSS-CLOUD-SLAPD-CA-CERTIFICATE-FILE>/ && $modus ne "demo-system" )
+        if ( $line =~ m/<STONEY-CLOUD-SLAPD-CA-CERTIFICATE-FILE>/ && $modus ne "demo-system" )
         {
             # Replace the syncrepl password
             $line = "TLSCACertificateFile   /etc/ssl/certs/FOSS-Cloud_CA.cert.pem\n";
-            print "Replacing <FOSS-CLOUD-SLAPD-CA-CERTIFICATE-FILE> with: /etc/ssl/certs/FOSS-Cloud_CA.cert.pem\n";
+            print "Replacing <STONEY-CLOUD-SLAPD-CA-CERTIFICATE-FILE> with: /etc/ssl/certs/FOSS-Cloud_CA.cert.pem\n";
             $error = 0;
         }
 
-        if ($line =~ m/<FOSS-CLOUD-LDAP-BASE-DN>/) {
-          $line =~ s/<FOSS-CLOUD-LDAP-BASE-DN>/$ldap_base_dn/;
-          print "Replacing <FOSS-CLOUD-LDAP-BASE-DN> with: $ldap_base_dn\n";
+        if ($line =~ m/<STONEY-CLOUD-LDAP-BASE-DN>/) {
+          $line =~ s/<STONEY-CLOUD-LDAP-BASE-DN>/$ldap_base_dn/;
+          print "Replacing <STONEY-CLOUD-LDAP-BASE-DN> with: $ldap_base_dn\n";
         } # End of if ($line =~ "listen_addr")
 
 
@@ -2584,20 +2584,20 @@ sub configureOpenLDAP {
       #
 
       @sar_commands = (## general ##
-                       {search => "<FOSS-CLOUD-NODE-NAME>",replace => $localNetworkHash->{"Node Name"}},
+                       {search => "<STONEY-CLOUD-NODE-NAME>",replace => $localNetworkHash->{"Node Name"}},
 
                        ## admin segment hashes ##
-                       {search => "<FOSS-CLOUD-ADMIN-NETWORK-ADDRESS>",replace => $localNetworkHash->{"admin"}->{"ip"}},
+                       {search => "<STONEY-CLOUD-ADMIN-NETWORK-ADDRESS>",replace => $localNetworkHash->{"admin"}->{"ip"}},
 
                        ## int segment hashes ##
-                       {search => "<FOSS-CLOUD-INT-NETWORK-ADDRESS>",replace => $localNetworkHash->{"int"}->{"ip"}},
+                       {search => "<STONEY-CLOUD-INT-NETWORK-ADDRESS>",replace => $localNetworkHash->{"int"}->{"ip"}},
 
                        ## data segment hashes##
-                       {search => "<FOSS-CLOUD-DATA-NETWORK-ADDRESS>",replace => $localNetworkHash->{"data"}->{"ip"}},
+                       {search => "<STONEY-CLOUD-DATA-NETWORK-ADDRESS>",replace => $localNetworkHash->{"data"}->{"ip"}},
 
                        ## pub segment hashes ##
-                       {search => "<FOSS-CLOUD-PUB-NETWORK-ADDRESS>",replace => $localNetworkHash->{"pub"}->{"ip"}},
-                       {search => "<FOSS-CLOUD-PUB-DOMAIN>",replace => $localNetworkHash->{"pub"}->{"domain"}},
+                       {search => "<STONEY-CLOUD-PUB-NETWORK-ADDRESS>",replace => $localNetworkHash->{"pub"}->{"ip"}},
+                       {search => "<STONEY-CLOUD-PUB-DOMAIN>",replace => $localNetworkHash->{"pub"}->{"domain"}},
 
                        # Path
                        {search  => "16_secondary-master-node.template",
@@ -2715,12 +2715,12 @@ sub configureOpenLDAP {
       print "Working on $file_02_administration_services ...\n";
 
       # Replace:
-      # labeledURI: <FOSS-CLOUD-LABELED-URI>
+      # labeledURI: <STONEY-CLOUD-LABELED-URI>
       # With:
       # labeledURI: ldap://192.0.2.87:389
 
       # Replace:
-      # sstLDAPBindPassword: <FOSS-CLOUD-MANAGER-PASSWORD>
+      # sstLDAPBindPassword: <STONEY-CLOUD-MANAGER-PASSWORD>
       # With:
       # sstLDAPBindPassword: admin
 
@@ -2779,10 +2779,10 @@ sub configureOpenLDAP {
     # We don't want user input in the demo system
     if ( $modus eq "demo-system" )
     {
-        $givenname = "FOSS-Cloud";
+        $givenname = "stoney cloud";
         $surname = "Administrator";
         $gender = "n";
-        $mail = 'info@foss-cloud.org';
+        $mail = 'info@stoney-cloud.org';
         $timezone = "UTC+01";
         $language = "en-GB";
         $password = `/usr/sbin/slappasswd -s admin`;
@@ -2907,13 +2907,13 @@ sub configureOpenLDAP {
     }
 
     # Now lets replace the information in the template and create a ldif
-    @sar_commands = ( {search => "<FOSS-CLOUD-PEOPLE-GENDER>", replace => $gender },
-                      {search => "<FOSS-CLOUD-PEOPLE-GIVENNAME>", replace => $givenname},
-                      {search => "<FOSS-CLOUD-PEOPLE-SURNAME>", replace => $surname},
-                      {search => "<FOSS-CLOUD-PEOPLE-LANGUAGE>", replace => $language},
-                      {search => "<FOSS-CLOUD-PEOPLE-PASSWORD>", replace => $password},
-                      {search => "<FOSS-CLOUD-PEOPLE-MAIL>", replace => $mail},
-                      {search => "<FOSS-CLOUD-PEOPLE-TIMEZONE>", replace => $timezone},
+    @sar_commands = ( {search => "<STONEY-CLOUD-PEOPLE-GENDER>", replace => $gender },
+                      {search => "<STONEY-CLOUD-PEOPLE-GIVENNAME>", replace => $givenname},
+                      {search => "<STONEY-CLOUD-PEOPLE-SURNAME>", replace => $surname},
+                      {search => "<STONEY-CLOUD-PEOPLE-LANGUAGE>", replace => $language},
+                      {search => "<STONEY-CLOUD-PEOPLE-PASSWORD>", replace => $password},
+                      {search => "<STONEY-CLOUD-PEOPLE-MAIL>", replace => $mail},
+                      {search => "<STONEY-CLOUD-PEOPLE-TIMEZONE>", replace => $timezone},
                     );
 
     searchAndReplace( $file_05_people_template,
@@ -2942,19 +2942,19 @@ sub configureOpenLDAP {
       print "Working on $file_07_authentication_services_virtualization ...\n";
 
       # Replace:
-      # labeledURI: <FOSS-CLOUD-LABELED-URI>
+      # labeledURI: <STONEY-CLOUD-LABELED-URI>
       # With:
       # labeledURI: ldap://192.0.2.87:389
 
       # Replace:
-      # sstLDAPBindPassword: <FOSS-CLOUD-MANAGER-PASSWORD>
+      # sstLDAPBindPassword: <STONEY-CLOUD-MANAGER-PASSWORD>
       # With:
       # sstLDAPBindPassword: admin
 
       # Create the search_and_replace commands to replace the LDIF template with
       # the correct values
-      @sar_commands = ( {search => "<FOSS-CLOUD-LABELED-URI>", replace => "ldap://$localIntIP:389"},
-                           {search => "<FOSS-CLOUD-MANAGER-PASSWORD>", replace => $unencrypted_password},
+      @sar_commands = ( {search => "<STONEY-CLOUD-LABELED-URI>", replace => "ldap://$localIntIP:389"},
+                           {search => "<STONEY-CLOUD-MANAGER-PASSWORD>", replace => $unencrypted_password},
                       );
 
       # Replace the template with the correct values which are specified in the
@@ -3023,38 +3023,38 @@ sub configureOpenLDAP {
 
       # Generate the search and replace commands for each segement.
       @sar_commands = (## admin segment hashes ##
-                          {search => "<FOSS-CLOUD-ADMIN-VLAN-ID>",replace => $localNetworkHash->{"admin"}->{"id"}},
-                          {search => "<FOSS-CLOUD-ADMIN-NETWORK-ADDRESS>",replace => $localNetworkHash->{"admin"}->{"ip"}},
-                          {search => "<FOSS-CLOUD-ADMIN-NETMASK>",replace => $localNetworkHash->{"admin"}->{"netmask"}},
-                          {search => "<FOSS-CLOUD-ADMIN-BROADCAST>",replace => $localNetworkHash->{"admin"}->{"broadcast"}},
-                          {search => "<FOSS-CLOUD-ADMIN-DOMAIN>",replace => $localNetworkHash->{"admin"}->{"domain"}},
+                          {search => "<STONEY-CLOUD-ADMIN-VLAN-ID>",replace => $localNetworkHash->{"admin"}->{"id"}},
+                          {search => "<STONEY-CLOUD-ADMIN-NETWORK-ADDRESS>",replace => $localNetworkHash->{"admin"}->{"ip"}},
+                          {search => "<STONEY-CLOUD-ADMIN-NETMASK>",replace => $localNetworkHash->{"admin"}->{"netmask"}},
+                          {search => "<STONEY-CLOUD-ADMIN-BROADCAST>",replace => $localNetworkHash->{"admin"}->{"broadcast"}},
+                          {search => "<STONEY-CLOUD-ADMIN-DOMAIN>",replace => $localNetworkHash->{"admin"}->{"domain"}},
 
                           ## int segment hashes ##
-                          {search => "<FOSS-CLOUD-INT-VLAN-ID>",replace => $localNetworkHash->{"int"}->{"id"}},
-                          {search => "<FOSS-CLOUD-INT-NETWORK-ADDRESS>",replace => $localNetworkHash->{"int"}->{"ip"}},
-                          {search => "<FOSS-CLOUD-INT-NETMASK>",replace => $localNetworkHash->{"int"}->{"netmask"}},
-                          {search => "<FOSS-CLOUD-INT-BROADCAST>",replace => $localNetworkHash->{"int"}->{"broadcast"}},
-                          {search => "<FOSS-CLOUD-INT-DOMAIN>",replace => $localNetworkHash->{"int"}->{"domain"}},
+                          {search => "<STONEY-CLOUD-INT-VLAN-ID>",replace => $localNetworkHash->{"int"}->{"id"}},
+                          {search => "<STONEY-CLOUD-INT-NETWORK-ADDRESS>",replace => $localNetworkHash->{"int"}->{"ip"}},
+                          {search => "<STONEY-CLOUD-INT-NETMASK>",replace => $localNetworkHash->{"int"}->{"netmask"}},
+                          {search => "<STONEY-CLOUD-INT-BROADCAST>",replace => $localNetworkHash->{"int"}->{"broadcast"}},
+                          {search => "<STONEY-CLOUD-INT-DOMAIN>",replace => $localNetworkHash->{"int"}->{"domain"}},
 
                           ## data segment hashes##
-                          {search => "<FOSS-CLOUD-DATA-VLAN-ID>",replace => $localNetworkHash->{"data"}->{"id"}},
-                          {search => "<FOSS-CLOUD-DATA-NETWORK-ADDRESS>",replace => $localNetworkHash->{"data"}->{"ip"}},
-                          {search => "<FOSS-CLOUD-DATA-NETMASK>",replace => $localNetworkHash->{"data"}->{"netmask"}},
-                          {search => "<FOSS-CLOUD-DATA-BROADCAST>",replace => $localNetworkHash->{"data"}->{"broadcast"}},
-                          {search => "<FOSS-CLOUD-DATA-DOMAIN>",replace => $localNetworkHash->{"data"}->{"domain"}},
+                          {search => "<STONEY-CLOUD-DATA-VLAN-ID>",replace => $localNetworkHash->{"data"}->{"id"}},
+                          {search => "<STONEY-CLOUD-DATA-NETWORK-ADDRESS>",replace => $localNetworkHash->{"data"}->{"ip"}},
+                          {search => "<STONEY-CLOUD-DATA-NETMASK>",replace => $localNetworkHash->{"data"}->{"netmask"}},
+                          {search => "<STONEY-CLOUD-DATA-BROADCAST>",replace => $localNetworkHash->{"data"}->{"broadcast"}},
+                          {search => "<STONEY-CLOUD-DATA-DOMAIN>",replace => $localNetworkHash->{"data"}->{"domain"}},
 
                           ## pub segment hashes ##
-                          {search => "<FOSS-CLOUD-PUB-VLAN-ID>",replace => $localNetworkHash->{"pub"}->{"id"}},
-                          {search => "<FOSS-CLOUD-PUB-NETWORK-ADDRESS>",replace => $localNetworkHash->{"pub"}->{"ip"}},
-                          {search => "<FOSS-CLOUD-PUB-NETMASK>",replace => $localNetworkHash->{"pub"}->{"netmask"}},
-                          {search => "<FOSS-CLOUD-PUB-DEFAULT-GATEWAY>",replace => $localNetworkHash->{"pub"}->{"gateway"}},
-                          {search => "<FOSS-CLOUD-PUB-BROADCAST>",replace => $localNetworkHash->{"pub"}->{"broadcast"}},
-                          {search => "<FOSS-CLOUD-PUB-DOMAIN>",replace => $localNetworkHash->{"pub"}->{"domain"}},
-                          {search => "<FOSS-CLOUD-NTP-INFO>",replace => $ntp_host_string},
-                          {search => "<FOSS-CLOUD-DNS-INFO>",replace => $dns_host_string},
+                          {search => "<STONEY-CLOUD-PUB-VLAN-ID>",replace => $localNetworkHash->{"pub"}->{"id"}},
+                          {search => "<STONEY-CLOUD-PUB-NETWORK-ADDRESS>",replace => $localNetworkHash->{"pub"}->{"ip"}},
+                          {search => "<STONEY-CLOUD-PUB-NETMASK>",replace => $localNetworkHash->{"pub"}->{"netmask"}},
+                          {search => "<STONEY-CLOUD-PUB-DEFAULT-GATEWAY>",replace => $localNetworkHash->{"pub"}->{"gateway"}},
+                          {search => "<STONEY-CLOUD-PUB-BROADCAST>",replace => $localNetworkHash->{"pub"}->{"broadcast"}},
+                          {search => "<STONEY-CLOUD-PUB-DOMAIN>",replace => $localNetworkHash->{"pub"}->{"domain"}},
+                          {search => "<STONEY-CLOUD-NTP-INFO>",replace => $ntp_host_string},
+                          {search => "<STONEY-CLOUD-DNS-INFO>",replace => $dns_host_string},
 
                           # General
-                          {search => "<FOSS-CLOUD-ID>" , replace => $foss_cloud_uuid },
+                          {search => "<STONEY-CLOUD-ID>" , replace => $stoney_cloud_uuid },
 
                           # Path
                           {search  => "08_configuration_services_virtualization.template",
@@ -3140,13 +3140,13 @@ sub configureOpenLDAP {
 
       $ntp = $ntp_host_string;
 
-      @sar_commands = ( {search => "<FOSS-CLOUD-PUB-SUBNET-ADDRESS>", replace => $network_address},
-                        {search => "<FOSS-CLOUD-PUB-NETMASK>", replace => $netmask},
-                        {search => "<FOSS-CLOUD-PUB-DOMAIN>", replace => $domain},
-                        {search => "<FOSS-CLOUD-DNS-INFO>", replace => $dns},
-                        {search => "<FOSS-CLOUD-PUB-DEFAULT-GATEWAY>", replace => $gateway},
-                        {search => "<FOSS-CLOUD-PUB-BROADCAST>", replace => $broadcast},
-                        {search => "<FOSS-CLOUD-NTP-INFO>", replace => $ntp},
+      @sar_commands = ( {search => "<STONEY-CLOUD-PUB-SUBNET-ADDRESS>", replace => $network_address},
+                        {search => "<STONEY-CLOUD-PUB-NETMASK>", replace => $netmask},
+                        {search => "<STONEY-CLOUD-PUB-DOMAIN>", replace => $domain},
+                        {search => "<STONEY-CLOUD-DNS-INFO>", replace => $dns},
+                        {search => "<STONEY-CLOUD-PUB-DEFAULT-GATEWAY>", replace => $gateway},
+                        {search => "<STONEY-CLOUD-PUB-BROADCAST>", replace => $broadcast},
+                        {search => "<STONEY-CLOUD-NTP-INFO>", replace => $ntp},
                       );
 
       # Replace the template with the correct values which are specified in the
@@ -3192,10 +3192,10 @@ sub configureOpenLDAP {
       #
 
       @sar_commands = (## general ##
-                       {search => "<FOSS-CLOUD-NODE-NAME>",replace => $localNetworkHash->{"Node Name"}},
+                       {search => "<STONEY-CLOUD-NODE-NAME>",replace => $localNetworkHash->{"Node Name"}},
 
                        ## pub segment hashes ##
-                       {search => "<FOSS-CLOUD-PUB-DOMAIN>",replace => $localNetworkHash->{"pub"}->{"domain"}},
+                       {search => "<STONEY-CLOUD-PUB-DOMAIN>",replace => $localNetworkHash->{"pub"}->{"domain"}},
 
                        # Path
                        {search  => "14_vm-pools_services_virtualization.template",
@@ -3243,20 +3243,20 @@ sub configureOpenLDAP {
       #
 
       @sar_commands = (## general ##
-                       {search => "<FOSS-CLOUD-NODE-NAME>",replace => $localNetworkHash->{"Node Name"}},
+                       {search => "<STONEY-CLOUD-NODE-NAME>",replace => $localNetworkHash->{"Node Name"}},
 
                        ## admin segment hashes ##
-                       {search => "<FOSS-CLOUD-ADMIN-NETWORK-ADDRESS>",replace => $localNetworkHash->{"admin"}->{"ip"}},
+                       {search => "<STONEY-CLOUD-ADMIN-NETWORK-ADDRESS>",replace => $localNetworkHash->{"admin"}->{"ip"}},
 
                        ## int segment hashes ##
-                       {search => "<FOSS-CLOUD-INT-NETWORK-ADDRESS>",replace => $localNetworkHash->{"int"}->{"ip"}},
+                       {search => "<STONEY-CLOUD-INT-NETWORK-ADDRESS>",replace => $localNetworkHash->{"int"}->{"ip"}},
 
                        ## data segment hashes##
-                       {search => "<FOSS-CLOUD-DATA-NETWORK-ADDRESS>",replace => $localNetworkHash->{"data"}->{"ip"}},
+                       {search => "<STONEY-CLOUD-DATA-NETWORK-ADDRESS>",replace => $localNetworkHash->{"data"}->{"ip"}},
 
                        ## pub segment hashes ##
-                       {search => "<FOSS-CLOUD-PUB-NETWORK-ADDRESS>",replace => $localNetworkHash->{"pub"}->{"ip"}},
-                       {search => "<FOSS-CLOUD-PUB-DOMAIN>",replace => $localNetworkHash->{"pub"}->{"domain"}},
+                       {search => "<STONEY-CLOUD-PUB-NETWORK-ADDRESS>",replace => $localNetworkHash->{"pub"}->{"ip"}},
+                       {search => "<STONEY-CLOUD-PUB-DOMAIN>",replace => $localNetworkHash->{"pub"}->{"domain"}},
 
                        # Path
                        {search  => "16_primary-master-node.template",
@@ -3405,11 +3405,11 @@ sub configureDHCP {
     # template
     my $ldap_uri = "ldapm.".$localNetworkHash->{"pub"}->{"domain"};
     $ldap_uri = "127.0.0.1" if ( $modus eq "demo-system" );
-    my @sar_commands = ( { search => "<FOSS-CLOUD-LDAP-SERVER>", replace =>  $ldap_uri },
-                         { search => "<FOSS-CLOUD-DHCP-PASSWORD>", replace => $dhcp_unencrypted_password}, 
-                         { search => "<FOSS-CLOUD-LDAP-PORT>", replace => $ldap_port},
-                         { search => "<FOSS-CLOUD-DHCP-BIND-DN>", replace => $dhcp_bind_dn},
-                         { search => "<FOSS-CLOUD-LDAP-BASE-DN>", replace => $ldap_base_dn},
+    my @sar_commands = ( { search => "<STONEY-CLOUD-LDAP-SERVER>", replace =>  $ldap_uri },
+                         { search => "<STONEY-CLOUD-DHCP-PASSWORD>", replace => $dhcp_unencrypted_password}, 
+                         { search => "<STONEY-CLOUD-LDAP-PORT>", replace => $ldap_port},
+                         { search => "<STONEY-CLOUD-DHCP-BIND-DN>", replace => $dhcp_bind_dn},
+                         { search => "<STONEY-CLOUD-LDAP-BASE-DN>", replace => $ldap_base_dn},
 
                        );
 
@@ -3449,7 +3449,7 @@ sub configureVMManager {
   print "Working on $file_vmmanager_conf ...\n";
 
   # Replace:
-  # 'server' => 'ldaps://<FOSS-CLOUD-LDAP-HOSTNAME>/',
+  # 'server' => 'ldaps://<STONEY-CLOUD-LDAP-HOSTNAME>/',
   # or
   # 'server' => 'ldap://192.0.2.5/',
   # With:
@@ -3463,7 +3463,7 @@ sub configureVMManager {
   # 'port' => 389,
 
   # Replace:
-  # 'bind_pwd' => '<FOSS-CLOUD-LDAP-PASSWORD>',
+  # 'bind_pwd' => '<STONEY-CLOUD-LDAP-PASSWORD>',
   # Or:
   # 'bind_pwd' => 'admin',
   # With:
@@ -3604,7 +3604,7 @@ sub configurePhpLDAPadmin {
   print "Working on $file_phpldapadmin_template ...\n";
 
   # Replace:
-  # $servers->setValue('server','host','ldaps://<FOSS-CLOUD-LDAP-VIP>');
+  # $servers->setValue('server','host','ldaps://<STONEY-CLOUD-LDAP-VIP>');
   # With: 
   # $servers->setValue('server','host','ldap://192.0.2.87');
 
@@ -3622,11 +3622,11 @@ sub configurePhpLDAPadmin {
   }
 
   my @sar_commands = (
-                      {search => "<FOSS-CLOUD-LDAP-VIP>",replace => $ldap_protocol.$ldap_vip_uri},
-                      {search => "<FOSS-CLOUD-LDAP-RIP1>",replace => $ldap_protocol.$ldap_rip1_uri},
-                      {search => "<FOSS-CLOUD-LDAP-RIP2>",replace => $ldap_protocol.$ldap_rip2_uri},
-                      {search => "<FOSS-CLOUD-LDAP-PORT>",replace => $ldap_port},
-                      {search => "<FOSS-CLOUD-LDAP-BASE-DN>",replace => $ldap_base_dn},
+                      {search => "<STONEY-CLOUD-LDAP-VIP>",replace => $ldap_protocol.$ldap_vip_uri},
+                      {search => "<STONEY-CLOUD-LDAP-RIP1>",replace => $ldap_protocol.$ldap_rip1_uri},
+                      {search => "<STONEY-CLOUD-LDAP-RIP2>",replace => $ldap_protocol.$ldap_rip2_uri},
+                      {search => "<STONEY-CLOUD-LDAP-PORT>",replace => $ldap_port},
+                      {search => "<STONEY-CLOUD-LDAP-BASE-DN>",replace => $ldap_base_dn},
                      );
 
   searchAndReplace ( $file_phpldapadmin_template,
@@ -3674,7 +3674,7 @@ sub configureApache2 {
   stopDaemon("apache2");
 
   # Apache vip name for demo system
-  $apache_vip_name = "foss-cloud.".$localPubDomain if ( $modus eq "demo-system" );
+  $apache_vip_name = "stoney-cloud.".$localPubDomain if ( $modus eq "demo-system" );
 
   while ( $apache_vip_name !~ m/.+\..+\..{2,3}/ )
   {
@@ -3684,7 +3684,7 @@ sub configureApache2 {
       chomp( $apache_vip_name = <STDIN> );
 
       # If no name is entered take default one
-      $apache_vip_name = "foss-cloud.".$localPubDomain unless ( $apache_vip_name );
+      $apache_vip_name = "stoney-cloud.".$localPubDomain unless ( $apache_vip_name );
 
   }
 
@@ -3740,14 +3740,14 @@ sub configureApache2 {
     if ($line =~ m/^\s+SSLCertificateFile/) {
       print "Found:          $line";
       my $cert_file = $apache_vip_name.".cert.pem";
-      $line =~ s/<FOSS-CLOUD-APACHE-CERTIFICATE-FILE>/$cert_file/g;
+      $line =~ s/<STONEY-CLOUD-APACHE-CERTIFICATE-FILE>/$cert_file/g;
       print "Replacing with: $cert_file\n";
       $error = 0;
     } # End of if ($line =~ "^<VirtualHost")
     if ($line =~ m/^\s+SSLCertificateKeyFile/) {
       print "Found:          $line";
       my $cert_key_file = $apache_vip_name.".key.pem";
-      $line =~ s/<FOSS-CLOUD-APACHE-CERTIFICATE-KEY-FILE>/$cert_key_file/g;
+      $line =~ s/<STONEY-CLOUD-APACHE-CERTIFICATE-KEY-FILE>/$cert_key_file/g;
       print "Replacing with: $cert_key_file\n";
       $error = 0;
     } # End of if ($line =~ "^<VirtualHost")
@@ -3841,11 +3841,11 @@ sub configureUcarp
   foreach my $line ( @output )
   {
     # Check it the line matches
-    $line = "UCARP_INTERFACE=".$ucarp_pub_interface."\n" if ( $line =~ m/<FOSS-CLOUD-PUB-INTERFACE>/ );
-    $line = "UCARP_SOURCEADDRESS=$ucarp_pub_rip\n" if ( $line =~ m/<FOSS-CLOUD-PUB-RIP-ADDRESS>/); 
-    $line = "UCARP_VIRTUALADDRESS=$ucarp_pub_vip\n" if ( $line =~ m/<FOSS-CLOUD-PUB-VIP-ADDRESS>/); 
-    $line = "UCARP_VIRTUALPREFIX=$ucarp_pub_netmask\n" if ( $line =~ m/<FOSS-CLOUD-PUB-NETMASK>/); 
-    $line = "UCARP_OPTS=\"--shutdown $ucarp_pub_opts\"\n" if ( $line =~ m/<FOSS-CLOUD-UCARP-OPTS>/); 
+    $line = "UCARP_INTERFACE=".$ucarp_pub_interface."\n" if ( $line =~ m/<STONEY-CLOUD-PUB-INTERFACE>/ );
+    $line = "UCARP_SOURCEADDRESS=$ucarp_pub_rip\n" if ( $line =~ m/<STONEY-CLOUD-PUB-RIP-ADDRESS>/); 
+    $line = "UCARP_VIRTUALADDRESS=$ucarp_pub_vip\n" if ( $line =~ m/<STONEY-CLOUD-PUB-VIP-ADDRESS>/); 
+    $line = "UCARP_VIRTUALPREFIX=$ucarp_pub_netmask\n" if ( $line =~ m/<STONEY-CLOUD-PUB-NETMASK>/); 
+    $line = "UCARP_OPTS=\"--shutdown $ucarp_pub_opts\"\n" if ( $line =~ m/<STONEY-CLOUD-UCARP-OPTS>/); 
 
     # Write the line to the file
     print FILE $line;
@@ -3879,11 +3879,11 @@ sub configureUcarp
   foreach my $line ( @output )
   {
     # Check it the line matches
-    $line = "UCARP_INTERFACE=$ucarp_int_interface\n" if ( $line =~ m/<FOSS-CLOUD-INT-INTERFACE>/ );
-    $line = "UCARP_SOURCEADDRESS=$ucarp_int_rip\n" if ( $line =~ m/<FOSS-CLOUD-INT-RIP-ADDRESS>/); 
-    $line = "UCARP_VIRTUALADDRESS=$ucarp_int_vip\n" if ( $line =~ m/<FOSS-CLOUD-INT-VIP-ADDRESS>/); 
-    $line = "UCARP_VIRTUALPREFIX=$ucarp_int_netmask\n" if ( $line =~ m/<FOSS-CLOUD-INT-NETMASK>/); 
-    $line = "UCARP_OPTS=\"--shutdown $ucarp_int_opts\"\n" if ( $line =~ m/<FOSS-CLOUD-UCARP-OPTS>/); 
+    $line = "UCARP_INTERFACE=$ucarp_int_interface\n" if ( $line =~ m/<STONEY-CLOUD-INT-INTERFACE>/ );
+    $line = "UCARP_SOURCEADDRESS=$ucarp_int_rip\n" if ( $line =~ m/<STONEY-CLOUD-INT-RIP-ADDRESS>/); 
+    $line = "UCARP_VIRTUALADDRESS=$ucarp_int_vip\n" if ( $line =~ m/<STONEY-CLOUD-INT-VIP-ADDRESS>/); 
+    $line = "UCARP_VIRTUALPREFIX=$ucarp_int_netmask\n" if ( $line =~ m/<STONEY-CLOUD-INT-NETMASK>/); 
+    $line = "UCARP_OPTS=\"--shutdown $ucarp_int_opts\"\n" if ( $line =~ m/<STONEY-CLOUD-UCARP-OPTS>/); 
 
     # Write the line to the file
     print FILE $line;
@@ -3962,10 +3962,10 @@ sub configureFcBrokerd {
 
   # Generate the search and replace commands
   my @sar_commands = (
-                      {search => "<FOSS-CLOUD-LDAP-VIP-URI>", replace => $ldap_uri.":".$openldap_port},
-                      {search => "<FOSS-CLOUD-BINDDN>", replace => $openldap_binddn},
-                      {search => "<FOSS-CLOUD-BINDPW>", replace => $openldap_bind_password},
-                      {search => "<FOSS-CLOUD-BASEDN>", replace => $openldap_basedn}
+                      {search => "<STONEY-CLOUD-LDAP-VIP-URI>", replace => $ldap_uri.":".$openldap_port},
+                      {search => "<STONEY-CLOUD-BINDDN>", replace => $openldap_binddn},
+                      {search => "<STONEY-CLOUD-BINDPW>", replace => $openldap_bind_password},
+                      {search => "<STONEY-CLOUD-BASEDN>", replace => $openldap_basedn}
                      );
 
   # Execute the command
@@ -4032,14 +4032,14 @@ sub configureProvBackupKVM {
 
   # Generate the search and replace commands
   my @sar_commands = (
-                      {search => "<FOSS-CLOUD-NODE-NAME>", replace => $node_name},
-                      {search => "<FOSS-CLOUD-LDAP-SERVER>", replace => $ldap_uri},
-                      {search => "<FOSS-CLOUD-LDAP-PORT>", replace => $ldap_port},
-                      {search => "<FOSS-CLOUD-LDAP-BINDDN>", replace => $ldap_binddn},
-                      {search => "<FOSS-CLOUD-LDAP-BIND-PASSWORD>", replace => $ldap_bind_password},
-                      {search => "<FOSS-CLOUD-LDAP-SERVICE-SUBTREE>", replace => $ldap_service_subtree},
-                      {search => "<FOSS-CLOUD-LDAP-COOKIE-FILE>", replace => $ldap_cookie_file},
-                      {search => "<FOSS-CLOUD-LDAP-PROV-BACKUP-KVM-DEFAULT-CONFIGURATION>", replace => $ldap_default_config},
+                      {search => "<STONEY-CLOUD-NODE-NAME>", replace => $node_name},
+                      {search => "<STONEY-CLOUD-LDAP-SERVER>", replace => $ldap_uri},
+                      {search => "<STONEY-CLOUD-LDAP-PORT>", replace => $ldap_port},
+                      {search => "<STONEY-CLOUD-LDAP-BINDDN>", replace => $ldap_binddn},
+                      {search => "<STONEY-CLOUD-LDAP-BIND-PASSWORD>", replace => $ldap_bind_password},
+                      {search => "<STONEY-CLOUD-LDAP-SERVICE-SUBTREE>", replace => $ldap_service_subtree},
+                      {search => "<STONEY-CLOUD-LDAP-COOKIE-FILE>", replace => $ldap_cookie_file},
+                      {search => "<STONEY-CLOUD-LDAP-PROV-BACKUP-KVM-DEFAULT-CONFIGURATION>", replace => $ldap_default_config},
                      );
 
   # Execute the command
@@ -4218,14 +4218,14 @@ sub createRootCA
 #    openssl req -new \
 #            -keyout /etc/ssl/FOSS-Cloud_CA/private/FOSS-Cloud_CA.key.pem \
 #            -out /etc/ssl/FOSS-Cloud_CA/requests/FOSS-Cloud_CA.req.pem \
-#            -subj "/DC=org/DC=foss-cloud/OU=Certificate Authority/OU=Local FOSS-Cloud Certificate Authority/OU=<UUID>/CN=Local FOSS-Cloud Certificate Authority <UUID>" \
+#            -subj "/DC=org/DC=stoney-cloud/OU=Certificate Authority/OU=Local FOSS-Cloud Certificate Authority/OU=<UUID>/CN=Local FOSS-Cloud Certificate Authority <UUID>" \
 #            -passout file:/etc/ssl/FOSS-Cloud_CA/private/passphrase.txt
 
     # Create the openssl request
     @args = ("openssl","req","-new",
              "-keyout","/etc/ssl/FOSS-Cloud_CA/private/FOSS-Cloud_CA.key.pem",
              "-out","/etc/ssl/FOSS-Cloud_CA/requests/FOSS-Cloud_CA.req.pem",
-             "-subj",'"/DC=org/DC=foss-cloud/OU=Certificate Authority/OU=Local FOSS-Cloud Certificate Authority/OU='.$foss_cloud_uuid.'/CN=Local FOSS-Cloud CA '.$foss_cloud_uuid.'"',
+             "-subj",'"/DC=org/DC=stoney-cloud/OU=Certificate Authority/OU=Local FOSS-Cloud Certificate Authority/OU='.$stoney_cloud_uuid.'/CN=Local FOSS-Cloud CA '.$stoney_cloud_uuid.'"',
              "-passout","file:/etc/ssl/FOSS-Cloud_CA/private/passphrase.txt",
             );
     system( join( " ", @args ) );
@@ -4341,7 +4341,7 @@ sub createApacheCertificate
 #        -keyout /etc/ssl/apache2/foss-cloud.example.com.key.pem \
 #        -newkey rsa:2048 \
 #        -sha1 \
-#        -subj "/DC=org/DC=foss-cloud/OU=Certificate Authority/OU=<UUID>/OU=domains/CN=foss-cloud.example.com" \
+#        -subj "/DC=org/DC=stoney-cloud/OU=Certificate Authority/OU=<UUID>/OU=domains/CN=foss-cloud.example.com" \
 #        -new \
 #        -passout pass:""
 
@@ -4355,8 +4355,8 @@ sub createApacheCertificate
 
     my $request = "/etc/ssl/apache2/".$apache_vip_name.".req.pem";
     my $key = "/etc/ssl/apache2/".$apache_vip_name.".key.pem";
-    my $subject = "/DC=org/DC=foss-cloud/OU=Certificate Authority/OU="
-                  .$foss_cloud_uuid."/OU=domains/CN=".$apache_vip_name;
+    my $subject = "/DC=org/DC=stoney-cloud/OU=Certificate Authority/OU="
+                  .$stoney_cloud_uuid."/OU=domains/CN=".$apache_vip_name;
 
     # Generate and execute the reqest command
     my @args = ( 'openssl','req',
@@ -4501,11 +4501,11 @@ sub createLDAPCertificate
 #    -keyout keys/ldapm-01.example.com.key.pem \
 #    -newkey rsa:2048 \
 #    -sha1 \
-#    -subj "/DC=org/DC=foss-cloud/OU=Certificate Authority/OU=Local FOSS-Cloud Certificate Authority/OU=<UUID>/OU=domains/CN=ldapm-01.example.com" \
+#    -subj "/DC=org/DC=stoney-cloud/OU=Certificate Authority/OU=Local FOSS-Cloud Certificate Authority/OU=<UUID>/OU=domains/CN=ldapm-01.example.com" \
 #    -new
 #    -passout pass:""
-    my $subject = "/DC=org/DC=foss-cloud/OU=Certificate Authority/OU=Local "
-                 ."FOSS-Cloud Certificate Authority/OU=".$foss_cloud_uuid
+    my $subject = "/DC=org/DC=stoney-cloud/OU=Certificate Authority/OU=Local "
+                 ."FOSS-Cloud Certificate Authority/OU=".$stoney_cloud_uuid
                  ."/OU=domains/CN=".$ldap_host_name;
 
     my @args = ( "openssl","req",
@@ -4972,7 +4972,7 @@ sub loadOpenLDAPsingleLDIF {
       print $output;
     } # End of if($errorCode != 0)
   } else {
-    print "/usr/bin/ldapadd -M -H \"ldap://$server\" -w $password -x -D \"cn=Manager,dc=foss-cloud,dc=org\" -f $ldif\n";
+    print "/usr/bin/ldapadd -M -H \"ldap://$server\" -w $password -x -D \"cn=Manager,dc=stoney-cloud,dc=org\" -f $ldif\n";
   } # End of if (!$dryrun)
 
 } # End of loadOpenLDAPsingleLDIF

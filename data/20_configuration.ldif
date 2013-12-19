@@ -29,9 +29,9 @@
 # /etc/openldap/data/20_configuration.ldif
 #####################################################################################################################
 # Description:
-#  The configuration section of the foss-cloud directory.
+#  The configuration section of the stoney-cloud directory.
 #####################################################################################################################
-dn: ou=configuration,dc=foss-cloud,dc=org
+dn: ou=configuration,dc=stoney-cloud,dc=org
 objectclass: top
 objectclass: organizationalUnit
 ou: configuration

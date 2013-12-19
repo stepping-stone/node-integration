@@ -34,12 +34,12 @@
 #####################################################################################################################
 
 #####################################################################################################################
-# uid=4000014,ou=groups,dc=foss-cloud,dc=org
+# uid=4000014,ou=groups,dc=stoney-cloud,dc=org
 ################################################################################
 # Description:
 #   This is an example group mapping with the name "Technology".
 ################################################################################
-dn: uid=4000014,ou=groups,dc=foss-cloud,dc=org
+dn: uid=4000014,ou=groups,dc=stoney-cloud,dc=org
 objectclass: top
 objectclass: sstGroupObjectClass
 objectclass: sstRelationship
@@ -47,17 +47,17 @@ objectclass: labeledURIObject
 uid: 4000014
 sstDisplayName: Technology
 description: This is an example group mapping with the name "Technology".
-labeledURI: ldap:///ou=people,dc=foss-cloud,dc=org??one?(sstGroupUID=4000014)
+labeledURI: ldap:///ou=people,dc=stoney-cloud,dc=org??one?(sstGroupUID=4000014)
 sstBelongsToResellerUID: 4000000
 sstBelongsToCustomerUID: 4000001
 
 ################################################################################
-# uid=4000015,ou=groups,dc=foss-cloud,dc=org
+# uid=4000015,ou=groups,dc=stoney-cloud,dc=org
 ################################################################################
 # Description:
 #   This is an example group mapping with the name "Office".
 ################################################################################
-dn: uid=4000015,ou=groups,dc=foss-cloud,dc=org
+dn: uid=4000015,ou=groups,dc=stoney-cloud,dc=org
 objectclass: top
 objectclass: sstGroupObjectClass
 objectclass: sstRelationship
@@ -65,6 +65,6 @@ objectclass: labeledURIObject
 uid: 4000015
 sstDisplayName: Office
 description: This is an example group mapping with the name "Office".
-labeledURI: ldap:///ou=people,dc=foss-cloud,dc=org??one?(sstGroupUID=4000015)
+labeledURI: ldap:///ou=people,dc=stoney-cloud,dc=org??one?(sstGroupUID=4000015)
 sstBelongsToResellerUID: 4000000
 sstBelongsToCustomerUID: 4000001

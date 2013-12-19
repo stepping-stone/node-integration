@@ -30,17 +30,17 @@
 # /etc/openldap/data/01_nextfreeuid-administration.ldif
 #####################################################################################################################
 # Description:
-#  Adds the next free uid data to the "ou=nextfreeuid,ou=administration,dc=foss-cloud,dc=org
+#  Adds the next free uid data to the "ou=nextfreeuid,ou=administration,dc=stoney-cloud,dc=org
 #  sub tree.
 #####################################################################################################################
 
 #####################################################################################################################
-# ou=nextfreeuid,ou=administration,dc=foss-cloud,dc=org
+# ou=nextfreeuid,ou=administration,dc=stoney-cloud,dc=org
 #####################################################################################################################
 # Description:
 #  The the next free uid administrative section of the stepping stone directory.
 #####################################################################################################################
-dn: cn=nextfreeuid,ou=administration,dc=foss-cloud,dc=org
+dn: cn=nextfreeuid,ou=administration,dc=stoney-cloud,dc=org
 objectClass: inetOrgPerson
 uid: 4000057
 cn: nextFreeUID

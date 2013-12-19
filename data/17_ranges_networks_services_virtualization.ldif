@@ -1,25 +1,25 @@
-dn: cn=172.31.255.64/26,ou=ranges,cn=172.31.255.0,cn=config-01,ou=dhcp,ou=networks,ou=virtualization,ou=services,dc=foss-cloud,dc=org
+dn: cn=172.31.255.64/26,ou=ranges,cn=172.31.255.0,cn=config-01,ou=dhcp,ou=networks,ou=virtualization,ou=services,dc=stoney-cloud,dc=org
 cn: 172.31.255.64/26
 objectclass: sstVirtualizationNetworkRange
 objectclass: top
 sstdisplayname: template
 sstnetworktype: template
 
-dn: cn=172.31.255.128/26,ou=ranges,cn=172.31.255.0,cn=config-01,ou=dhcp,ou=networks,ou=virtualization,ou=services,dc=foss-cloud,dc=org
+dn: cn=172.31.255.128/26,ou=ranges,cn=172.31.255.0,cn=config-01,ou=dhcp,ou=networks,ou=virtualization,ou=services,dc=stoney-cloud,dc=org
 cn: 172.31.255.128/26
 objectclass: sstVirtualizationNetworkRange
 objectclass: top
 sstdisplayname: persistent
 sstnetworktype: persistent
 
-dn: cn=172.31.255.192/26,ou=ranges,cn=172.31.255.0,cn=config-01,ou=dhcp,ou=networks,ou=virtualization,ou=services,dc=foss-cloud,dc=org
+dn: cn=172.31.255.192/26,ou=ranges,cn=172.31.255.0,cn=config-01,ou=dhcp,ou=networks,ou=virtualization,ou=services,dc=stoney-cloud,dc=org
 cn: 172.31.255.192/26
 objectclass: sstVirtualizationNetworkRange
 objectclass: top
 sstdisplayname: dynamic
 sstnetworktype: dynamic
 
-dn: ou=172.31.255.64/26,ou=ranges,sstVirtualMachinePool=40fac639-c69d-43b0-817c-dbbf3fd161fc,ou=virtual machine pools,ou=virtualization,ou=services,dc=foss-cloud,dc=org
+dn: ou=172.31.255.64/26,ou=ranges,sstVirtualMachinePool=40fac639-c69d-43b0-817c-dbbf3fd161fc,ou=virtual machine pools,ou=virtualization,ou=services,dc=stoney-cloud,dc=org
 objectclass: top
 objectclass: organizationalUnit
 objectclass: sstRelationship
@@ -28,7 +28,7 @@ description: This sub tree stores all the ranges belonging to default vm-templat
 sstBelongsToResellerUID: 4000000
 sstBelongsToCustomerUID: 4000001
 
-dn: ou=172.31.255.128/26,ou=ranges,sstVirtualMachinePool=d9c3cc0c-9ae7-40e5-8fb7-ba5297e835aa,ou=virtual machine pools,ou=virtualization,ou=services,dc=foss-cloud,dc=org
+dn: ou=172.31.255.128/26,ou=ranges,sstVirtualMachinePool=d9c3cc0c-9ae7-40e5-8fb7-ba5297e835aa,ou=virtual machine pools,ou=virtualization,ou=services,dc=stoney-cloud,dc=org
 objectclass: top
 objectclass: organizationalUnit
 objectclass: sstRelationship
@@ -37,7 +37,7 @@ description: This sub tree stores all the ranges belonging to default persistent
 sstBelongsToResellerUID: 4000000
 sstBelongsToCustomerUID: 4000001
 
-dn: ou=172.31.255.192/26,ou=ranges,sstVirtualMachinePool=dbd81080-d9f8-42e2-a261-d56b80c9c528,ou=virtual machine pools,ou=virtualization,ou=services,dc=foss-cloud,dc=org
+dn: ou=172.31.255.192/26,ou=ranges,sstVirtualMachinePool=dbd81080-d9f8-42e2-a261-d56b80c9c528,ou=virtual machine pools,ou=virtualization,ou=services,dc=stoney-cloud,dc=org
 objectclass: top
 objectclass: organizationalUnit
 objectclass: sstRelationship

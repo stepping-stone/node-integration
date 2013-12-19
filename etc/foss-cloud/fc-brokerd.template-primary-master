@@ -2,7 +2,7 @@
 cycle = 30
 
 [ldap]
-uri = <FOSS-CLOUD-LDAP-VIP-URI>
-binddn = <FOSS-CLOUD-BINDDN>
-bindpwd = <FOSS-CLOUD-BINDPW>
-basedn = <FOSS-CLOUD-BASEDN>
+uri = <STONEY-CLOUD-LDAP-VIP-URI>
+binddn = <STONEY-CLOUD-BINDDN>
+bindpwd = <STONEY-CLOUD-BINDPW>
+basedn = <STONEY-CLOUD-BASEDN>

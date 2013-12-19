@@ -34,12 +34,12 @@
 #####################################################################################################################
 
 #####################################################################################################################
-# ou=virtualization,ou=services,dc=foss-cloud,dc=org
+# ou=virtualization,ou=services,dc=stoney-cloud,dc=org
 #####################################################################################################################
 # Description:
 #  The virtualization (virtual desktop and server infrastructure) sub tree.
 #####################################################################################################################
-dn: ou=virtualization,ou=services,dc=foss-cloud,dc=org
+dn: ou=virtualization,ou=services,dc=stoney-cloud,dc=org
 objectclass: top
 objectclass: organizationalUnit
 ou: virtualization

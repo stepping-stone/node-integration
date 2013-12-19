@@ -31,17 +31,17 @@
 # /etc/openldap/data/09_networks_services_virtualization.ldif
 ################################################################################
 # Description:
-#  This sub tree holds all the networks of the FOSS-Cloud and acts as the backend to the DHCP
+#  This sub tree holds all the networks of the stoney cloud and acts as the backend to the DHCP
 #  server.
 ################################################################################
 
 ################################################################################
-# ou=networks,ou=virtualization,ou=services,dc=foss-cloud,dc=org
+# ou=networks,ou=virtualization,ou=services,dc=stoney-cloud,dc=org
 ################################################################################
 # Description:
 #  This subtree contains the network pools for the virtualization environment.
 ################################################################################
-dn: ou=networks,ou=virtualization,ou=services,dc=foss-cloud,dc=org
+dn: ou=networks,ou=virtualization,ou=services,dc=stoney-cloud,dc=org
 objectclass: top
 objectclass: organizationalUnit
 ou: networks
@@ -49,44 +49,44 @@ description: This subtree contains the network pools for the virtualization envi
 
 
 ################################################################################
-# ou=dhcp,ou=networks,ou=virtualization,ou=services,dc=foss-cloud,dc=org
+# ou=dhcp,ou=networks,ou=virtualization,ou=services,dc=stoney-cloud,dc=org
 ################################################################################
 # Description:
 #  The virtualization (virtual desktop and server infrastructure) subtree.
 ################################################################################
-dn: ou=dhcp,ou=networks,ou=virtualization,ou=services,dc=foss-cloud,dc=org
+dn: ou=dhcp,ou=networks,ou=virtualization,ou=services,dc=stoney-cloud,dc=org
 objectclass: top
 objectclass: organizationalUnit
 ou: dhcp
 
-dn: cn=config-01,ou=dhcp,ou=networks,ou=virtualization,ou=services,dc=foss-cloud,dc=org
+dn: cn=config-01,ou=dhcp,ou=networks,ou=virtualization,ou=services,dc=stoney-cloud,dc=org
 objectclass: top
 objectclass: dhcpService
 cn: config-01
-dhcpprimarydn: cn=dhcp-01,ou=dhcp,ou=networks,ou=virtualization,ou=services,dc=foss-cloud,dc=org
+dhcpprimarydn: cn=dhcp-01,ou=dhcp,ou=networks,ou=virtualization,ou=services,dc=stoney-cloud,dc=org
 
-dn: cn=dhcp-01,ou=dhcp,ou=networks,ou=virtualization,ou=services,dc=foss-cloud,dc=org
+dn: cn=dhcp-01,ou=dhcp,ou=networks,ou=virtualization,ou=services,dc=stoney-cloud,dc=org
 objectclass: top
 objectclass: dhcpServer
 cn: dhcp-01
-dhcpservicedn: cn=config-01,ou=dhcp,ou=networks,ou=virtualization,ou=services,dc=foss-cloud,dc=org
+dhcpservicedn: cn=config-01,ou=dhcp,ou=networks,ou=virtualization,ou=services,dc=stoney-cloud,dc=org
 
 
 ################################################################################
-# cn=<FOSS-CLOUD-PUB-SUBNETs-ADDRESS>,cn=config-01,ou=dhcp,ou=networks,ou=virtualization,ou=services,dc=foss-cloud,dc=org
+# cn=<STONEY-CLOUD-PUB-SUBNETs-ADDRESS>,cn=config-01,ou=dhcp,ou=networks,ou=virtualization,ou=services,dc=stoney-cloud,dc=org
 ################################################################################
 # Description:
 #  The sub tree the first predefined network.
 ################################################################################
-dn: cn=<FOSS-CLOUD-PUB-SUBNET-ADDRESS>,cn=config-01,ou=dhcp,ou=networks,ou=virtualization,ou=services,dc=foss-cloud,dc=org
-cn: <FOSS-CLOUD-PUB-SUBNET-ADDRESS>
+dn: cn=<STONEY-CLOUD-PUB-SUBNET-ADDRESS>,cn=config-01,ou=dhcp,ou=networks,ou=virtualization,ou=services,dc=stoney-cloud,dc=org
+cn: <STONEY-CLOUD-PUB-SUBNET-ADDRESS>
 description: This is the first network for which the DHCP server is responsible. All default DHCP options and statements are defined within this entry. It is set during the installation of the primary-master-node.
-dhcpnetmask: <FOSS-CLOUD-PUB-NETMASK>
-dhcpoption: domain-name "<FOSS-CLOUD-PUB-DOMAIN>"
-dhcpoption: domain-name-servers <FOSS-CLOUD-DNS-INFO>
-dhcpoption: routers <FOSS-CLOUD-PUB-DEFAULT-GATEWAY>
-dhcpoption: broadcast-address <FOSS-CLOUD-PUB-BROADCAST>
-dhcpoption: ntp-servers <FOSS-CLOUD-NTP-INFO>
+dhcpnetmask: <STONEY-CLOUD-PUB-NETMASK>
+dhcpoption: domain-name "<STONEY-CLOUD-PUB-DOMAIN>"
+dhcpoption: domain-name-servers <STONEY-CLOUD-DNS-INFO>
+dhcpoption: routers <STONEY-CLOUD-PUB-DEFAULT-GATEWAY>
+dhcpoption: broadcast-address <STONEY-CLOUD-PUB-BROADCAST>
+dhcpoption: ntp-servers <STONEY-CLOUD-NTP-INFO>
 dhcpstatements: authoritative
 dhcpstatements: default-lease-time 3600
 dhcpstatements: min-lease-time 600
@@ -102,14 +102,14 @@ sstbelongstocustomeruid: 4000001
 sstbelongstoreselleruid: 4000000
 sstdisplayname: network-pool-01
 
-dn: ou=ranges,cn=<FOSS-CLOUD-PUB-SUBNET-ADDRESS>,cn=config-01,ou=dhcp,ou=networks,ou=virtualization,ou=services,dc=foss-cloud,dc=org
-description: This sub tree holds all user defined ranges (template, persistent and dynamic) belonging to the network <FOSS-CLOUD-PUB-SUBNET-ADDRESS>.
+dn: ou=ranges,cn=<STONEY-CLOUD-PUB-SUBNET-ADDRESS>,cn=config-01,ou=dhcp,ou=networks,ou=virtualization,ou=services,dc=stoney-cloud,dc=org
+description: This sub tree holds all user defined ranges (template, persistent and dynamic) belonging to the network <STONEY-CLOUD-PUB-SUBNET-ADDRESS>.
 objectclass: top
 objectclass: organizationalUnit
 ou: ranges
 
-dn: ou=virtual machines,cn=<FOSS-CLOUD-PUB-SUBNET-ADDRESS>,cn=config-01,ou=dhcp,ou=networks,ou=virtualization,ou=services,dc=foss-cloud,dc=org
-description: This sub tree holds all the virtual machines with an ip address from the network <FOSS-CLOUD-PUB-SUBNET-ADDRESS>.
+dn: ou=virtual machines,cn=<STONEY-CLOUD-PUB-SUBNET-ADDRESS>,cn=config-01,ou=dhcp,ou=networks,ou=virtualization,ou=services,dc=stoney-cloud,dc=org
+description: This sub tree holds all the virtual machines with an ip address from the network <STONEY-CLOUD-PUB-SUBNET-ADDRESS>.
 objectclass: top
 objectclass: organizationalUnit
 ou: virtual machines

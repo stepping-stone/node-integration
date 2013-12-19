@@ -34,12 +34,12 @@
 ################################################################################
 
 ################################################################################
-# ou=nodes,ou=virtualization,ou=services,dc=foss-cloud,dc=org
+# ou=nodes,ou=virtualization,ou=services,dc=stoney-cloud,dc=org
 ################################################################################
 # Description:
 #  This subtree contains all the nodes for the virtualization environment.
 ################################################################################
-dn: ou=nodes,ou=virtualization,ou=services,dc=foss-cloud,dc=org
+dn: ou=nodes,ou=virtualization,ou=services,dc=stoney-cloud,dc=org
 objectclass: top
 objectclass: organizationalUnit
 ou: nodes

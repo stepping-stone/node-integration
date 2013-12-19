@@ -32,19 +32,19 @@
 # Description:
 #  This LDIF defines the sub tree for the monitoring service. 
 #####################################################################################################################
-dn: ou=monitoring,ou=services,dc=foss-cloud,dc=org
+dn: ou=monitoring,ou=services,dc=stoney-cloud,dc=org
 objectclass: top
 objectclass: organizationalUnit
 ou: monitoring
 description: The sub tree for the monitoring service.
 
-dn: ou=configuration,ou=monitoring,ou=services,dc=foss-cloud,dc=org
+dn: ou=configuration,ou=monitoring,ou=services,dc=stoney-cloud,dc=org
 objectclass: top
 objectclass: organizationalUnit
 ou: configuration
 description: The sub tree for the configuration of the monitoring service.
 
-dn: uid=4000016,ou=monitoring,ou=services,dc=foss-cloud,dc=org
+dn: uid=4000016,ou=monitoring,ou=services,dc=stoney-cloud,dc=org
 objectclass: top
 objectclass: sstRelationship
 objectclass: sstServiceObjectClass

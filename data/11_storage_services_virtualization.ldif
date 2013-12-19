@@ -34,12 +34,12 @@
 #####################################################################################################################
 
 #####################################################################################################################
-# ou=storage pools,ou=virtualization,ou=services,dc=foss-cloud,dc=org
+# ou=storage pools,ou=virtualization,ou=services,dc=stoney-cloud,dc=org
 #####################################################################################################################
 # Description:
 #  This sub tree contains all the storage pools for the virtualization environment.
 #####################################################################################################################
-dn: ou=storage pools,ou=virtualization,ou=services,dc=foss-cloud,dc=org
+dn: ou=storage pools,ou=virtualization,ou=services,dc=stoney-cloud,dc=org
 objectclass: top
 objectclass: organizationalUnit
 ou: storage pools
@@ -48,13 +48,13 @@ description: This sub tree contains all the storage pools for the virtualization
 
 #####################################################################################################################
 # sstStoragePool=0f83f084-8080-413e-b558-b678e504836e,ou=storage pools,ou=virtualization,
-# ou=services,dc=foss-cloud,dc=org
+# ou=services,dc=stoney-cloud,dc=org
 #####################################################################################################################
 # Description:
 #  This entry contains the default persistent storage pool persistent-storage-pool-01 that is already
-#  set up when the FOSS-Cloud is installed.
+#  set up when the stoney cloud is installed.
 #####################################################################################################################
-dn: sstStoragePool=0f83f084-8080-413e-b558-b678e504836e,ou=storage pools,ou=virtualization,ou=services,dc=foss-cloud,dc=org
+dn: sstStoragePool=0f83f084-8080-413e-b558-b678e504836e,ou=storage pools,ou=virtualization,ou=services,dc=stoney-cloud,dc=org
 objectclass: top
 objectclass: sstStoragePoolObjectClass
 objectclass: sstRelationship
@@ -69,13 +69,13 @@ sstBelongsToCustomerUID: 4000001
 
 #####################################################################################################################
 # sstStoragePool=5b77d2f6-061f-410c-8ee7-9e61da6f1927,ou=storage pools,ou=virtualization,
-# ou=services,dc=foss-cloud,dc=org
+# ou=services,dc=stoney-cloud,dc=org
 #####################################################################################################################
 # Description:
 #  This entry contains the default template storage pool template-storage-pool-01 that is already
-#  set up when the FOSS-Cloud is installed.
+#  set up when the stoney cloud is installed.
 #####################################################################################################################
-dn: sstStoragePool=5b77d2f6-061f-410c-8ee7-9e61da6f1927,ou=storage pools,ou=virtualization,ou=services,dc=foss-cloud,dc=org
+dn: sstStoragePool=5b77d2f6-061f-410c-8ee7-9e61da6f1927,ou=storage pools,ou=virtualization,ou=services,dc=stoney-cloud,dc=org
 objectclass: top
 objectclass: sstStoragePoolObjectClass
 objectclass: sstRelationship
@@ -90,13 +90,13 @@ sstBelongsToCustomerUID: 4000001
 
 #####################################################################################################################
 # sstStoragePool=c92851ab-ec8e-4eba-b60d-96cf3f72fd02,ou=storage pools,ou=virtualization,
-# ou=services,dc=foss-cloud,dc=org
+# ou=services,dc=stoney-cloud,dc=org
 #####################################################################################################################
 # Description:
 #  This entry contains the default dynamic storage pool dynamic-storage-pool-01 that is already
-#  set up when the FOSS-Cloud is installed.
+#  set up when the stoney cloud is installed.
 #####################################################################################################################
-dn: sstStoragePool=c92851ab-ec8e-4eba-b60d-96cf3f72fd02,ou=storage pools,ou=virtualization,ou=services,dc=foss-cloud,dc=org
+dn: sstStoragePool=c92851ab-ec8e-4eba-b60d-96cf3f72fd02,ou=storage pools,ou=virtualization,ou=services,dc=stoney-cloud,dc=org
 objectclass: top
 objectclass: sstStoragePoolObjectClass
 objectclass: sstRelationship
