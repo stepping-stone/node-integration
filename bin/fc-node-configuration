@@ -1971,7 +1971,9 @@ sub configureOpenLDAP {
   my $directory_confd    = $cfg->val("General","directory_confd");
   my $file_slapd         = $directory_confd.$cfg->val("General","file_slapd");
   my $file_ldap_conf     = $directory_openldap.$cfg->val("General","file_ldap_conf");
+  my $file_ldap_template = $directory_openldap.$cfg->val("General","file_ldap_template");
   my $file_slapd_conf    = $directory_openldap.$cfg->val("General","file_slapd_conf");
+  my $file_slapd_template= $directory_openldap.$cfg->val("General","file_slapd_template");
   my $file_00_directory                              = $directory_data."/00_directory-init.ldif";
   my $file_01_administration_nextfreeuid             = $directory_data."/01_nextfreeuid-administration.ldif";
   my $file_02_group_mapping_administration           = $directory_data."/02_group_mapping-administration.ldif";
@@ -2006,7 +2008,7 @@ sub configureOpenLDAP {
   my $file_19_services_maintenance                   = $directory_data."/19_services_maintenance.ldif";
   my $file_20_configuration                          = $directory_data."/20_configuration.ldif";
   my $file_21_operating_system_configuration         = $directory_data."/21_operating_system_configuration.ldif";
-  my $file_22_software_stack_configuration           = $directory_data."/21_software_stack_configuration.ldif";
+  my $file_22_software_stack_configuration           = $directory_data."/22_software_stack_configuration.ldif";
   my $acl_administration_template                    = $directory_acl."/slapd.acl.administration.template";
   my $acl_administration_file                        = $directory_acl."/slapd.acl.administration.conf";
   my $acl_customers_template                         = $directory_acl."/slapd.acl.customers.template";
@@ -2017,6 +2019,8 @@ sub configureOpenLDAP {
   my $acl_reseller_file                              = $directory_acl."/slapd.acl.reseller.conf";
   my $acl_service_template                           = $directory_acl."/slapd.acl.service.virtualization.template";
   my $acl_service_file                               = $directory_acl."/slapd.acl.service.virtualization.conf";
+  my $acl_backup_template                            = $directory_acl."/slapd.acl.service.backup.template";
+  my $acl_backup_file                                = $directory_acl."/slapd.acl.service.backup.conf";
   my $file;
   my $line;
   my $unencrypted_password;
@@ -2113,6 +2117,10 @@ sub configureOpenLDAP {
                     @sar_commands
                   );
   
+  searchAndReplace( $acl_backup_template,
+                    $acl_backup_file,
+                    @sar_commands
+                  );
 
   ##############################################################################
   ### Working on the file /etc/openldap/ldap.conf if needed by $modus
@@ -2132,88 +2140,45 @@ sub configureOpenLDAP {
       # URI             ldap://$localIntIP:389
 
       # Test if the file exists and is readable
-      unless ( -r $file_ldap_conf )
+      unless ( -r $file_ldap_template )
       {
           returnError(ERROR_MISSING_FILE_CODE,
                       ERROR_MISSING_FILE_STRING,
                       "Could not open $file_ldap_conf for reading");
       }
 
-      open(FILE,$file_ldap_conf);
-      @output = <FILE>;
-      close FILE;
-
-      # Create the replace string 
-      my $replace_string;
-      my $cert_file;
-      my $req_cert;
+      # Create the replace commands
       if ( $modus eq "demo-system" )
       {
-        # LDAP
         $ldap_port = 389;
-        $replace_string = "URI             ldap:\/\/$ldap_vip_name:$ldap_port";
-        $cert_file = "#TLS_CACERT <STONEY-CLOUD-LDAP-CA-CERTIFICATE-FILE>";
-        $req_cert = "#TLS_REQCERT demand"; 
+        @sar_commands = ( { search => "<STONEY-CLOUD-LDAP-BASE-DN>",replace => $ldap_base_dn },
+                          { search => "<STONEY-CLOUD-LDAP-VIP-URI>",replace => "ldap:\/\/$ldap_vip_name:$ldap_port"},
+                          { search => "<STONEY-CLOUD-LDAP-CA-CERTIFICATE-FILE>", replace => ""},
+                          { search => "<STONEY-CLOUD-LDAP-CA-CERTIFICATE-REQUIRE>", replace => ""},
+                        );
+
       } else
       {
-        # LDAPS
         $ldap_port = 636;
-        $replace_string = "URI             ldaps:\/\/$ldap_vip_name:$ldap_port";
-        my $ldap_cert_name;
-        $ldap_cert_name = "ldapm-01." if ( $modus eq "primary-master" || $modus eq "single-server" );
-        $ldap_cert_name = "ldapm-02." if ( $modus eq "secondary-master");
-        $ldap_cert_name .= $localNetworkHash->{'pub'}->{'domain'}.".cert.pem";
-        $cert_file = "TLS_CACERT /etc/ssl/certs/FOSS-Cloud_CA.cert.pem";
-        $req_cert = "TLS_REQCERT demand"; 
+        @sar_commands = ( { search => "<STONEY-CLOUD-LDAP-BASE-DN>",replace => $ldap_base_dn },
+                          { search => "<STONEY-CLOUD-LDAP-VIP-URI>",replace => "ldaps:\/\/$ldap_vip_name:$ldap_port"},
+                          { search => "<STONEY-CLOUD-LDAP-CA-CERTIFICATE-FILE>", replace => "TLS_CACERT /etc/ssl/certs/FOSS-Cloud_CA.cert.pem"},
+                          { search => "<STONEY-CLOUD-LDAP-CA-CERTIFICATE-REQUIRE>", replace => "TLS_REQCERT demand"},
+                        );  
+          
+        # LDAPS
+        #$ldap_port = 636;
+        #$replace_string = "URI             ldaps:\/\/$ldap_vip_name:$ldap_port";
+#        my $ldap_cert_name;
+#        $ldap_cert_name = "ldapm-01." if ( $modus eq "primary-master" || $modus eq "single-server" );
+#        $ldap_cert_name = "ldapm-02." if ( $modus eq "secondary-master");
+#        $ldap_cert_name .= $localNetworkHash->{'pub'}->{'domain'}.".cert.pem";
       }
 
-      foreach $line (@output) {
-        if ($line =~ "^URI") {
-          print "Found:          $line";
-          $line =~ s/URI.*/$replace_string/g;
-          print "Replacing with: $replace_string\n";
-          $error = 0;
-        } # End of if ($line =~ "listen_addr")
-
-        if ($line =~ m/<STONEY-CLOUD-LDAP-CA-CERTIFICATE-FILE>/ ) {
-          print "Found:          $line";
-          $line = $cert_file."\n";
-          print "Replacing with: $cert_file\n";
-          $error = 0;
-        } # End of if ($line =~ "listen_addr")
-
-        if ($line =~ m/#TLS_REQCERT\sdemand/) {
-          print "Found:          $line";
-          $line = $req_cert."\n";
-          print "Replacing with: $req_cert\n";
-          $error = 0;
-        } # End of if ($line =~ "listen_addr")
-
-        if ($line =~ m/<STONEY-CLOUD-LDAP-BASE-DN>/) {
-          print "Found:          $line";
-          $line =~ s/<STONEY-CLOUD-LDAP-BASE-DN>/$ldap_base_dn/;
-          print "Replacing <STONEY-CLOUD-LDAP-BASE-DN> with: $ldap_base_dn\n";
-          $error = 0;
-        } # End of if ($line =~ "listen_addr")
-
-      } # End of foreach $line (@output)
-
-      if (!$dryrun) {
-        print "Writing:        $replace_string\n";
-        print "To the file:    $file_ldap_conf\n";
-        open(FOUT,">$file_ldap_conf") || die("Could not open $file_ldap_conf for writing.");
-        foreach $line (@output) {
-          print FOUT $line;
-        } # End of foreach $line (@output)
-        close FOUT;
-      } else {
-        if ($debug) {
-          foreach $line (@output) {
-            print $line;
-          } # End of foreach $line (@output)
-        } # End of if ($debug)
-        print "--dry-run: Would write '$replace_string' to the file $file_ldap_conf!\n";
-      } # End of if (!$dryrun)
+      searchAndReplace( $file_ldap_template,
+                        $file_ldap_conf,
+                        @sar_commands
+                      );
 
       # Setting the proper permisions on the file /etc/openldap/ldap.conf ...
       setSingleFilePermissions("file",$uid_root,$gid_ldap,0644,$file_ldap_conf);
@@ -2332,102 +2297,38 @@ sub configureOpenLDAP {
       # rootpw          {SSHA}McZMZiKDM5/EpeexPxG4qOojndoJeM2D
 
       # Test if the file exists and is readable
-      unless ( -r $file_slapd_conf )
+      unless ( -r $file_slapd_template )
       {
           returnError(ERROR_MISSING_FILE_CODE,
                       ERROR_MISSING_FILE_STRING,
-                      "Could not open $file_slapd_conf for reading");
+                      "Could not open $file_slapd_template for reading");
       }
+      
+      @sar_commands = (
+                        { search => "<STONEY-CLOUD-LDAP-BASE-DN>",replace => $ldap_base_dn },
+                        { search => "<STONEY-CLOUD-SLAPD-SERVER-ID>", replace => $cfg->val($modus,"openldap_server_id") },
+                        { search => "<STONEY-CLOUD-SLAPD-ROOT-PW>", replace => $password },
+                        { search => "<STONEY-CLOUD-SLAPD-SYNCREPL-RID>", replace => $cfg->val($modus,"syncrepl_rid") },
+                        { search => "<STONEY-CLOUD-SLAPD-SYNCREPL-PROVIDER>", replace => $syncrepl_provider },
+                        { search => "<STONEY-CLOUD-SLAPD-SYNCREPL-CREDENTIALS>", replace => $syncrepl_password},
+                      );
 
-      open(FILE,$file_slapd_conf);
-      @output = <FILE>;
-      close FILE;
-
-      foreach $line (@output) {
-        if ($line =~ "^rootpw") {
-          print "Found:          $line";
-          $line =~ s/rootpw.*/rootpw          $password/g;
-          print "Replacing with: rootpw          $password\n";
-          $error = 0;
-        } # End of if ($line =~ "^rootpw")
-        if ( $line =~ m/<STONEY-CLOUD-SLAPD-SERVER-ID>/ )
-        {
-            # Replace the Serverid
-            my $server_id = $cfg->val($modus,"openldap_server_id");
-            $line =~ s/<STONEY-CLOUD-SLAPD-SERVER-ID>/$server_id/;
-            print "Replacing <STONEY-CLOUD-SLAPD-SERVER-ID> with: $server_id\n";
-            $error = 0;
-        }
-        if ( $line =~ m/<STONEY-CLOUD-SLAPD-SYNCREPL-RID>/ )
-        {
-            # Replace the sycnrepl rid
-            my $syncrepl_rid = $cfg->val($modus,"syncrepl_rid");
-            $line =~ s/<STONEY-CLOUD-SLAPD-SYNCREPL-RID>/$syncrepl_rid/;
-            print "Replacing <STONEY-CLOUD-SLAPD-SERVER-ID> with: $syncrepl_rid\n";
-            $error = 0;
-        }
-        if ( $line =~ m/<STONEY-CLOUD-SLAPD-SYNCREPL-PROVIDER>/ )
-        {
-            # Replace the syncrepl provider
-            $line =~ s/provider=.+$/provider=$syncrepl_provider/;
-            # TODO change the line above, just replace <STONEY-CLOUD-SLAPD-SYNCREPL-PROVIDER>
-            print "Replacing <STONEY-CLOUD-SLAPD-SYNCREPL-PROVIDER> with: $syncrepl_provider\n";
-            $error = 0;
-        }
-        if ( $line =~ m/<STONEY-CLOUD-SLAPD-SYNCREPL-CREDENTIALS>/ )
-        {
-            # Replace the syncrepl password
-            $line =~ s/<STONEY-CLOUD-SLAPD-SYNCREPL-CREDENTIALS>/$syncrepl_password/;
-            print "Replacing <STONEY-CLOUD-SLAPD-SYNCREPL-CREDENTIALS> with: $syncrepl_password\n";
-            $error = 0;
-        }
-        if ( $line =~ m/<STONEY-CLOUD-SLAPD-CERTIFICATE>/ && $modus ne "demo-system" )
-        {
-            # Replace the syncrepl password
-            $line = "TLSCertificateFile     /etc/openldap/ssl/$ldap_server.cert.pem\n";
-            print "Replacing <STONEY-CLOUD-SLAPD-CERTIFICATE> with: $ldap_server.cert.pem\n";
-            $error = 0;
-        }
-        if ( $line =~ m/<STONEY-CLOUD-SLAPD-KEY>/ && $modus ne "demo-system" )
-        {
-            # Replace the syncrepl password
-            $line = "TLSCertificateKeyFile     /etc/openldap/ssl/keys/$ldap_server.key.pem\n";
-            print "Replacing <STONEY-CLOUD-SLAPD-KEY> with: $ldap_server.key.pem\n";
-            $error = 0;
-        }
-
-        if ( $line =~ m/<STONEY-CLOUD-SLAPD-CA-CERTIFICATE-FILE>/ && $modus ne "demo-system" )
-        {
-            # Replace the syncrepl password
-            $line = "TLSCACertificateFile   /etc/ssl/certs/FOSS-Cloud_CA.cert.pem\n";
-            print "Replacing <STONEY-CLOUD-SLAPD-CA-CERTIFICATE-FILE> with: /etc/ssl/certs/FOSS-Cloud_CA.cert.pem\n";
-            $error = 0;
-        }
-
-        if ($line =~ m/<STONEY-CLOUD-LDAP-BASE-DN>/) {
-          $line =~ s/<STONEY-CLOUD-LDAP-BASE-DN>/$ldap_base_dn/;
-          print "Replacing <STONEY-CLOUD-LDAP-BASE-DN> with: $ldap_base_dn\n";
-        } # End of if ($line =~ "listen_addr")
-
-
-      } # End of foreach $line (@output)
-
-      if (!$dryrun) {
-        print "Writing:        rootpw          $password\n";
-        print "To the file:    $file_slapd_conf\n";
-        open(FOUT,">$file_slapd_conf") || die("Could not open $file_slapd_conf for writing.");
-        foreach $line (@output) {
-          print FOUT $line;
-        } # End of foreach $line (@output)
-        close FOUT;
-      } else {
-        if ($debug) {
-          foreach $line (@output) {
-            print $line;
-          } # End of foreach $line (@output)
-        } # End of if ($debug)
-        print "--dry-run: Would write 'rootpw          $password' to the file $file_slapd_conf!\n";
-      } # End of if (!$dryrun)
+      if ($modus ne "demo-system" )
+      {
+          push( @sar_commands, {search => "<STONEY-CLOUD-SLAPD-CERTIFICATE>", replace => "TLSCertificateFile     /etc/openldap/ssl/$ldap_server.cert.pem"} );
+          push( @sar_commands, {search => "<STONEY-CLOUD-SLAPD-KEY>", replace => "TLSCertificateKeyFile  /etc/openldap/ssl/keys/$ldap_server.key.pem"} );
+          push( @sar_commands, {search => "<STONEY-CLOUD-SLAPD-CA-CERTIFICATE-FILE>", replace => "TLSCACertificateFile   /etc/ssl/certs/FOSS-Cloud_CA.cert.pem"} );
+      } else
+      {
+          push( @sar_commands, {search => "<STONEY-CLOUD-SLAPD-CERTIFICATE>", replace => "# <STONEY-CLOUD-SLAPD-CERTIFICATE>"} );
+          push( @sar_commands, {search => "<STONEY-CLOUD-SLAPD-KEY>", replace => "# <STONEY-CLOUD-SLAPD-KEY>"} );
+          push( @sar_commands, {search => "<STONEY-CLOUD-SLAPD-CA-CERTIFICATE-FILE>", replace => "# <STONEY-CLOUD-SLAPD-CA-CERTIFICATE-FILE>"} );
+      }
+      
+      searchAndReplace( $file_slapd_template,
+                        $file_slapd_conf,
+                        @sar_commands
+                      );
 
       # Setting the proper permisions on the file /etc/openldap/slapd.conf ...
       setSingleFilePermissions("file",$uid_root,$gid_ldap,0640,$file_slapd_conf);
@@ -2732,7 +2633,8 @@ sub configureOpenLDAP {
 
       # Create the search_and_replace commands to replace the LDIF template with
       # the correct values
-      @sar_commands = ( {search => "<STONEY-CLOUD-PROV-BACKUP-KVM-PASSWORD>", replace => $prov_backup_kvm_password},
+      @sar_commands = ( { search => "<STONEY-CLOUD-LDAP-BASE-DN>",replace => $ldap_base_dn },
+                        {search => "<STONEY-CLOUD-PROV-BACKUP-KVM-PASSWORD>", replace => $prov_backup_kvm_password},
                         {search => "<STONEY-CLOUD-DHCP-PASSWORD>", replace => $dhcp_password},
                         {search => "<STONEY-CLOUD-SYNCREPL-PASSWORD>", replace => $crypted_syncrepl_password},
                         {search => "<STONEY-CLOUD-LIBVIRTD-PASSWORD>", replace => $crypted_syncrepl_password },
@@ -2811,7 +2713,7 @@ sub configureOpenLDAP {
     {
         # Ask for all necessary information
         print "\n";
-        print "Please enter the the information for the FOSS-Cloud ";
+        print "Please enter the the information for the stoney cloud ";
         print "administrator with which\nyou will log in on the webinterface ";
         print "(username is 'admin'):";
         print "\n\n";
@@ -2931,6 +2833,7 @@ sub configureOpenLDAP {
                       {search => "<STONEY-CLOUD-PEOPLE-PASSWORD>", replace => $password},
                       {search => "<STONEY-CLOUD-PEOPLE-MAIL>", replace => $mail},
                       {search => "<STONEY-CLOUD-PEOPLE-TIMEZONE>", replace => $timezone},
+                      { search => "<STONEY-CLOUD-LDAP-BASE-DN>",replace => $ldap_base_dn },
                     );
 
     searchAndReplace( $file_05_people_template,
@@ -3312,7 +3215,7 @@ sub configureOpenLDAP {
   # And finally load the services, operating system and software stack
   # configuration into the ldap
   loadOpenLDAPsingleLDIF($ldap_server,$unencrypted_password,$file_18_services_monitoring);
-  loadOpenLDAPsingleLDIF($ldap_server,$unencrypted_password,$file_19_services_maintenance);
+  #loadOpenLDAPsingleLDIF($ldap_server,$unencrypted_password,$file_19_services_maintenance);
   loadOpenLDAPsingleLDIF($ldap_server,$unencrypted_password,$file_20_configuration);
   loadOpenLDAPsingleLDIF($ldap_server,$unencrypted_password,$file_21_operating_system_configuration);
   loadOpenLDAPsingleLDIF($ldap_server,$unencrypted_password,$file_22_software_stack_configuration);
@@ -3701,7 +3604,7 @@ sub configureApache2 {
   while ( $apache_vip_name !~ m/.+\..+\..{2,3}/ )
   {
       # Ask for the apache2 VIP name
-      print "\nPlease enter the apache VIP name (default: foss-cloud."
+      print "\nPlease enter the apache VIP name (default: cloud."
            .$localPubDomain."): ";
       chomp( $apache_vip_name = <STDIN> );
 
@@ -4295,8 +4198,8 @@ sub createRootCA
 
     # And finally create a symlink the the htdocs/ca directory to be able to 
     # download this certificate
-    @args = ("ln","-s","/etc/ssl/certs/FOSS-Cloud_CA.cert.pem","/var/www/localhost/htdocs/ca/FOSS-Cloud_CA.cert.pem");
 
+    @args = ("ln","-s","/etc/ssl/certs/FOSS-Cloud_CA.cert.pem","/var/www/localhost/htdocs/ca/FOSS-Cloud_CA.cert.pem");
     # Execute the commands
     system( join(' ', @args) );
 
@@ -5279,12 +5182,12 @@ sub askVIP
     while ( $apache_vip_name !~ m/.+\..+\..{2,3}/ )
     {
         # Ask for the apache2 VIP name
-        print "\nPlease enter the apache VIP name (default: foss-cloud."
+        print "\nPlease enter the apache VIP name (default: cloud."
              .$localPubDomain."): ";
         chomp( $apache_vip_name = <STDIN> );
 
         # If no name is entered take default one
-        $apache_vip_name = "foss-cloud.".$localPubDomain unless ( $apache_vip_name );
+        $apache_vip_name = "cloud.".$localPubDomain unless ( $apache_vip_name );
 
     }
 
@@ -5941,6 +5844,7 @@ sub configureLibvirtdHooks
     
     # Open the template file, replace the variables and write the configuration 
     # file
+    #TODO return errors!
     if ( !open( TEMPLATE , $configuration_template ) )
     {
         returnError();

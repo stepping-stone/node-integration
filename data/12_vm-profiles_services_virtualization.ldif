@@ -293,8 +293,7 @@ sstVirtualMachineType: profile
 sstVirtualMachineSubType: VM-Profile
 
 # Entry 5: ou=devices,sstVirtualMachine=default,ou=default,ou=default,ou=...
-dn: ou=devices,sstVirtualMachine=default,ou=default,ou=default,ou=default,ou=windows,ou=virtual machine profiles,ou=virtualization,ou=services,dc=foss-
- cloud,dc=org
+dn: ou=devices,sstVirtualMachine=default,ou=default,ou=default,ou=default,ou=windows,ou=virtual machine profiles,ou=virtualization,ou=services,dc=stoney-cloud,dc=org
 objectclass: top
 objectclass: organizationalUnit
 objectclass: sstVirtualizationVirtualMachineDevices
