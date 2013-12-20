@@ -1529,8 +1529,8 @@ sub configureGlusterFS {
       $output = `$glusterCmd`;
       $errorCode = $? >> 8;
 
-      # Another command that needs to be executed
-      $glusterCmdTwo = "gluster volume set $gluster_volume_name server.allow-insecure Off";
+      # Permit access from unprivileged source ports for direct gluster file access via the API
+      $glusterCmdTwo = "gluster volume set $gluster_volume_name server.allow-insecure On";
       print "Executing: $glusterCmdTwo ...\n";
       $output = `$glusterCmdTwo`;
       $errorCodeTwo = $? >> 8;
