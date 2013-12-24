@@ -5519,7 +5519,7 @@ sub getRemoteConfiguration
         }
         
         # Get the libvirtd user password
-        my $libvirtd_config = $cfg->val("General","libvritd_service_configuration");
+        my $libvirtd_config = $cfg->val("General","libvritd_password_file");
         $cmd = "cat '$libvirtd_config'";
         
         # Execute the command on the remote host
