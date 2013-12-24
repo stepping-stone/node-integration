@@ -613,9 +613,10 @@ sub primaryMasterNode{
   # Configure the fc-brockerd daemon
   configureFcBrokerd($localNetworkHash,$unencrypted_password);
 
-  # Start the daemon and add it to de default runlevel
-  startDaemon("fc-brokerd");
-  rcUpdate("fc-brokerd","default");
+  # Currently we don't want to start the fc-broker daemon, skip this step
+#  # Start the daemon and add it to de default runlevel
+#  startDaemon("fc-brokerd");
+#  rcUpdate("fc-brokerd","default");
 
   configureProvBackupKVM($localNetworkHash, $localNetworkHash->{'int'}->{'vip'}, $prov_backup_kvm_unencrypted_password);
 
@@ -1009,8 +1010,10 @@ sub demoSystem{
 
   # Configure the fc-brockerd daemon
   configureFcBrokerd($localNetworkHash,$unencrypted_password);
-  startDaemon("fc-brokerd");
-  rcUpdate("fc-brokerd","default");
+  # Currently we don't want to start the fc-broker daemon, skip this step
+#  # Start the daemon and add it to de default runlevel
+#  startDaemon("fc-brokerd");
+#  rcUpdate("fc-brokerd","default");
 
   # Start and add the PowerDNS recursor to the default runlevel
   startDaemon("precursor");
@@ -1125,9 +1128,10 @@ sub singleServer{
   # Configure the fc-brockerd daemon
   configureFcBrokerd($localNetworkHash,$unencrypted_password);
 
-  # Start the daemon and add it to de default runlevel
-  startDaemon("fc-brokerd");
-  rcUpdate("fc-brokerd","default");
+  # Currently we don't want to start the fc-broker daemon, skip this step
+#  # Start the daemon and add it to de default runlevel
+#  startDaemon("fc-brokerd");
+#  rcUpdate("fc-brokerd","default");
 
   configureProvBackupKVM($localNetworkHash, $localNetworkHash->{'int'}->{'vip'}, $prov_backup_kvm_unencrypted_password);
 
