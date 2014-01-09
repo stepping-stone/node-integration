@@ -5859,6 +5859,8 @@ sub configureLibvirtdHooks
         returnError();
     }
     
+    my @lines;
+    
     while ( <TEMPLATE> )
     {
         my $line = $_;
@@ -5880,6 +5882,11 @@ sub configureLibvirtdHooks
             $line = "libvirtHookFirewallLdapUri=\"$ldap_uri\"\n";
         }
      
+        push( @lines, $line );
+    }
+    
+    foreach my $line ( @lines )
+    {
         # Write the current line (replaced or not) to the configuration file
         print CONFIG $line;
     }
