@@ -548,7 +548,7 @@ sub primaryMasterNode{
   my $remoteNetworkHash2 = checkRemoteNetwork($host2,$user2,$password2);
 
   # Write to the hosts file
-  wirteVIPToHosts($localNetworkHash);
+  writeVIPToHosts($localNetworkHash);
 
   # Start the ksm daemon and add it to the default runlevel
   startDaemon("ksm");
@@ -2250,7 +2250,7 @@ sub configureOpenLDAP {
          $libvirtd_password ) = getRemoteConfiguration();
 
         # Write to the hosts file
-        wirteVIPToHosts($localNetworkHash);
+        writeVIPToHosts($localNetworkHash);
 
       }
 
@@ -5561,19 +5561,19 @@ sub getRemoteConfiguration
 }
 
 ################################################################################
-# wirteVIPToHosts
+# writeVIPToHosts
 ################################################################################
 # Description:
 #   
 ################################################################################
 # Usage:
-#   wirteVIPToHosts( $localNetworkHash );
+#   writeVIPToHosts( $localNetworkHash );
 ################################################################################
 # Return Values:
 #   none
 ################################################################################
 
-sub wirteVIPToHosts
+sub writeVIPToHosts
 {
     my $local_network_hash = shift;
 
