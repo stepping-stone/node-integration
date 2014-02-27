@@ -783,6 +783,9 @@ sub vmNode{
   # Retreive the network information of the second Storage-Node
   my $remoteNetworkHash2 = checkRemoteNetwork($host2,$user2,$password2);
 
+  # Write the VIPs to the hosts file
+  writeVIPToHosts( $localNetworkHash );
+
   # Mount the GlusterFS volume
   mountGlusterFS($remoteNetworkHash1,$remoteNetworkHash2);
 
