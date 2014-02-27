@@ -1,2 +1,4 @@
 # Ignore the eclipse project file
 .project
+.settings/
+.includepath
