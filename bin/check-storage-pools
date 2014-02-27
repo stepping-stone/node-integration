@@ -1,0 +1,298 @@
+#!/usr/bin/perl -w
+######################################################################################################
+# /usr/sbin/fc-node-configuration
+######################################################################################################
+#
+# Copyright (C) 2014 stepping stone GmbH
+#                    Switzerland
+#                    http://www.stepping-stone.ch
+#                    support@stepping-stone.ch
+#
+# Authors:
+#  Pat Kläy <pat.klaey@stepping-stone.ch>
+#  
+# Licensed under the EUPL, Version 1.1.
+#
+# You may not use this work except in compliance with the
+# Licence.
+# You may obtain a copy of the Licence at:
+#
+# http://www.osor.eu/eupl
+#
+# Unless required by applicable law or agreed to in
+# writing, software distributed under the Licence is
+# distributed on an "AS IS" basis,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+# express or implied.
+# See the Licence for the specific language governing
+# permissions and limitations under the Licence.
+#
+################################################################################
+# Incorporate code with use (evaluates the included file at compile time).
+################################################################################
+
+use warnings;
+use strict;
+use Config::IniFiles;
+use Getopt::Long;
+Getopt::Long::Configure("no_auto_abbrev");
+use File::Basename;
+use Cwd 'abs_path';
+
+use PerlUtil::Logging;
+use PerlUtil::LDAPUtil;
+
+
+$| = 1;         # Turn buffering off, so that the output is flushed immediately
+
+################################################################################
+# Start the POD documentation information
+################################################################################
+=pod
+
+=head1 NAME
+
+check-storage-pools
+
+=head1 DESCRIPTION
+
+The script uses syslog for logging purposes.
+
+Command Line Interface (CLI) parameters:
+
+=head1 USAGE
+
+=over
+
+=item ./
+
+
+
+=back
+
+=head1 CREATED
+
+2014-02-27 pat.klaey@stepping-stone.ch created
+
+=head1 VERSION
+
+=over
+
+=item 2014-02-27 pat.klaey@stepping-stone.ch created
+
+=back
+
+=head1 INCORPORATED CODE
+
+Incorporated code with use:
+
+=over
+
+=over
+
+=item warnings;
+
+=item strict;
+
+=item Getopt::Long;
+
+=item PerlUtil::LDAPUtil;
+
+=item PerlUtil::Logging;
+
+=item PerlUtil::Mail;
+
+=item Number::Format;
+
+=item File::Basename;
+
+=item Cwd 'abs_path';
+
+=back
+
+=back
+
+=cut
+################################################################################
+# End the POD documentation information
+################################################################################
+
+################################################################################
+# Process the single character or long command line arguments.
+################################################################################
+my %opts;
+
+GetOptions (
+    \%opts,
+    "help|h",       # This option will display a short help message.
+    "image|i:s",    # This option indicates the disk image to process
+    "all|a",        # This option indicates to process all disk images
+    "debug|d",      # This option enables the debug mode
+);
+
+################################################################################
+# Read the configuration file
+################################################################################
+my $location=dirname(abs_path($0));
+my $config_file = basename($0);
+$config_file =~ s/\.pl//;
+
+my $cfg = Config::IniFiles->new(-file => "$location/../etc/foss-cloud/$config_file.conf");
+
+# LDAP
+my $ldap_server = $cfg->val("LDAP","Server");
+my $ldap_port = $cfg->val("LDAP","Port");
+my $ldap_user = $cfg->val("LDAP","Username");
+my $ldap_password = $cfg->val("LDAP","Password");
+my $ldap_ca = $cfg->val("LDAP","CA_Path");
+my $ldap_machine_base = $cfg->val("LDAP","Machine_Base");
+
+################################################################################
+# Variable definitions
+################################################################################
+my $debug             = 1;   # Debug modus: 0: off, 1: on
+
+my $image;
+
+################################################################################
+# Constant definitions
+################################################################################
+use constant SUCCESS_CODE                         => 0;
+use constant ERROR_CODE                           => 1;
+
+use constant TRUE                                 => 1;
+use constant FALSE                                => 0;
+
+################################################################################
+# Help text
+################################################################################
+my $help = "\nPlease use pod2text $0 for the online help\n\n";
+
+################################################################################
+# Main Programme
+################################################################################
+
+# Start syslog
+createLogger(abs_path($0),"ndelay,pid");
+
+# Check the command line arguments
+checkCommandLineArguments();
+
+# Connect to the LDAP backend
+my $connection = LDAPConnect(
+                              $ldap_server,
+                              $ldap_port,
+                              $ldap_user,
+                              $ldap_password
+                            );
+                            
+# Check if the connection could be established
+unless ( $connection )
+{
+    logger("error","Cannot connect to LDAP server $ldap_server. See logfile " 
+          ."for more information",$debug);
+    exit ERROR_CODE;
+}
+
+if ( $opts{all} )
+{
+    # Get the storage pool parent directory
+    my $root_dir = $cfg->val("Storage","Pool_Mount_Point");
+    my $disk_image_format = $cfg->val("Storage","Disk_Image_Format");
+    
+    # Put all not used disk images in an array
+    my @not_found = ();
+    
+    # Go through all storage pools (i.e. all subdirs of root_dir)
+    foreach my $storage_pool ( <$root_dir/*> )
+    {
+        # Read all files for the current storage pool
+        foreach my $file ( <$storage_pool/*> )
+        {
+            # If the file does not contain the disk image format we can skip it
+            next if ( $file !~ m/$disk_image_format/ );
+            
+            # Add the image to the not_found array if it was not found in the 
+            # LDAP
+            push(@not_found, $file) if ( diskImageIsInLDAP($file,$connection) );
+        }
+    }
+    
+    print "The following disk images were not found in the LDAP:\n";
+    print join("\n",@not_found);
+    print "\n";
+} else
+{
+    # Check the sinlge disk image
+    if ( diskImageIsInLDAP( $opts{image}, $connection ) )
+    {
+        print "The disk image is currently in use!\n";
+    } else
+    {
+        print "The disk image could not be found in the LDAP, it is possible to"
+             ." delete it";
+    }
+}
+
+################################################################################
+# Subroutines
+################################################################################
+
+################################################################################
+# checkCommandLineArguments
+################################################################################
+# Description:
+#  Check the command line arguments.
+################################################################################
+sub checkCommandLineArguments 
+{
+    # Enable debug mode if the debug option is set
+    $debug = 1 if ( $opts{debug} );
+    
+    # Execute the pod2text help text if required
+    exec("pod2text ".$location."/".basename($0)) if ( $opts{help} );
+    
+    # Check that one option is given
+    if ( !$opts{all} && !$opts{image} )
+    {
+        logger("error","The script needs either the --all or the --image option"
+              ." but neither is provided. Use -h|--help for more information",
+              $debug);
+        exit ERROR_CODE;
+    }
+    
+    # Check that not both options at the same time are given
+    if ( $opts{all} && $opts{image} )
+    {
+        logger("error","Both options --all and the --image are given. This is "
+              ."not allowed. Use -h|--help for more information",
+              $debug);
+        exit ERROR_CODE;
+    }
+}
+
+################################################################################
+# diskImageIsInLDAP
+################################################################################
+# Description:
+#  
+################################################################################
+sub diskImageIsInLDAP
+{
+    my ($image, $connection) = @_;
+    
+    # Search the image in below the machine base
+    my @results = LDAPSearch( $ldap_machine_base,
+                              "sub",
+                              "|((sstSourceName=*$image)".
+                              "(sstSourceFile=*$image))",
+                              $connection
+                            );
+                            
+    # Check if a result was found, if yes, return true
+    return TRUE if ( @results && @results >= 1 );
+    
+    # Else return false
+    return FALSE;
+    
+}
