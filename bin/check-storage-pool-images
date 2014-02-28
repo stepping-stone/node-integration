@@ -131,13 +131,47 @@ GetOptions (
 );
 
 ################################################################################
+# Constant definitions
+################################################################################
+use constant SUCCESS_CODE                         => 0;
+use constant ERROR_CODE                           => 1;
+
+use constant TRUE                                 => 1;
+use constant FALSE                                => 0;
+
+################################################################################
+# Variable definitions
+################################################################################
+my $debug             = 1;   # Debug modus: 0: off, 1: on
+
+my $image;
+
+################################################################################
+# Check the command line arguments
+################################################################################
+
+# Start syslog
+createLogger(abs_path($0),"ndelay,pid");
+
+checkCommandLineArguments();
+
+################################################################################
 # Read the configuration file
 ################################################################################
 my $location=dirname(abs_path($0));
 my $config_file = basename($0);
 $config_file =~ s/\.pl//;
+my $config_file_path = "$location/../etc/foss-cloud/$config_file.conf";
 
-my $cfg = Config::IniFiles->new(-file => "$location/../etc/foss-cloud/$config_file.conf");
+# Check if the configuration file is readable
+unless ( -r $config_file_path )
+{
+    logger("error","The configuration file ($config_file_path) cannot be read, "
+          ." please make sure that it exists and is readble",$debug);
+    exit ERROR_CODE;
+}
+
+my $cfg = Config::IniFiles->new(-file => $config_file_path);
 
 # LDAP
 my $ldap_server = $cfg->val("LDAP","Server");
@@ -148,35 +182,8 @@ my $ldap_ca = $cfg->val("LDAP","CA_Path");
 my $ldap_machine_base = $cfg->val("LDAP","Machine_Base");
 
 ################################################################################
-# Variable definitions
-################################################################################
-my $debug             = 1;   # Debug modus: 0: off, 1: on
-
-my $image;
-
-################################################################################
-# Constant definitions
-################################################################################
-use constant SUCCESS_CODE                         => 0;
-use constant ERROR_CODE                           => 1;
-
-use constant TRUE                                 => 1;
-use constant FALSE                                => 0;
-
-################################################################################
-# Help text
-################################################################################
-my $help = "\nPlease use pod2text $0 for the online help\n\n";
-
-################################################################################
 # Main Programme
 ################################################################################
-
-# Start syslog
-createLogger(abs_path($0),"ndelay,pid");
-
-# Check the command line arguments
-checkCommandLineArguments();
 
 # Connect to the LDAP backend
 my $connection = LDAPConnect(
