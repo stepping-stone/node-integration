@@ -149,6 +149,7 @@ my $image;
 ################################################################################
 # Check the command line arguments
 ################################################################################
+my $location=dirname(abs_path($0));
 
 # Start syslog
 createLogger(abs_path($0),"ndelay,pid");
@@ -158,7 +159,6 @@ checkCommandLineArguments();
 ################################################################################
 # Read the configuration file
 ################################################################################
-my $location=dirname(abs_path($0));
 my $config_file = basename($0);
 $config_file =~ s/\.pl//;
 my $config_file_path = "$location/../etc/foss-cloud/$config_file.conf";
@@ -167,7 +167,7 @@ my $config_file_path = "$location/../etc/foss-cloud/$config_file.conf";
 unless ( -r $config_file_path )
 {
     logger("error","The configuration file ($config_file_path) cannot be read, "
-          ." please make sure that it exists and is readble",$debug);
+          ."please make sure that it exists and is readable",$debug);
     exit ERROR_CODE;
 }
 
@@ -207,37 +207,105 @@ if ( $opts{all} )
     my $root_dir = $cfg->val("Storage","Pool_Mount_Point");
     my $disk_image_format = $cfg->val("Storage","Disk_Image_Format");
     
+    # Check the values we get from the configuration file, the mount point must
+    # be set, start with / and contain some more charaters
+    if ( !$root_dir || $root_dir eq "" )
+    {
+        logger("error","The storage pool mount point is not properly set in the"
+              ." configuration file (".$cfg->GetFileName()."). If you use the "
+              ."option --all make sure the attribute 'Pool_Mount_Point' in the "
+              ."section 'Storage' is properly set",$debug);
+        exit ERROR_CODE;
+    }
+    
+    if ( $root_dir !~ m/^\//)
+    {
+        logger("error","The storage pool mount point must be an absolute path "
+              ."(i.e. start with a '/'). Please correct this in the "
+              ."configuration file (".$cfg->GetFileName().")", $debug);
+        exit ERROR_CODE;
+    }
+    
+    if ( $root_dir =~ m/^\/$/ )
+    {
+        logger("error","The storage pool mount point cannot be the absolute "
+              ."root directory ('/'). Please specify a valid mount point (for "
+              ."example '/var/virtualization/vm-persistent/)",$debug);
+        exit ERROR_CODE;
+    }
+    
+    unless ( -e $root_dir )
+    {
+        logger("error","The specified mount storage pool mount point ($root_dir"
+              .") does not exist. Please double check the attribute 'Pool_Mount"
+              ."_Point' in the section 'Storage'", $debug);
+        exit ERROR_CODE;
+    }
+    
+    # Also check if the disk image format is set
+    if ( !$disk_image_format || $disk_image_format eq "" )
+    {
+        logger("error","The attribute 'Disk_Image_Format' in the section "
+              ."'Storage' is not set. Please set the corresponding disk image "
+              ."format in the configuration file (".$cfg->GetFileName().")",
+              $debug);
+        exit ERROR_CODE;
+    }
+    
     # Put all not used disk images in an array
     my @not_found = ();
     
     # Go through all storage pools (i.e. all subdirs of root_dir)
     foreach my $storage_pool ( <$root_dir/*> )
     {
+        # Log/Print which storage pool we are currently processing if in debug
+        # mode
+        logger( "info", "In storage pool $storage_pool", $debug ) if ( $debug );
+        
         # Read all files for the current storage pool
         foreach my $file ( <$storage_pool/*> )
         {
             # If the file does not contain the disk image format we can skip it
             next if ( $file !~ m/$disk_image_format/ );
             
+            # Get the files name
+            my $file_name = basename($file);
+            
             # Add the image to the not_found array if it was not found in the 
             # LDAP
-            push(@not_found, $file) if ( diskImageIsInLDAP($file,$connection) );
+            if ( diskImageIsInLDAP( $file_name, $connection) )
+            {
+                # Log/print which file we are currently processing if in debug 
+                # mode
+                logger("info", "-- $file_name FOUND", $debug ) if ( $debug );
+            } else
+            {
+                # Log/print which file we are currently processing if in debug 
+                # mode
+                logger("info", "-- $file_name NOT FOUND", $debug ) if ( $debug);
+                push( @not_found, $file );
+            }
         }
     }
     
-    print "The following disk images were not found in the LDAP:\n";
+    print "\n\nThe following disk images were not found in the LDAP:\n";
     print join("\n",@not_found);
     print "\n";
 } else
 {
+    my $disk_image = $opts{image};
+    
+    # get the images file name 
+    $disk_image = basename($disk_image);
+    
     # Check the sinlge disk image
-    if ( diskImageIsInLDAP( $opts{image}, $connection ) )
+    if ( diskImageIsInLDAP($disk_image , $connection ) )
     {
         print "The disk image is currently in use!\n";
     } else
     {
         print "The disk image could not be found in the LDAP, it is possible to"
-             ." delete it";
+             ." delete it\n";
     }
 }
 
@@ -291,7 +359,7 @@ sub diskImageIsInLDAP
     # Search the image in below the machine base
     my @results = LDAPSearch( $ldap_machine_base,
                               "sub",
-                              "|((sstSourceName=*$image)".
+                              "(|(sstSourceName=*$image)".
                               "(sstSourceFile=*$image))",
                               $connection
                             );
