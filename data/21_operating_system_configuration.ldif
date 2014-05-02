@@ -336,6 +336,30 @@ sstAllowResellerUID: 0
 sstAllowCustomerUID: 0
 sstAllowPersonUID: 0
 
+dn: uid=3000058,uid=3000052,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
+objectclass: top
+objectclass: sstGroupObjectClass
+objectclass: sstRelationship
+uid: 3000058
+sstDisplayName: 14.04 (Trusty Tahr)
+sstBelongsToResellerUID: 4000000
+sstBelongsToCustomerUID: 4000001
+sstAllowResellerUID: 0
+sstAllowCustomerUID: 0
+sstAllowPersonUID: 0
+
+dn: uid=3000059,uid=3000052,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
+objectclass: top
+objectclass: sstGroupObjectClass
+objectclass: sstRelationship
+uid: 3000059
+sstDisplayName: 14.10 (Utopic Unicorn)
+sstBelongsToResellerUID: 4000000
+sstBelongsToCustomerUID: 4000001
+sstAllowResellerUID: 0
+sstAllowCustomerUID: 0
+sstAllowPersonUID: 0
+
 # This sub tree contains the Windows based operating system choices for the whole stoney cloud installation.
 dn: uid=3000036,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
 objectclass: top

@@ -123,6 +123,8 @@ labeledURI: ldap:///uid=3000054,uid=3000052,uid=3000019,ou=operating system,ou=c
 labeledURI: ldap:///uid=3000055,uid=3000052,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
 labeledURI: ldap:///uid=3000056,uid=3000052,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
 labeledURI: ldap:///uid=3000057,uid=3000052,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
+labeledURI: ldap:///uid=3000058,uid=3000052,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
+labeledURI: ldap:///uid=3000059,uid=3000052,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
 labeledURI: ldap:///uid=3000038,uid=3000037,uid=3000036,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
 labeledURI: ldap:///uid=3000039,uid=3000037,uid=3000036,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
 labeledURI: ldap:///uid=3000040,uid=3000037,uid=3000036,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
