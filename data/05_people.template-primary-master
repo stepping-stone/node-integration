@@ -52,7 +52,6 @@ surname: <STONEY-CLOUD-PEOPLE-SURNAME>
 preferredLanguage: <STONEY-CLOUD-PEOPLE-LANGUAGE>
 userPassword: <STONEY-CLOUD-PEOPLE-PASSWORD>
 mail: <STONEY-CLOUD-PEOPLE-MAIL>
-cn: admin
 sstTimeZoneOffset: <STONEY-CLOUD-PEOPLE-TIMEZONE>
 sstIsActive: TRUE
 sstBelongsToUID: 1
