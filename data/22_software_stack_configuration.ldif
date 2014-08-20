@@ -72,7 +72,7 @@ objectclass: sstRelationship
 uid: 3000061
 sstDisplayName: Integration Environment
 description: This is the environment used for integration (pre-production).
-sstEnvironmentName: production
+sstEnvironmentName: integration
 sstBelongsToResellerUID: 4000000
 sstBelongsToCustomerUID: 4000001
 sstAllowResellerUID: 0
