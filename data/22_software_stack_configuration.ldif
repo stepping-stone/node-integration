@@ -114,6 +114,7 @@ objectclass: sstRelationship
 objectclass: labeledURIObject
 uid: 3000051
 sstDisplayName: None
+sstBusinessLogicRoleName: none
 description: No Software Stack is to be managed through the configuration management.
 labeledURI: ldap:///uid=3000021,uid=3000020,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
 labeledURI: ldap:///uid=3000022,uid=3000020,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
@@ -164,6 +165,7 @@ objectclass: sstRelationship
 objectclass: labeledURIObject
 uid: 3000052
 sstDisplayName: SSH (stepping stone GmbH)
+sstBusinessLogicRoleName: ssh
 description: SSH configuration for remote access by stepping stone GmbH employees.
 labeledURI: ldap:///uid=3000034,uid=3000033,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
 labeledURI: ldap:///uid=3000035,uid=3000033,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
