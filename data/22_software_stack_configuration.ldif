@@ -148,7 +148,7 @@ labeledURI: ldap:///uid=3000047,uid=3000042,uid=3000036,ou=operating system,ou=c
 labeledURI: ldap:///uid=3000049,uid=3000048,uid=3000036,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
 labeledURI: ldap:///uid=3000050,uid=3000048,uid=3000036,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
 sstEnvironmentName: production
-sstEnvironmentName: integraion
+sstEnvironmentName: integration
 sstEnvironmentName: test
 sstEnvironmentName: development
 sstBelongsToResellerUID: 4000000
@@ -162,15 +162,13 @@ objectclass: top
 objectclass: sstGroupObjectClass
 objectclass: sstRelationship
 objectclass: labeledURIObject
-stEnvironmentName: Test
-sstEnvironmentName: Development
-sstEnvironmentName: Productionid: 3000052
+uid: 3000052
 sstDisplayName: SSH (stepping stone GmbH)
 description: SSH configuration for remote access by stepping stone GmbH employees.
 labeledURI: ldap:///uid=3000034,uid=3000033,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
 labeledURI: ldap:///uid=3000035,uid=3000033,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
 sstEnvironmentName: production
-sstEnvironmentName: integraion
+sstEnvironmentName: integration
 sstEnvironmentName: test
 sstEnvironmentName: development
 sstBelongsToResellerUID: 4000000
