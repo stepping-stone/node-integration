@@ -1,29 +1,26 @@
-# Copyright (C) 2013 stepping stone GmbH
+# Copyright (C) 2014 stepping stone GmbH
 #                    Switzerland
 #                    http://www.stepping-stone.ch
 #                    support@stepping-stone.ch
-#
-# Authors:
-#  Michael Eichenberger <michael.eichenberger@stepping-stone.ch>
 #  
-# Licensed under the EUPL, Version 1.1.
+# Authors:
+#  Hans Mustermann <hans.mustermann@stepping-stone.ch>
 #
-# You may not use this work except in compliance with the
-# Licence.
-# You may obtain a copy of the Licence at:
+# This file is part of the stoney cloud.
 #
-# http://www.osor.eu/eupl
+# stoney cloud is free software: you can redistribute it and/or
+# modify it under the terms of the GNU Affero General Public 
+# License as published  by the Free Software Foundation, version
+# 3 of the License.
 #
-# Unless required by applicable law or agreed to in
-# writing, software distributed under the Licence is
-# distributed on an "AS IS" basis,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
-# express or implied.
-# See the Licence for the specific language governing
-# permissions and limitations under the Licence.
+# stoney cloud is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
 #
-# $Id$
-#
+# You should have received a copy of the GNU Affero General Public
+# License  along with stoney cloud.
+# If not, see <http://www.gnu.org/licenses/>.
 #
 #####################################################################################################################
 # /etc/openldap/data/22_software_stack_configuration.ldif
@@ -54,42 +51,56 @@ objectclass: organizationalUnit
 ou: environments
 description: This sub tree contains the software stack environment choices for the whole stoney cloud installation.
 
-dn: uid=3000054,ou=environments,ou=software stack,ou=configuration,dc=stoney-cloud,dc=org
+dn: uid=3000060,ou=environments,ou=software stack,ou=configuration,dc=stoney-cloud,dc=org
 objectclass: top
 objectclass: sstGroupObjectClass
 objectclass: sstRelationship
-uid: 3000054
-sstDisplayName: Test Environment
-description: This is the environment used for testing (pre-production).
-sstEnvironmentName: Test
-sstBelongsToResellerUID: 4000000
-sstBelongsToCustomerUID: 4000001
-sstAllowResellerUID: 0
-sstAllowCustomerUID: 0
-sstAllowPersonUID: 0
-
-dn: uid=3000055,ou=environments,ou=software stack,ou=configuration,dc=stoney-cloud,dc=org
-objectclass: top
-objectclass: sstGroupObjectClass
-objectclass: sstRelationship
-uid: 3000055
-sstDisplayName: Development Environment
-description: This is the environment used for development (sandbox).
-sstEnvironmentName: Development
-sstBelongsToResellerUID: 4000000
-sstBelongsToCustomerUID: 4000001
-sstAllowResellerUID: 0
-sstAllowCustomerUID: 0
-sstAllowPersonUID: 0
-
-dn: uid=3000056,ou=environments,ou=software stack,ou=configuration,dc=stoney-cloud,dc=org
-objectclass: top
-objectclass: sstGroupObjectClass
-objectclass: sstRelationship
-uid: 3000056
+uid: 3000061
 sstDisplayName: Production Environment
 description: This is the environment used for production.
-sstEnvironmentName: Production
+sstEnvironmentName: production
+sstBelongsToResellerUID: 4000000
+sstBelongsToCustomerUID: 4000001
+sstAllowResellerUID: 0
+sstAllowCustomerUID: 0
+sstAllowPersonUID: 0
+
+dn: uid=3000061,ou=environments,ou=software stack,ou=configuration,dc=stoney-cloud,dc=org
+objectclass: top
+objectclass: sstGroupObjectClass
+objectclass: sstRelationship
+uid: 3000061
+sstDisplayName: Integration Environment
+description: This is the environment used for integration (pre-production).
+sstEnvironmentName: production
+sstBelongsToResellerUID: 4000000
+sstBelongsToCustomerUID: 4000001
+sstAllowResellerUID: 0
+sstAllowCustomerUID: 0
+sstAllowPersonUID: 0
+
+dn: uid=3000062,ou=environments,ou=software stack,ou=configuration,dc=stoney-cloud,dc=org
+objectclass: top
+objectclass: sstGroupObjectClass
+objectclass: sstRelationship
+uid: 3000062
+sstDisplayName: Test Environment
+description: This is the environment used for testing (pre-integration).
+sstEnvironmentName: test
+sstBelongsToResellerUID: 4000000
+sstBelongsToCustomerUID: 4000001
+sstAllowResellerUID: 0
+sstAllowCustomerUID: 0
+sstAllowPersonUID: 0
+
+dn: uid=3000063,ou=environments,ou=software stack,ou=configuration,dc=stoney-cloud,dc=org
+objectclass: top
+objectclass: sstGroupObjectClass
+objectclass: sstRelationship
+uid: 3000063
+sstDisplayName: Development Environment
+description: This is the environment used for development (sandbox or pre-test).
+sstEnvironmentName: development
 sstBelongsToResellerUID: 4000000
 sstBelongsToCustomerUID: 4000001
 sstAllowResellerUID: 0
@@ -136,9 +147,10 @@ labeledURI: ldap:///uid=3000046,uid=3000042,uid=3000036,ou=operating system,ou=c
 labeledURI: ldap:///uid=3000047,uid=3000042,uid=3000036,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
 labeledURI: ldap:///uid=3000049,uid=3000048,uid=3000036,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
 labeledURI: ldap:///uid=3000050,uid=3000048,uid=3000036,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
-sstEnvironmentName: Test
-sstEnvironmentName: Development
-sstEnvironmentName: Production
+sstEnvironmentName: production
+sstEnvironmentName: integraion
+sstEnvironmentName: test
+sstEnvironmentName: development
 sstBelongsToResellerUID: 4000000
 sstBelongsToCustomerUID: 4000001
 sstAllowResellerUID: 0
@@ -150,14 +162,17 @@ objectclass: top
 objectclass: sstGroupObjectClass
 objectclass: sstRelationship
 objectclass: labeledURIObject
-uid: 3000052
+stEnvironmentName: Test
+sstEnvironmentName: Development
+sstEnvironmentName: Productionid: 3000052
 sstDisplayName: SSH (stepping stone GmbH)
 description: SSH configuration for remote access by stepping stone GmbH employees.
 labeledURI: ldap:///uid=3000034,uid=3000033,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
 labeledURI: ldap:///uid=3000035,uid=3000033,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
-sstEnvironmentName: Test
-sstEnvironmentName: Development
-sstEnvironmentName: Production
+sstEnvironmentName: production
+sstEnvironmentName: integraion
+sstEnvironmentName: test
+sstEnvironmentName: development
 sstBelongsToResellerUID: 4000000
 sstBelongsToCustomerUID: 4000001
 sstAllowResellerUID: 0
