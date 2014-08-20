@@ -55,7 +55,7 @@ dn: uid=3000060,ou=environments,ou=software stack,ou=configuration,dc=stoney-clo
 objectclass: top
 objectclass: sstGroupObjectClass
 objectclass: sstRelationship
-uid: 3000061
+uid: 3000060
 sstDisplayName: Production Environment
 description: This is the environment used for production.
 sstEnvironmentName: production
