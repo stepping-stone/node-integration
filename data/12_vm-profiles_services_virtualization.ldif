@@ -149,7 +149,7 @@ objectclass: top
 objectclass: organizationalUnit
 objectclass: sstVirtualizationVirtualMachineDevices
 ou: devices
-sstemulator: /usr/bin/qemu-kvm
+sstemulator: /usr/bin/qemu-system-x86_64
 sstmemballoon: virtio
 
 # Entry 6: sstDisk=hdb,ou=devices,sstVirtualMachine=default,ou=default,ou...
@@ -298,7 +298,7 @@ objectclass: top
 objectclass: organizationalUnit
 objectclass: sstVirtualizationVirtualMachineDevices
 ou: devices
-sstemulator: /usr/bin/qemu-kvm
+sstemulator: /usr/bin/qemu-system-x86_64
 sstmemballoon: virtio
 
 # Entry 6: sstDisk=hdb,ou=devices,sstVirtualMachine=default,ou=default,ou...
