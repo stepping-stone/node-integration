@@ -113,10 +113,10 @@ sstfeature: acpi
 sstfeature: pae
 sstfeature: hap
 sstmemory: -1
-sstmemorydefault: 134217728
+sstmemorydefault: 1073741824
 sstmemorymax: 137438953472
-sstmemorymin: 134217728
-sstmemorystep: 134217728
+sstmemorymin: 1073741824
+sstmemorystep: 1073741824
 sstnode: TBD_GUI
 sstoncrash: TBD_GUI
 sstoncrashdefault: destroy
@@ -262,10 +262,10 @@ sstfeature: acpi
 sstfeature: pae
 sstfeature: hap
 sstmemory: -1
-sstmemorydefault: 536870912
+sstmemorydefault: 1073741824
 sstmemorymax: 137438953472
-sstmemorymin: 268435456
-sstmemorystep: 134217728
+sstmemorymin: 1073741824
+sstmemorystep: 1073741824
 sstnode: TBD_GUI
 sstoncrash: TBD_GUI
 sstoncrashdefault: destroy
