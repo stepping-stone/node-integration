@@ -129,7 +129,7 @@ sstonrebootdefault: restart
 sstonrebootvalues: restart
 sstosarchitecture: TBD_GUI
 sstosbootdevice: cdrom
-sstOSMachine: pc-i440fx-1.5
+sstOSMachine: pc-i440fx-2.1
 sstostype: hvm
 sststatus: TBD_SYSTEM
 ssttype: kvm
@@ -278,7 +278,7 @@ sstonrebootdefault: restart
 sstonrebootvalues: restart
 sstosarchitecture: TBD_GUI
 sstosbootdevice: cdrom
-sstOSMachine: pc-i440fx-1.5
+sstOSMachine: pc-i440fx-2.1
 sstostype: hvm
 sststatus: TBD_SYSTEM
 ssttype: kvm
