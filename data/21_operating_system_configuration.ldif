@@ -99,6 +99,18 @@ sstAllowResellerUID: 0
 sstAllowCustomerUID: 0
 sstAllowPersonUID: 0
 
+dn: uid=3000067,uid=3000020,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
+objectclass: top
+objectclass: sstGroupObjectClass
+objectclass: sstRelationship
+uid: 3000067
+sstDisplayName: 8 (Jessie)
+sstBelongsToResellerUID: 4000000
+sstBelongsToCustomerUID: 4000001
+sstAllowResellerUID: 0
+sstAllowCustomerUID: 0
+sstAllowPersonUID: 0
+
 # This sub tree contains the Fedora Linux based operating system choices for the whole stoney cloud installation.
 dn: uid=3000024,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
 objectclass: top
