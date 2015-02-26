@@ -108,6 +108,10 @@ sstclockoffset: TBD_GUI
 sstclockoffsetdefault: utc
 sstclockoffsetvalues: localtime
 sstclockoffsetvalues: utc
+sstClockTimer: rtc:tickpolicy=catchup
+sstClockTimer: pit:tickpolicy=delay
+sstClockTimer: hypervclock:present=yes
+sstClockTimer: hpet:present=no
 sstdisplayname: TBD_GUI
 sstfeature: acpi
 sstfeature: pae
@@ -258,9 +262,10 @@ sstclockoffsetdefault: localtime
 sstclockoffsetvalues: localtime
 sstclockoffsetvalues: utc
 sstdisplayname: TBD_GUI
-sstfeature: acpi
-sstfeature: pae
-sstfeature: hap
+sstFeature: acpi
+sstFeature: pae
+sstFeature: hap
+sstFeature: hyperv:relaxed+state=on,vapic+state=on,spinlocks+state=on+retries=8191
 sstmemory: -1
 sstmemorydefault: 1073741824
 sstmemorymax: 137438953472
