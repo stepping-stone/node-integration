@@ -34,9 +34,9 @@
 #  file 21_operating_system_configuration.ldif, execute the following command:
 #    grep -E '((uid=([0-9]{7})),){3}' 21_operating_system_configuration.ldif
 #  This will give you the following output:
-#    dn: uid=3000021,uid=3000020,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
-#    dn: uid=3000022,uid=3000020,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
-#    dn: uid=3000023,uid=3000020,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
+#   labeledURI: ldap:///uid=3000021,uid=3000020,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
+#   labeledURI: ldap:///uid=3000022,uid=3000020,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
+#   labeledURI: ldap:///uid=3000023,uid=3000020,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
 #    ...
 #####################################################################################################################
 dn: ou=software stack,ou=configuration,dc=stoney-cloud,dc=org
@@ -116,40 +116,40 @@ uid: 3000064
 sstDisplayName: None
 sstBusinessLogicRoleName: none
 description: No Software Stack is to be managed through the configuration management.
-dn: uid=3000021,uid=3000020,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
-dn: uid=3000022,uid=3000020,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
-dn: uid=3000023,uid=3000020,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
-dn: uid=3000067,uid=3000020,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
-dn: uid=3000025,uid=3000024,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
-dn: uid=3000026,uid=3000024,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
-dn: uid=3000027,uid=3000024,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
-dn: uid=3000028,uid=3000024,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
-dn: uid=3000029,uid=3000024,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
-dn: uid=3000030,uid=3000024,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
-dn: uid=3000031,uid=3000024,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
-dn: uid=3000032,uid=3000024,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
-dn: uid=3000051,uid=3000024,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
-dn: uid=3000066,uid=3000024,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
-dn: uid=3000034,uid=3000033,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
-dn: uid=3000035,uid=3000033,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
-dn: uid=3000053,uid=3000052,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
-dn: uid=3000054,uid=3000052,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
-dn: uid=3000055,uid=3000052,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
-dn: uid=3000056,uid=3000052,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
-dn: uid=3000057,uid=3000052,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
-dn: uid=3000058,uid=3000052,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
-dn: uid=3000059,uid=3000052,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
-dn: uid=3000038,uid=3000037,uid=3000036,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
-dn: uid=3000039,uid=3000037,uid=3000036,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
-dn: uid=3000040,uid=3000037,uid=3000036,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
-dn: uid=3000041,uid=3000037,uid=3000036,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
-dn: uid=3000043,uid=3000042,uid=3000036,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
-dn: uid=3000044,uid=3000042,uid=3000036,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
-dn: uid=3000045,uid=3000042,uid=3000036,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
-dn: uid=3000046,uid=3000042,uid=3000036,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
-dn: uid=3000047,uid=3000042,uid=3000036,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
-dn: uid=3000049,uid=3000048,uid=3000036,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
-dn: uid=3000050,uid=3000048,uid=3000036,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
+labeledURI: ldap:///uid=3000021,uid=3000020,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
+labeledURI: ldap:///uid=3000022,uid=3000020,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
+labeledURI: ldap:///uid=3000023,uid=3000020,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
+labeledURI: ldap:///uid=3000067,uid=3000020,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
+labeledURI: ldap:///uid=3000025,uid=3000024,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
+labeledURI: ldap:///uid=3000026,uid=3000024,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
+labeledURI: ldap:///uid=3000027,uid=3000024,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
+labeledURI: ldap:///uid=3000028,uid=3000024,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
+labeledURI: ldap:///uid=3000029,uid=3000024,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
+labeledURI: ldap:///uid=3000030,uid=3000024,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
+labeledURI: ldap:///uid=3000031,uid=3000024,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
+labeledURI: ldap:///uid=3000032,uid=3000024,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
+labeledURI: ldap:///uid=3000051,uid=3000024,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
+labeledURI: ldap:///uid=3000066,uid=3000024,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
+labeledURI: ldap:///uid=3000034,uid=3000033,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
+labeledURI: ldap:///uid=3000035,uid=3000033,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
+labeledURI: ldap:///uid=3000053,uid=3000052,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
+labeledURI: ldap:///uid=3000054,uid=3000052,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
+labeledURI: ldap:///uid=3000055,uid=3000052,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
+labeledURI: ldap:///uid=3000056,uid=3000052,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
+labeledURI: ldap:///uid=3000057,uid=3000052,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
+labeledURI: ldap:///uid=3000058,uid=3000052,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
+labeledURI: ldap:///uid=3000059,uid=3000052,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
+labeledURI: ldap:///uid=3000038,uid=3000037,uid=3000036,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
+labeledURI: ldap:///uid=3000039,uid=3000037,uid=3000036,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
+labeledURI: ldap:///uid=3000040,uid=3000037,uid=3000036,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
+labeledURI: ldap:///uid=3000041,uid=3000037,uid=3000036,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
+labeledURI: ldap:///uid=3000043,uid=3000042,uid=3000036,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
+labeledURI: ldap:///uid=3000044,uid=3000042,uid=3000036,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
+labeledURI: ldap:///uid=3000045,uid=3000042,uid=3000036,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
+labeledURI: ldap:///uid=3000046,uid=3000042,uid=3000036,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
+labeledURI: ldap:///uid=3000047,uid=3000042,uid=3000036,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
+labeledURI: ldap:///uid=3000049,uid=3000048,uid=3000036,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
+labeledURI: ldap:///uid=3000050,uid=3000048,uid=3000036,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
 sstEnvironmentName: production
 sstEnvironmentName: integration
 sstEnvironmentName: test
