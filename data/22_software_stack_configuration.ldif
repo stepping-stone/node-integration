@@ -107,12 +107,12 @@ sstAllowResellerUID: 0
 sstAllowCustomerUID: 0
 sstAllowPersonUID: 0
 
-dn: uid=3000051,ou=software stack,ou=configuration,dc=stoney-cloud,dc=org
+dn: uid=3000064,ou=software stack,ou=configuration,dc=stoney-cloud,dc=org
 objectclass: top
 objectclass: sstGroupObjectClass
 objectclass: sstRelationship
 objectclass: labeledURIObject
-uid: 3000051
+uid: 3000064
 sstDisplayName: None
 sstBusinessLogicRoleName: none
 description: No Software Stack is to be managed through the configuration management.
@@ -150,27 +150,6 @@ dn: uid=3000046,uid=3000042,uid=3000036,ou=operating system,ou=configuration,dc=
 dn: uid=3000047,uid=3000042,uid=3000036,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
 dn: uid=3000049,uid=3000048,uid=3000036,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
 dn: uid=3000050,uid=3000048,uid=3000036,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
-sstEnvironmentName: production
-sstEnvironmentName: integration
-sstEnvironmentName: test
-sstEnvironmentName: development
-sstBelongsToResellerUID: 4000000
-sstBelongsToCustomerUID: 4000001
-sstAllowResellerUID: 0
-sstAllowCustomerUID: 0
-sstAllowPersonUID: 0
-
-dn: uid=3000052,ou=software stack,ou=configuration,dc=stoney-cloud,dc=org
-objectclass: top
-objectclass: sstGroupObjectClass
-objectclass: sstRelationship
-objectclass: labeledURIObject
-uid: 3000052
-sstDisplayName: SSH (stepping stone GmbH)
-sstBusinessLogicRoleName: ssh
-description: SSH configuration for remote access by stepping stone GmbH employees.
-labeledURI: ldap:///uid=3000034,uid=3000033,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
-labeledURI: ldap:///uid=3000035,uid=3000033,uid=3000019,ou=operating system,ou=configuration,dc=stoney-cloud,dc=org
 sstEnvironmentName: production
 sstEnvironmentName: integration
 sstEnvironmentName: test
