@@ -1,35 +1,32 @@
-# Copyright (C) 2013 stepping stone GmbH
+# Copyright (C) 2015 stepping stone GmbH
 #                    Switzerland
 #                    http://www.stepping-stone.ch
 #                    support@stepping-stone.ch
-#
+#  
 # Authors:
 #  Michael Eichenberger <michael.eichenberger@stepping-stone.ch>
-#  
-# Licensed under the EUPL, Version 1.1.
 #
-# You may not use this work except in compliance with the
-# Licence.
-# You may obtain a copy of the Licence at:
+# This file is part of the stoney cloud.
 #
-# http://www.osor.eu/eupl
+# stoney cloud is free software: you can redistribute it and/or
+# modify it under the terms of the GNU Affero General Public 
+# License as published  by the Free Software Foundation, version
+# 3 of the License.
 #
-# Unless required by applicable law or agreed to in
-# writing, software distributed under the Licence is
-# distributed on an "AS IS" basis,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
-# express or implied.
-# See the Licence for the specific language governing
-# permissions and limitations under the Licence.
+# stoney cloud is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
 #
-# $Id$
-#
+# You should have received a copy of the GNU Affero General Public
+# License  along with stoney cloud.
+# If not, see <http://www.gnu.org/licenses/>.
 #
 #####################################################################################################################
 # /etc/openldap/data/19_services_maintenance.ldif
 #####################################################################################################################
 # Description:
-#  This LDIF defines the sub tree for the maintenance (configuration management) service. 
+#  This LDIF defines the sub tree for the maintenance service. 
 #####################################################################################################################
 dn: ou=maintenance,ou=services,dc=stoney-cloud,dc=org
 objectclass: top
@@ -41,12 +38,4 @@ dn: ou=configuration,ou=maintenance,ou=services,dc=stoney-cloud,dc=org
 objectclass: top
 objectclass: organizationalUnit
 ou: configuration
-description: The sub tree for the configuration of the maintenance (configuration management) service.
-
-dn: ou=prov-maintenance-puppet,ou=configuration,ou=maintenance,ou=services,dc=stoney-cloud,dc=org
-objectclass: top
-objectclass: organizationalUnit
-objectclass: sstServiceConfigurationMaintenanceObjectClass
-ou: prov-maintenance-puppet
-description: The sub tree for the configuration of the prov-maintenance-puppet daemon.
-sstIsActive: TRUE
+description: The sub tree for the configuration of the maintenance service.
