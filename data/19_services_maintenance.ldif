@@ -39,3 +39,21 @@ objectclass: top
 objectclass: organizationalUnit
 ou: configuration
 description: The sub tree for the configuration of the maintenance service.
+
+dn: ou=reseller,ou=configuration,ou=maintenance,ou=services,dc=stoney-cloud,dc=org
+objectclass: top
+objectclass: organizationalUnit
+ou: reseller
+description: The sub tree for the reseller specific maintenance service settings.
+
+dn: ou=customers,ou=configuration,ou=maintenance,ou=services,dc=stoney-cloud,dc=org
+objectclass: top
+objectclass: organizationalUnit
+ou: customer
+description: The sub tree for the customer specific maintenance service settings.
+
+dn: ou=units,ou=maintenance,ou=services,dc=stoney-cloud,dc=org
+objectclass: top
+objectclass: organizationalUnit
+ou: units
+description: The sub tree for the units of the maintenance service.
